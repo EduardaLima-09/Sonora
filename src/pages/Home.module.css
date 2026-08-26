@@ -180,44 +180,53 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
     margin-bottom: 24px;
+    width: 100%;
 }
 
 .headerLeft {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
+    flex: 1;
 }
 
 .title {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 700;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
+    margin: 0;
+    line-height: 1.2;
+    text-align: left;
 }
 
 .subtitle {
-    font-size: 14px;
-    color: var(--cor-texto-primario);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--cor-texto-secundario);
+    margin: 0;
+    opacity: 0.8;
+    text-align: left;
 }
 
 .headerRight {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex: 1;
-    max-width: 340px;
+    max-width: 420px;
+    min-width: 280px;
 }
 
 .search {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1;
-    padding: 8px 14px;
-    border-radius: 8px;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 12px;
     border: 1.5px solid var(--cor-fundo-escuro);
     background-color: rgba(255, 255, 255, 0.05);
     transition: 0.2s ease;
@@ -225,26 +234,31 @@ body {
 
 .search:focus-within {
     border-color: var(--cor-borda-foco);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(215, 159, 196, 0.1);
 }
 
 .searchIcon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     color: var(--cor-texto-secundario);
+    flex-shrink: 0;
 }
 
 .search input {
     width: 100%;
     border: none;
     outline: none;
-    font-size: 13px;
+    font-size: 15px;
     background: transparent;
     color: var(--cor-texto-primario);
+    font-family: var(--fonte-primaria);
 }
 
 .search input::placeholder {
     color: var(--cor-texto-secundario);
-    opacity: 0.5;
+    opacity: 0.4;
+    font-size: 14px;
 }
 
 /* =========================
@@ -254,117 +268,132 @@ body {
 .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 24px;
 }
 
 .statCard {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    padding: 14px 20px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     background-color: rgba(255, 255, 255, 0.03);
+    gap: 14px;
 }
 
 .statIconWrapper {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     background-color: rgba(174, 92, 166, 0.15);
 }
 
 .statIcon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     color: var(--cor-rosa-claro);
 }
 
-.statNumber {
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--cor-texto-primario);
+.statLabel {
+    font-size: 14px;
+    color: var(--cor-texto-secundario);
+    font-weight: 500;
+    flex: 1;
 }
 
-.statLabel {
-    font-size: 12px;
-    color: var(--cor-texto-secundario);
+.statNumber {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--cor-texto-primario);
+    line-height: 1.2;
+    min-width: 40px;
+    text-align: right;
+    margin-left: 20px;
 }
 
 /* =========================
-   DESTAQUE
+   DESTAQUE - ARTISTA
 ========================= */
 
 .destaque {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
 }
 
 .destaqueCard {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px;
+    flex-direction: column;
+    padding: 20px 24px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     background: linear-gradient(135deg, rgba(174, 92, 166, 0.1), rgba(106, 13, 173, 0.06));
+    max-width: 100%;
 }
 
-.destaqueInfo {
+.destaqueTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+}
+
+.destaqueLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     flex: 1;
 }
 
 .destaqueLabel {
     font-size: 14px;
-    font-weight: 600;
-    color: var(--cor-texto-primario);
+    font-weight: 500;
+    color: var(--cor-texto-secundario);
 }
 
 .destaqueNome {
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 700;
-    margin: 2px 0 4px;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
+    margin: 2px 0 6px;
+    text-align: left;
 }
 
 .destaqueStats {
     display: flex;
-    align-items: center;
-    gap: 6px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
     font-size: 14px;
-    flex-wrap: wrap;
     color: var(--cor-texto-secundario);
 }
 
 .destaqueStatIcon {
-    width: 14px;
-    height: 14px;
-    margin-right: 2px;
+    width: 16px;
+    height: 16px;
     color: var(--cor-rosa-claro);
-}
-
-.destaqueDivisor {
-    opacity: 0.4;
+    margin-right: 6px;
 }
 
 .destaqueImagem {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     background: linear-gradient(135deg, var(--cor-rosa-medio), var(--cor-roxo-claro));
 }
 
 .destaqueImagemIcon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     color: var(--cor-texto-primario);
 }
 
@@ -373,115 +402,201 @@ body {
 ========================= */
 
 .secao {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .secaoHeader {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    align-items: flex-start;
 }
 
 .secaoHeader h2 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.secaoIcon {
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
-    color: var(--cor-rosa-claro);
-}
-
-.secaoIconFavoritas {
-    margin-left: 6px;
-    color: #ff4d6d;
+.secaoHeader h2 .secaoIconFavoritas {
+    color: var(--cor-branco);
+    font-size: 18px;
 }
 
 .secaoSubtitulo {
-    font-size: 13px;
-    opacity: 0.6;
+    font-size: 14px;
     color: var(--cor-texto-secundario);
+    opacity: 0.7;
+    margin: 0;
+    text-align: left;
 }
 
 .secaoSubtituloFavoritas {
-    font-size: 13px;
-    opacity: 0.6;
+    font-size: 14px;
     color: var(--cor-texto-secundario);
+    opacity: 0.7;
+    margin: 0;
+    text-align: left;
 }
 
 /* =========================
-   LISTAS
+   LISTA MÚSICAS
 ========================= */
 
-.listaMusicas,
-.listaFavoritas {
+.listaMusicas {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
 }
-
-/* =========================
-   CARD MÚSICA
-========================= */
 
 .cardMusica {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background-color: rgba(255, 255, 255, 0.03);
-    transition: 0.2s ease;
+    justify-content: center;
+    padding: 14px 12px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
 }
 
 .cardMusica:hover {
-    background-color: rgba(255, 255, 255, 0.06);
+    background: linear-gradient(145deg, rgba(174, 92, 166, 0.15), rgba(106, 13, 173, 0.08));
+    border-color: rgba(174, 92, 166, 0.2);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 32px rgba(174, 92, 166, 0.12);
 }
 
-.cardNumero {
-    min-width: 18px;
-    font-size: 10px;
-    font-weight: 600;
-    opacity: 0.3;
-    color: var(--cor-texto-secundario);
-    font-family: var(--fonte-secundaria);
-}
-
-.cardMusicaIcon {
-    width: 12px;
-    height: 12px;
-    opacity: 0.4;
+.cardCapa {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
     flex-shrink: 0;
-    color: var(--cor-texto-secundario);
+    transition: 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cardMusica:hover .cardCapa {
+    transform: scale(1.05);
+    border-color: rgba(174, 92, 166, 0.3);
+    box-shadow: 0 4px 20px rgba(174, 92, 166, 0.2);
+}
+
+.cardCapaIcon {
+    width: 28px;
+    height: 28px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .cardInfo {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0px;
-    min-width: 0;
+    align-items: center;
+    gap: 3px;
+    width: 100%;
 }
 
 .cardNome {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
-    line-height: 1.2;
     color: var(--cor-texto-primario);
+    transition: 0.3s ease;
+    line-height: 1.2;
+}
+
+.cardMusica:hover .cardNome {
+    color: var(--cor-rosa-claro);
 }
 
 .cardArtista {
-    font-size: 10px;
+    font-size: 12px;
+    opacity: 0.5;
+    color: var(--cor-texto-secundario);
+}
+
+/* =========================
+   LISTA FAVORITAS
+========================= */
+
+.listaFavoritas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.cardFavorita {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 12px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cardFavorita:hover {
+    background: linear-gradient(145deg, rgba(255, 77, 109, 0.12), rgba(255, 77, 109, 0.04));
+    border-color: rgba(255, 77, 109, 0.2);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 32px rgba(255, 77, 109, 0.08);
+}
+
+.cardFavorita .cardCapa {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    transition: 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cardFavorita:hover .cardCapa {
+    transform: scale(1.05);
+    border-color: rgba(255, 77, 109, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 77, 109, 0.15);
+}
+
+.favoritaNome {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cor-texto-primario);
+    transition: 0.3s ease;
     line-height: 1.2;
-    opacity: 0.6;
+}
+
+.cardFavorita:hover .favoritaNome {
+    color: #ff4d6d;
+}
+
+.favoritaArtista {
+    font-size: 12px;
+    opacity: 0.5;
     color: var(--cor-texto-secundario);
 }
 
@@ -493,15 +608,15 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 8px;
-    margin-top: 2px;
-    font-size: 10px;
+    padding: 3px 12px;
+    margin-top: 8px;
+    font-size: 11px;
     font-weight: 500;
     font-family: var(--fonte-primaria);
     color: var(--cor-texto-secundario);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 12px;
+    border-radius: 20px;
     cursor: pointer;
     width: fit-content;
     transition: 0.2s ease;
@@ -513,87 +628,155 @@ body {
     border-color: var(--cor-rosa-claro);
 }
 
-.notasButton.hasNotes {
-    color: var(--cor-rosa-claro);
-    border-color: rgba(215, 159, 196, 0.2);
-}
-
 .notasButton svg {
-    width: 12px;
-    height: 12px;
-}
-
-.notasButton .badge {
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--cor-texto-primario);
-    background: var(--cor-rosa-claro);
-    padding: 0 6px;
-    border-radius: 8px;
-    min-width: 16px;
-    text-align: center;
+    width: 13px;
+    height: 13px;
 }
 
 /* =========================
-   CARD FAVORITA
+   MODAL NOTAS
 ========================= */
 
-.cardFavorita {
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background-color: rgba(255, 255, 255, 0.03);
-    transition: 0.2s ease;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
 }
 
-.cardFavorita:hover {
-    background-color: rgba(255, 255, 255, 0.06);
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.favoritaIcon {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
-    fill: #ff4d6d;
-    color: #ff4d6d;
+.modal {
+    background: var(--cor-fundo-preto);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
 }
 
-.cardFavorita .cardInfo {
-    flex: 1;
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
     display: flex;
-    flex-direction: column;
-    gap: 0px;
-    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.favoritaNome {
-    font-size: 12px;
+.modalHeader h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
     font-weight: 600;
-    line-height: 1.2;
     color: var(--cor-texto-primario);
+    font-family: var(--fonte-secundaria);
+    margin: 0;
 }
 
-.favoritaArtista {
-    font-size: 10px;
-    line-height: 1.2;
-    opacity: 0.6;
+.modalIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--cor-rosa-claro);
+}
+
+.modalClose {
+    background: none;
+    border: none;
+    font-size: 22px;
     color: var(--cor-texto-secundario);
+    cursor: pointer;
+    transition: 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.modalClose:hover {
+    color: var(--cor-texto-primario);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.modalBody {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.modalBody::-webkit-scrollbar {
+    width: 4px;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: var(--cor-rosa-claro);
+}
+
+.modalBody::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.modalVazio {
+    text-align: center;
+    color: var(--cor-texto-secundario);
+    opacity: 0.5;
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+.modalNota {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 8px;
+}
+
+.modalNota:last-child {
+    margin-bottom: 0;
+}
+
+.modalTexto {
+    font-size: 14px;
+    color: var(--cor-texto-secundario);
+    line-height: 1.5;
+    margin: 0 0 6px 0;
+}
+
+.modalData {
+    font-size: 11px;
+    color: var(--cor-texto-secundario);
+    opacity: 0.4;
+    display: block;
 }
 
 /* =========================
    RESPONSIVO
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
     .listaMusicas,
     .listaFavoritas {
-        grid-template-columns: 1fr;
-    }
-
-    .stats {
         grid-template-columns: repeat(3, 1fr);
     }
 }
@@ -650,28 +833,37 @@ body {
     }
 
     .destaqueCard {
-        flex-direction: column;
-        text-align: center;
         padding: 14px 16px;
     }
 
+    .destaqueTop {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .destaqueLeft {
+        align-items: center;
+    }
+
+    .destaqueNome {
+        font-size: 22px;
+        text-align: center;
+    }
+
     .destaqueStats {
-        justify-content: center;
+        align-items: center;
     }
 
     .destaqueImagem {
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
         margin-top: 10px;
     }
 
     .destaqueImagemIcon {
-        width: 24px;
-        height: 24px;
-    }
-
-    .destaqueNome {
-        font-size: 18px;
+        width: 30px;
+        height: 30px;
     }
 
     .title {
@@ -684,21 +876,45 @@ body {
 
     .listaMusicas,
     .listaFavoritas {
-        grid-template-columns: 1fr;
-        gap: 4px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .cardMusica,
     .cardFavorita {
-        padding: 4px 8px;
+        padding: 12px 10px;
     }
 
     .cardNome,
     .favoritaNome {
+        font-size: 13px;
+    }
+
+    .cardArtista,
+    .favoritaArtista {
         font-size: 11px;
     }
 
+    .cardCapa {
+        width: 56px;
+        height: 56px;
+    }
+
+    .cardCapaIcon {
+        width: 22px;
+        height: 22px;
+    }
+
     .search {
-        padding: 6px 12px;
+        padding: 8px 14px;
+    }
+
+    .search input {
+        font-size: 13px;
+    }
+
+    .modal {
+        padding: 24px;
+        max-width: 95%;
     }
 }

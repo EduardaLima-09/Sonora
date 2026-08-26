@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 
-// Importando ícones do react-icons
 import {
     FiHome,
     FiMusic,
@@ -12,131 +11,140 @@ import {
     FiPlus,
     FiLogOut,
     FiHeadphones,
-    FiMic,
     FiStar,
     FiMessageCircle
 } from "react-icons/fi";
 
 import logo from "../assets/LogoSomenteIconeCortada.png";
-import Notas from "../componentes/Notas";
+
+// Cores para as capas das músicas
+const coresCapas = [
+    "#6C3D5F", "#A63088", "#D79FC4", "#40265C",
+    "#AE5CA6", "#BB6AB0", "#8B4A82", "#5A2D50",
+    "#7A3D6A", "#C48AB8", "#9A5A8A", "#E8B8D8"
+];
 
 function Home() {
-    // Estado com músicas recentes + anotações
+    const usuario = "du4ards_";
+
+    // ============================
+    // MÚSICAS RECENTES
+    // ============================
     const [musicasRecentes, setMusicasRecentes] = useState([
-        { 
+        {
             id: 1,
-            nome: "United in Grief", 
+            nome: "United in Grief",
             artista: "Kendrick Lamar",
-            notas: [
-                { id: 1, texto: "Essa música me faz refletir sobre a vida...", criadoEm: "2024-01-15T10:30:00" }
-            ]
+            notas: [{ id: 1, texto: "Essa música me faz refletir sobre a vida...", criadoEm: "2024-01-15T10:30:00" }]
         },
-        { 
+        {
             id: 2,
-            nome: "Flashing Lights", 
+            nome: "Flashing Lights",
             artista: "Kanye West",
             notas: []
         },
-        { 
+        {
             id: 3,
-            nome: "Syss Without A Face", 
+            nome: "Syss Without A Face",
             artista: "Unknown",
             notas: []
         },
-        { 
+        {
             id: 4,
-            nome: "GONE, GONE, I THANK YOU", 
+            nome: "GONE, GONE, I THANK YOU",
             artista: "Tyler, The Creator",
             notas: []
         },
-        { 
+        {
             id: 5,
-            nome: "What You Need", 
+            nome: "What You Need",
             artista: "The Weeknd",
             notas: []
         },
-        { 
+        {
             id: 6,
-            nome: "PRIDE.", 
+            nome: "PRIDE.",
             artista: "Kendrick Lamar",
-            notas: [
-                { id: 2, texto: "Minha música favorita do Kendrick!", criadoEm: "2024-01-16T14:20:00" }
-            ]
+            notas: [{ id: 2, texto: "Minha música favorita do Kendrick!", criadoEm: "2024-01-16T14:20:00" }]
         },
-        { 
+        {
             id: 7,
-            nome: "Duvet", 
+            nome: "Duvet",
             artista: "bôa",
             notas: []
         },
-        { 
+        {
             id: 8,
-            nome: "Moonlight", 
+            nome: "Moonlight",
             artista: "Kali Uchis",
             notas: []
         }
     ]);
 
+    // ============================
+    // FAVORITAS
+    // ============================
     const [favoritas, setFavoritas] = useState([
-        { 
-            id: 101, 
-            nome: "Cigana", 
+        {
+            id: 101,
+            nome: "Cigana",
             artista: "Jorge Ben Jor",
-            notas: [
-                { id: 1011, texto: "Essa música me lembra do verão de 2019...", criadoEm: "2024-01-15T10:30:00" }
-            ]
+            notas: [{ id: 1011, texto: "Essa música me lembra do verão de 2019...", criadoEm: "2024-01-15T10:30:00" }]
         },
-        { 
-            id: 102, 
-            nome: "Palco", 
+        {
+            id: 102,
+            nome: "Palco",
             artista: "Gilberto Gil",
             notas: []
         },
-        { 
-            id: 103, 
-            nome: "Domingaz", 
+        {
+            id: 103,
+            nome: "Domingaz",
             artista: "Jorge Ben Jor",
             notas: []
         },
-        { 
-            id: 104, 
-            nome: "Te Gosto", 
+        {
+            id: 104,
+            nome: "Te Gosto",
             artista: "Jorge Ben Jor",
             notas: []
         },
-        { 
-            id: 105, 
-            nome: "Quais mais vocês gostam de listening?", 
+        {
+            id: 105,
+            nome: "Quais mais vocês gostam de listening?",
             artista: "Jorge Ben Jor",
             notas: []
         },
-        { 
-            id: 106, 
-            nome: "Figa De Guiné", 
+        {
+            id: 106,
+            nome: "Figa De Guiné",
             artista: "Jorge Ben Jor",
             notas: []
         },
-        { 
-            id: 107, 
-            nome: "Alívio", 
+        {
+            id: 107,
+            nome: "Alívio",
             artista: "Jorge Ben Jor",
             notas: []
         },
-        { 
-            id: 108, 
-            nome: "Me Chamando de Paixão", 
+        {
+            id: 108,
+            nome: "Me Chamando de Paixão",
             artista: "Jorge Ben Jor",
             notas: []
         }
     ]);
 
+    // ============================
+    // ESTADOS
+    // ============================
     const [artistaDestaque, setArtistaDestaque] = useState({
         nome: "Jorge Ben Jor",
         musicas: 12,
         albuns: 4
     });
 
-    const [notasAbertas, setNotasAbertas] = useState({});
+    const [modalNotas, setModalNotas] = useState({ musicaId: null, notas: [] });
 
     const stats = {
         musicas: 30,
@@ -144,15 +152,20 @@ function Home() {
         favoritas: 8
     };
 
-    const usuario = "du4ards_";
-
-    const toggleNotas = (musicaId) => {
-        setNotasAbertas(prev => ({
-            ...prev,
-            [musicaId]: !prev[musicaId]
-        }));
+    // ============================
+    // FUNÇÕES
+    // ============================
+    const abrirModalNotas = (musica) => {
+        setModalNotas({ musicaId: musica.id, notas: musica.notas || [] });
     };
 
+    const fecharModalNotas = () => {
+        setModalNotas({ musicaId: null, notas: [] });
+    };
+
+    // ============================
+    // RENDER
+    // ============================
     return (
         <div className={styles.home}>
             {/* SIDEBAR */}
@@ -184,17 +197,13 @@ function Home() {
                 </div>
             </aside>
 
-            {/* CONTEÚDO PRINCIPAL */}
+            {/* CONTEÚDO */}
             <main className={styles.main}>
                 {/* HEADER */}
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
-                        <h1 className={styles.title}>
-                            Olá, {usuario}!
-                        </h1>
-                        <p className={styles.subtitle}>
-                            Que música combina com o seu momento hoje?
-                        </p>
+                        <h1 className={styles.title}>Olá, {usuario}!</h1>
+                        <p className={styles.subtitle}>Que música combina com o seu momento hoje?</p>
                     </div>
                     <div className={styles.headerRight}>
                         <div className={styles.search}>
@@ -204,7 +213,7 @@ function Home() {
                     </div>
                 </header>
 
-                {/* ESTATÍSTICAS */}
+                {/* STATS */}
                 <section className={styles.stats}>
                     <div className={styles.statCard}>
                         <div className={styles.statIconWrapper}>
@@ -238,25 +247,24 @@ function Home() {
                 {/* ARTISTA EM DESTAQUE */}
                 <section className={styles.destaque}>
                     <div className={styles.destaqueCard}>
-                        <div className={styles.destaqueInfo}>
-                            <span className={styles.destaqueLabel}>
-                                Artista em destaque
-                            </span>
-                            <h3 className={styles.destaqueNome}>{artistaDestaque.nome}</h3>
-                            <div className={styles.destaqueStats}>
-                                <span>
-                                    <FiMusic className={styles.destaqueStatIcon} />
-                                    {artistaDestaque.musicas} músicas cadastradas
-                                </span>
-                                <span className={styles.destaqueDivisor}>•</span>
-                                <span>
-                                    <FiStar className={styles.destaqueStatIcon} />
-                                    {artistaDestaque.albuns} álbuns
-                                </span>
+                        <div className={styles.destaqueTop}>
+                            <div className={styles.destaqueLeft}>
+                                <span className={styles.destaqueLabel}>Artista em destaque</span>
+                                <h3 className={styles.destaqueNome}>{artistaDestaque.nome}</h3>
+                                <div className={styles.destaqueStats}>
+                                    <span>
+                                        <FiMusic className={styles.destaqueStatIcon} />
+                                        {artistaDestaque.musicas} músicas cadastradas
+                                    </span>
+                                    <span>
+                                        <FiStar className={styles.destaqueStatIcon} />
+                                        {artistaDestaque.albuns} álbuns
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.destaqueImagem}>
-                            <FiHeadphones className={styles.destaqueImagemIcon} />
+                            <div className={styles.destaqueImagem}>
+                                <FiHeadphones className={styles.destaqueImagemIcon} />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -271,29 +279,25 @@ function Home() {
                     <div className={styles.listaMusicas}>
                         {musicasRecentes.map((musica, index) => (
                             <div key={musica.id} className={styles.cardMusica}>
-                                <span className={styles.cardNumero}>{String(index + 1).padStart(2, '0')}</span>
-                                <FiMusic className={styles.cardMusicaIcon} />
+                                <div 
+                                    className={styles.cardCapa} 
+                                    style={{ backgroundColor: coresCapas[index % coresCapas.length] }}
+                                >
+                                    <FiMusic className={styles.cardCapaIcon} />
+                                </div>
                                 <div className={styles.cardInfo}>
                                     <span className={styles.cardNome}>{musica.nome}</span>
                                     <span className={styles.cardArtista}>{musica.artista}</span>
-                                    {/* BOTÃO ANOTAÇÕES */}
+                                </div>
+                                {musica.notas && musica.notas.length > 0 && (
                                     <button
-                                        onClick={() => toggleNotas(musica.id)}
+                                        onClick={() => abrirModalNotas(musica)}
                                         className={styles.notasButton}
                                     >
                                         <FiMessageCircle />
-                                        {musica.notas?.length || 0}
+                                        {musica.notas.length}
                                     </button>
-                                    {/* ANOTAÇÕES */}
-                                    {notasAbertas[musica.id] && (
-                                        <Notas
-                                            musicas={musicasRecentes}
-                                            setMusicas={setMusicasRecentes}
-                                            musicaId={musica.id}
-                                            onClose={() => toggleNotas(musica.id)}
-                                        />
-                                    )}
-                                </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -310,35 +314,67 @@ function Home() {
                     </div>
 
                     <div className={styles.listaFavoritas}>
-                        {favoritas.map((musica) => (
+                        {favoritas.map((musica, index) => (
                             <div key={musica.id} className={styles.cardFavorita}>
-                                <FiHeart className={styles.favoritaIcon} />
+                                <div 
+                                    className={styles.cardCapa} 
+                                    style={{ backgroundColor: coresCapas[(index + 4) % coresCapas.length] }}
+                                >
+                                    <FiHeart className={styles.cardCapaIcon} />
+                                </div>
                                 <div className={styles.cardInfo}>
                                     <span className={styles.favoritaNome}>{musica.nome}</span>
                                     <span className={styles.favoritaArtista}>{musica.artista}</span>
-                                    {/* BOTÃO ANOTAÇÕES NAS FAVORITAS */}
+                                </div>
+                                {musica.notas && musica.notas.length > 0 && (
                                     <button
-                                        onClick={() => toggleNotas(musica.id)}
+                                        onClick={() => abrirModalNotas(musica)}
                                         className={styles.notasButton}
                                     >
                                         <FiMessageCircle />
-                                        {musica.notas?.length || 0}
+                                        {musica.notas.length}
                                     </button>
-                                    {/* ANOTAÇÕES NAS FAVORITAS */}
-                                    {notasAbertas[musica.id] && (
-                                        <Notas
-                                            musicas={favoritas}
-                                            setMusicas={setFavoritas}
-                                            musicaId={musica.id}
-                                            onClose={() => toggleNotas(musica.id)}
-                                        />
-                                    )}
-                                </div>
+                                )}
                             </div>
                         ))}
                     </div>
                 </section>
             </main>
+
+            {/* ===== MODAL NOTAS ===== */}
+            {modalNotas.musicaId && (
+                <div className={styles.modalOverlay} onClick={fecharModalNotas}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
+                            <h3>
+                                <FiMessageCircle className={styles.modalIcon} />
+                                Anotações
+                            </h3>
+                            <button onClick={fecharModalNotas} className={styles.modalClose}>
+                                ✕
+                            </button>
+                        </div>
+                        <div className={styles.modalBody}>
+                            {modalNotas.notas.length === 0 ? (
+                                <p className={styles.modalVazio}>Nenhuma anotação para esta música.</p>
+                            ) : (
+                                modalNotas.notas.map((nota) => (
+                                    <div key={nota.id} className={styles.modalNota}>
+                                        <p className={styles.modalTexto}>{nota.texto}</p>
+                                        <span className={styles.modalData}>
+                                            {new Date(nota.criadoEm).toLocaleDateString('pt-BR', {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric'
+                                            })}
+                                        </span>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

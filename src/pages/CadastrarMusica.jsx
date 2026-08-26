@@ -306,7 +306,7 @@ function CadastrarMusica() {
                     </Link>
 
                     <Link
-                        to="/cadastrar-musica"
+                        to="/cadastrarMusica"
                         className={`${styles.navItem} ${styles.active}`}
                     >
                         <FiPlus className={styles.navIcon} />
