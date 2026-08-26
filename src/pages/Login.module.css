@@ -1,36 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
 
 :root {
-  /* CORES */
-  --color-purple-dark: #40265c;
-  --color-purple-medium: #6c3d5f;
-  --color-purple-light: #a65d9a;
-  --color-pink-medium: #aa5b9e;
-  --color-pink-light: #d79fc4;
-  --color-pink-bright: #a63088;
-  --color-pink-soft: #d9a3c6;
+  /* ===== CORES ===== */
+  --cor-roxo-escuro: #40265c;
+  --cor-roxo-medio: #6c3d5f;
+  --cor-roxo-claro: #a65d9a;
+  --cor-rosa-medio: #aa5b9e;
+  --cor-rosa-claro: #d79fc4;
+  --cor-rosa-vibrante: #a63088;
+  --cor-rosa-suave: #d9a3c6;
 
-  --color-button: #ae5ca6;
-  --color-button-hover: #bb6ab0;
+  --cor-botao: #ae5ca6;
+  --cor-botao-hover: #bb6ab0;
 
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #cdbbd3;
-  --color-text-label: #d8c9df;
-  --color-text-error: #ffb6c9;
+  --cor-texto-primario: #ffffff;
+  --cor-texto-secundario: #cdbbd3;
+  --cor-texto-label: #d8c9df;
+  --cor-texto-erro: #ffb6c9;
 
-  --color-bg-dark: #40265c;
-  --color-bg-shape-light: #d79fc4;
-  --color-bg-shape-medium: #aa5b9e;
+  --cor-fundo-escuro: #40265c;
+  --cor-fundo-forma-claro: #d79fc4;
+  --cor-fundo-forma-medio: #aa5b9e;
 
-  --color-border: #ae5ca6;
-  --color-border-focus: #d79fc4;
+  --cor-borda: #ae5ca6;
+  --cor-borda-foco: #d79fc4;
 
-  --color-white: #ffffff;
-  --color-gray-light: #f2f2f2;
+  --cor-branco: #ffffff;
+  --cor-cinza-claro: #f2f2f2;
 
-  /* FONTES */
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Poppins', sans-serif;
+  /* ===== FONTES ===== */
+  --fonte-primaria: 'Inter', sans-serif;
+  --fonte-secundaria: 'Poppins', sans-serif;
 }
 
 * {
@@ -40,7 +40,7 @@
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--fonte-primaria);
 }
 
 .login {
@@ -48,219 +48,290 @@ body {
   display: flex;
   overflow: hidden;
   min-height: 100vh;
-  background-color: var(--color-bg-dark);
+  background-color: var(--cor-fundo-escuro);
 }
 
-/* =========================
-   LADO ESQUERDO
-========================= */
-
 .visual {
-  width: 100%;
+  width: 54%;
   overflow: hidden;
   min-height: 100vh;
   position: relative;
-  background-color: var(--color-bg-dark);
+  background-color: var(--cor-fundo-escuro);
 }
 
 .shapePink {
   inset: 0;
   position: absolute;
-  background-color: var(--color-bg-shape-medium);
-  clip-path: polygon(0 0, 67.3% 0, 36.8% 100%, 0 100%);
+  background-color: var(--cor-fundo-forma-medio);
+  clip-path: polygon(0 0, 60% 0, 30% 100%, 0 100%);
 }
 
 .shapeLight {
   inset: 0;
   position: absolute;
-  background-color: var(--color-bg-shape-light);
-  clip-path: polygon(67.3% 0, 85% 0, 45.8% 100%, 28.8% 100%);
+  background-color: var(--cor-fundo-forma-claro);
+  clip-path: polygon(55% 0, 95% 0, 70% 100%, 25% 100%);
 }
 
 .dancer {
-  left: 40%;
+  left: 52%;
   z-index: 3;
-  bottom: -2%;
-  width: auto;
-  height: 100%;
+  bottom: 0;
+  width: 100vh;
+  height: 90%;
   position: absolute;
   object-fit: contain;
   transform: translateX(-50%);
 }
 
-/* =========================
-   LADO DIREITO
-========================= */
-
 .formSide {
-  position: relative;
-  width: 44%;
-  min-height: 100vh;
-  background-color: var(--color-bg-dark);
+  width: 46%;
   display: flex;
-  flex-direction: column;
+  padding: 40px 0;
+  min-height: 100vh;
+  position: relative;
   align-items: center;
+  flex-direction: column;
+  background-color: var(--cor-fundo-escuro);
 }
 
-/* =========================
-   LOGO
-========================= */
-
 .logo {
-  position: absolute;
-  top: 22px;
-  right: 28px;
-  width: 92px;
+  top: 10px;
+  right: 10px;
+  width: 240px;
   height: auto;
+  position: absolute;
   object-fit: contain;
 }
 
-/* =========================
-   CONTEÚDO
-========================= */
-
 .formContent {
-  width: 65%;
-  max-width: 300px;
-  margin-top: 25vh;
+  width: 80%;
+  max-width: 500px;
+  margin-top: 20vh;
 }
 
-/* =========================
-   BOAS-VINDAS
-========================= */
-
 .welcome {
-  text-align: center;
-  margin-bottom: 42px;
+  margin-top: 30px;
+  text-align: right;
+  margin-bottom: 50px;
 }
 
 .welcome h1 {
   margin: 0 0 8px;
-  color: var(--color-text-primary);
-  font-size: 16px;
+  font-size: 38px;
   font-weight: 700;
-  font-family: var(--font-secondary);
+  line-height: 1.2;
+  color: var(--cor-texto-primario);
+  font-family: var(--fonte-secundaria);
 }
 
 .welcome p {
   margin: 0;
-  color: var(--color-text-primary);
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 600;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
 }
 
-/* =========================
-   FORMULÁRIO
-========================= */
+.welcome p span {
+  font-size: 24px;
+  font-weight: 700;
+  padding-right: 4px;
+  color: var(--cor-texto-primario);
+  font-family: var(--fonte-secundaria);
+}
 
 .form {
+  gap: 10px;
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
-  gap: 16px;
 }
 
 .field {
+  gap: 4px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .field label {
-  color: var(--color-text-label);
-  font-size: 8px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: right;
+  letter-spacing: 0.6px;
+  color: var(--cor-texto-label);
 }
 
 .field input {
   width: 100%;
-  height: 21px;
-  box-sizing: border-box;
-  padding: 3px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  height: 50px;
   outline: none;
-  background-color: transparent;
-  color: var(--color-text-primary);
-  font-size: 10px;
-  font-family: var(--font-primary);
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
   transition: 0.2s ease;
+  box-sizing: border-box;
+  color: var(--cor-texto-primario);
+  font-family: var(--fonte-primaria);
+  border: 2px solid var(--cor-borda);
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.field input::placeholder {
+  font-size: 14px;
+  color: rgba(238, 132, 220, 0.25);
 }
 
 .field input:focus {
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px rgba(215, 159, 196, 0.12);
+  border-color: var(--cor-borda-foco);
+  box-shadow: 0 4px 20px rgba(203, 67, 190, 0.3), 0 0 0 3px rgba(232, 107, 190, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   ERRO
-========================= */
+.passwordWrapper {
+  width: 100%;
+  position: relative;
+}
+
+.passwordWrapper input {
+  width: 100%;
+  height: 50px;
+  outline: none;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+  padding: 8px 48px 8px 16px;
+  color: var(--cor-texto-primario);
+  font-family: var(--fonte-primaria);
+  border: 2px solid var(--cor-borda);
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.passwordWrapper input::placeholder {
+  font-size: 14px;
+  color: rgba(238, 132, 220, 0.25);
+}
+
+.passwordWrapper input:focus {
+  border-color: var(--cor-borda-foco);
+  box-shadow: 0 4px 20px rgba(203, 67, 190, 0.3), 0 0 0 3px rgba(232, 107, 190, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.togglePassword {
+  top: 50%;
+  right: 14px;
+  border: none;
+  padding: 4px;
+  display: flex;
+  cursor: pointer;
+  position: absolute;
+  align-items: center;
+  transition: 0.2s ease;
+  justify-content: center;
+  background: transparent;
+  transform: translateY(-50%);
+  color: var(--cor-texto-secundario);
+}
+
+.togglePassword:hover {
+  opacity: 0.8;
+  color: var(--cor-texto-primario);
+}
+
+.togglePassword:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.togglePassword svg {
+  width: 22px;
+  height: 22px;
+}
 
 .error {
+  font-size: 13px;
+  font-weight: 500;
   margin-top: -8px;
-  color: var(--color-text-error);
-  font-size: 9px;
+  text-align: right;
+  color: var(--cor-texto-erro);
 }
-
-/* =========================
-   BOTÃO
-========================= */
 
 .button {
   width: 100%;
-  height: 21px;
-  margin-top: 1px;
+  height: 44px;
+  margin-top: 10px;
   border: none;
-  border-radius: 6px;
-  background-color: var(--color-button);
-  color: var(--color-text-primary);
-  font-size: 9px;
+  border-radius: 8px;
+  background-color: var(--cor-botao);
+  color: var(--cor-texto-primario);
+  font-size: 16px;
   font-weight: 600;
-  font-family: var(--font-primary);
+  font-family: var(--fonte-primaria);
   cursor: pointer;
   transition: 0.2s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  box-shadow: 0 8px 24px rgba(174, 92, 166, 0.4);
 }
 
 .button:hover {
-  background-color: var(--color-button-hover);
+  background-color: var(--cor-botao-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(174, 92, 166, 0.5);
 }
 
 .button:active {
-  transform: scale(0.98);
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 4px 12px rgba(174, 92, 166, 0.3);
 }
 
 .button:disabled {
   opacity: 0.6;
+  transform: none;
   cursor: not-allowed;
+  box-shadow: 0 4px 12px rgba(174, 92, 166, 0.15);
 }
-
-/* =========================
-   CADASTRO
-========================= */
 
 .register {
   display: flex;
   justify-content: center;
-  gap: 4px;
-  margin-top: 18px;
-  color: var(--color-text-secondary);
-  font-size: 9px;
+  gap: 8px;
+  margin-top: 28px;
+  color: var(--cor-texto-secundario);
+  font-size: 16px;
 }
 
 .register a {
-  color: var(--color-text-primary);
+  color: var(--cor-texto-primario);
   font-weight: 600;
   text-decoration: none;
+  transition: 0.2s ease;
+  font-size: 16px;
 }
 
 .register a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  color: var(--cor-rosa-claro);
 }
 
-/* =========================
-   RESPONSIVIDADE
-========================= */
+/* RESPONSIVIDADE */
+
+@media (max-width: 1024px) {
+  .formContent {
+    width: 85%;
+    max-width: 450px;
+  }
+
+  .welcome h1 {
+    font-size: 32px;
+  }
+
+  .welcome p span {
+    font-size: 20px;
+    padding-right: 40px;
+  }
+}
 
 @media (max-width: 900px) {
   .visual {
@@ -272,7 +343,13 @@ body {
   }
 
   .formContent {
-    width: 70%;
+    width: 80%;
+    max-width: 400px;
+    margin-top: 15vh;
+  }
+
+  .logo {
+    width: 160px;
   }
 }
 
@@ -287,10 +364,46 @@ body {
 
   .formSide {
     width: 100%;
+    padding: 20px;
   }
 
   .formContent {
-    width: 80%;
-    max-width: 360px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 10vh;
+  }
+
+  .logo {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 20px;
+    width: 180px;
+  }
+
+  .welcome h1 {
+    font-size: 28px;
+  }
+
+  .welcome p span {
+    font-size: 18px;
+    padding-right: 30px;
+  }
+
+  .field input,
+  .passwordWrapper input,
+  .button {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .register {
+    font-size: 14px;
+    gap: 4px;
+    margin-top: 20px;
+  }
+
+  .register a {
+    font-size: 14px;
   }
 }
