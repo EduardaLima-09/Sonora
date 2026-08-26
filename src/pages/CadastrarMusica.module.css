@@ -44,11 +44,19 @@ body {
     font-family: var(--fonte-primaria);
 }
 
+/* =========================
+   CADASTRAR
+========================= */
+
 .cadastrar {
     display: flex;
     min-height: 100vh;
     background-color: var(--cor-fundo-preto);
 }
+
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar {
     top: 0;
@@ -84,7 +92,6 @@ body {
     gap: 14px;
     display: flex;
     font-size: 16px;
-    margin-top: 10px;
     padding: 10px 12px;
     border-radius: 6px;
     align-items: center;
@@ -110,33 +117,32 @@ body {
 }
 
 .sidebarFooter {
-    gap: 4px;
     display: flex;
-    margin-top: auto;
-    padding-top: 10px;
     flex-direction: column;
+    gap: 4px;
+    padding-top: 10px;
+    margin-top: auto;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .userInfo {
-    gap: 10px;
     display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 8px 12px;
     border-radius: 6px;
-    align-items: center;
     background-color: rgba(255, 255, 255, 0.03);
 }
 
 .userAvatar {
     width: 32px;
     height: 32px;
-    display: flex;
-    flex-shrink: 0;
-    font-size: 13px;
-    font-weight: 700;
     border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
     color: var(--cor-texto-primario);
     background: linear-gradient(135deg, var(--cor-botao), var(--cor-rosa-claro));
 }
@@ -148,21 +154,20 @@ body {
 }
 
 .logoutButton {
-    gap: 10px;
     display: flex;
-    font-size: 13px;
-    margin-top: 6px;
+    align-items: center;
+    gap: 10px;
     padding: 8px 12px;
     border-radius: 6px;
-    align-items: center;
+    font-size: 13px;
     text-decoration: none;
-    transition: 0.2s ease;
     color: var(--cor-texto-secundario);
+    transition: 0.2s ease;
 }
 
 .logoutButton:hover {
-    background-color: rgba(255, 0, 0, 0.1);
     color: #ff6b6b;
+    background-color: rgba(255, 0, 0, 0.1);
 }
 
 /* =========================
@@ -171,40 +176,40 @@ body {
 
 .main {
     flex: 1;
-    padding: 30px 40px 60px;
     overflow-y: auto;
+    padding: 30px 40px 60px;
 }
-
-/* =========================
-   HEADER
-========================= */
 
 .header {
     margin-bottom: 32px;
 }
 
 .headerLeft {
-    display: flex;
-    flex-direction: column;
     gap: 4px;
-    align-items: flex-start; /* 👈 ALINHA À ESQUERDA */
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .title {
+    margin: 0;
     font-size: 28px;
     font-weight: 700;
+    text-align: left;
+    line-height: 0.8;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
-    margin: 0;
-    text-align: left; /* 👈 ALINHA À ESQUERDA */
 }
 
 .subtitle {
-    font-size: 16px;
-    color: var(--cor-texto-primario);
-    font-weight: 400;
     margin: 0;
-    text-align: left; /* 👈 ALINHA À ESQUERDA */
+    opacity: 0.5;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 400;
+    text-align: left;
+    color: var(--cor-texto-primario);
 }
 
 /* =========================
@@ -212,67 +217,72 @@ body {
 ========================= */
 
 .form {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    padding: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px;
     margin-bottom: 40px;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* Erro caso não seja preenchido corretamente */
 .error {
     display: block;
-    color: var(--cor-texto-erro);
-    font-size: 14px;
-    margin-bottom: 16px;
+    font-size: 16px;
     text-align: center;
+    margin-bottom: 16px;
+    color: var(--cor-texto-erro);
 }
 
 .formGrid {
+    gap: 20px;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 32px;
 }
 
 .formLeft {
+    gap: 10px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 .field {
+    gap: 6px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    align-items: flex-start; /* 👈 ALINHA À ESQUERDA */
+    align-items: flex-start;
 }
 
 .field label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
+    text-align: left;
     color: var(--cor-texto-label);
-    text-align: left; /* 👈 ALINHA À ESQUERDA */
 }
 
 .field input,
 .field select {
     width: 100%;
-    height: 42px;
-    padding: 8px 14px;
+    height: 40px;
+    outline: none;
+    font-size: 16px;
+    text-align: left;
+    padding: 10px 16px;
     border-radius: 8px;
+    color: var(--cor-texto-primario);
+    font-family: var(--fonte-primaria);
+    box-shadow: 0 2px 8px rgba(111, 26, 181, 0.35);
     border: 1.5px solid var(--cor-fundo-escuro);
     background-color: rgba(255, 255, 255, 0.05);
-    color: var(--cor-texto-primario);
-    font-size: 14px;
-    font-family: var(--fonte-primaria);
-    transition: 0.2s ease;
-    outline: none;
-    text-align: left; /* 👈 ALINHA À ESQUERDA */
 }
 
 .field input:focus,
 .field select:focus {
-    border-color: var(--cor-borda-foco);
+    border-color: var(--cor-fundo-forma-medio);
     background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px rgba(111, 26, 181, 0.35);
 }
 
 .field input::placeholder {
@@ -280,14 +290,45 @@ body {
 }
 
 .field select option {
-    background-color: var(--cor-fundo-escuro);
     color: var(--cor-texto-primario);
+    background-color: var(--cor-fundo-escuro);
 }
 
 .fieldRow {
+    gap: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+}
+
+/* =========================
+   TEXTAREA - ANOTAÇÕES
+========================= */
+
+.textarea {
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    margin-top: 2px;
+    min-height: 80px;
+    text-align: left;
+    resize: vertical;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--cor-texto-primario);
+    font-family: var(--fonte-primaria);
+    border: 1.5px solid var(--cor-fundo-escuro);
+    box-shadow: 0 2px 8px rgba(111, 26, 181, 0.35);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.textarea:focus {
+    border-color: var(--cor-fundo-forma-medio);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px rgba(111, 26, 181, 0.35);
+}
+
+.textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
 }
 
 /* =========================
@@ -301,38 +342,39 @@ body {
 
 .capaContainer {
     width: 100%;
-    margin-top: 30px;
     max-width: 400px;
+    margin-top: 60px;
 }
 
 .capaLabel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 12px;
-    border: 2px dashed var(--cor-fundo-escuro);
-    cursor: pointer;
-    transition: 0.2s ease;
-    background-color: rgba(255, 255, 255, 0.03);
     gap: 8px;
+    width: 100%;
+    display: flex;
+    aspect-ratio: 1;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 12px;
+    transition: 0.2s ease;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px dashed var(--cor-fundo-escuro);
+    background-color: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 8px rgba(18, 18, 18, 0.35);
 }
 
 .capaLabel:hover {
-    border-color: var(--cor-borda-foco);
+    border-color: var(--cor-borda);
     background-color: rgba(255, 255, 255, 0.06);
 }
 
 .capaIcon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     color: var(--cor-texto-secundario);
 }
 
 .capaLabel span {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--cor-texto-secundario);
 }
 
@@ -352,59 +394,58 @@ body {
 ========================= */
 
 .formActions {
+    gap: 10px;
     display: flex;
-    justify-content: flex-end;
-    gap: 12px;
     margin-top: 24px;
     padding-top: 24px;
+    justify-content: flex-end;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .cancelButton {
-    display: flex;
-    align-items: center;
     gap: 8px;
+    display: flex;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
     padding: 10px 24px;
     border-radius: 8px;
-    border: 1px solid var(--cor-fundo-escuro);
-    background: transparent;
-    color: var(--cor-texto-secundario);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    align-items: center;
     transition: 0.2s ease;
+    background: transparent;
+    color: var(--cor-texto-primario);
     font-family: var(--fonte-primaria);
+    border: 1px solid var(--cor-fundo-escuro);
 }
 
 .cancelButton:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
     color: var(--cor-texto-primario);
+    background-color: var(--cor-fundo-escuro);
 }
 
 .saveButton {
-    display: flex;
-    align-items: center;
     gap: 8px;
+    border: none;
+    display: flex;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
     padding: 10px 24px;
     border-radius: 8px;
-    border: none;
-    background-color: var(--cor-fundo-escuro);
-    color: var(--cor-texto-primario);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    align-items: center;
     transition: 0.2s ease;
+    color: var(--cor-texto-primario);
     font-family: var(--fonte-primaria);
+    background-color: var(--cor-fundo-escuro);
 }
 
 .saveButton:hover {
-    background-color: var(--cor-botao-hover);
     transform: translateY(-2px);
+    background-color: var(--cor-botao-hover);
 }
 
-/* =========================
-   LISTA DE MÚSICAS
-========================= */
+/* =========================LISTA DE MÚSICAS========================= */
 
 .listaSection {
     margin-top: 16px;
@@ -412,62 +453,52 @@ body {
 
 .listaHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    justify-content: space-between;
 }
 
 .listaHeader h2 {
+    gap: 10px;
+    margin: 0;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
+    align-items: center;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
-    margin: 0;
-}
-
-.listaIcon {
-    width: 20px;
-    height: 20px;
-    color: var(--cor-rosa-claro);
 }
 
 .totalMusicas {
-    font-size: 14px;
-    color: var(--cor-texto-secundario);
-    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 16px;
+    font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
-}
-
-.emptyMessage {
-    text-align: center;
-    padding: 40px;
     color: var(--cor-texto-secundario);
-    font-size: 16px;
+    background-color: var(--cor-fundo-escuro);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* =========================
-   CARD MÚSICA
-========================= */
+/* =========================LISTA MÚSICAS========================= */
 
 .listaMusicas {
+    gap: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
+/* =========================CARD MÚSICA========================= */
+
 .cardMusica {
-    display: flex;
-    align-items: center;
     gap: 16px;
+    display: flex;
     padding: 16px 20px;
+    align-items: center;
     border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
     transition: 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .cardMusica:hover {
@@ -477,13 +508,14 @@ body {
 .cardCapa {
     width: 56px;
     height: 56px;
-    border-radius: 8px;
-    background: var(--cor-fundo-escuro);
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    background: var(--cor-fundo-escuro);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .cardCapa img {
@@ -495,123 +527,156 @@ body {
 .cardCapaIcon {
     width: 28px;
     height: 28px;
-    color: var(--cor-texto-primario);
     opacity: 0.6;
+    color: var(--cor-texto-primario);
 }
 
-.cardInfo {
-    flex: 1;
-    min-width: 0;
-}
+.cardInfo {flex: 1; min-width: 0;}
 
 .cardHeader {
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
 }
 
 .cardTitulo {
+    gap: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
 }
 
 .cardTitulo h4 {
-    font-size: 15px;
+    margin: 0;
+    font-size: 18px;
     font-weight: 600;
     color: var(--cor-texto-primario);
     font-family: var(--fonte-secundaria);
-    margin: 0;
 }
 
 .favoritarButton {
-    background: none;
+    padding: 0;
     border: none;
     cursor: pointer;
-    padding: 0;
+    background: none;
 }
 
 .favoritoAtivo {
     width: 18px;
     height: 18px;
-    color: #ff4d6d;
     fill: #ff4d6d;
+    color: #ff4d6d;
 }
 
 .favoritoInativo {
     width: 18px;
     height: 18px;
-    color: var(--cor-texto-secundario);
     opacity: 0.4;
+    color: var(--cor-texto-secundario);
 }
 
 .cardArtista {
-    font-size: 13px;
-    color: var(--cor-texto-secundario);
-    display: flex;
-    align-items: center;
     gap: 4px;
-}
-
-.cardArtista svg {
-    width: 14px;
-    height: 14px;
+    display: flex;
+    font-size: 14px;
+    align-items: flex-end;
+    color: var(--cor-texto-secundario);
 }
 
 .cardDetalhes {
-    display: flex;
     gap: 12px;
+    display: flex;
     margin-top: 4px;
     flex-wrap: wrap;
 }
 
 .cardDetalhes span {
-    display: flex;
-    align-items: center;
     gap: 4px;
-    font-size: 12px;
-    color: var(--cor-texto-secundario);
-    opacity: 0.7;
+    opacity: 0.5;
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    color: var(--cor-texto-primario);
 }
 
 .cardDetalhes span svg {
-    width: 14px;
+    width: 34px;
     height: 14px;
 }
 
-.cardActions {
+/* =========================CARD FOOTER - ANOTAÇÕES========================= */
+
+.cardFooter {
+    gap: 8px;
     display: flex;
-    gap: 4px;
+    margin-top: 10px;
+    padding-top: 6px;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
+
+.notasButton {
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 2px 8px;
+    cursor: pointer;
+    width: fit-content;
+    align-items: center;
+    border-radius: 12px;
+    display: inline-flex;
+    transition: 0.2s ease;
+    color: var(--cor-texto-secundario);
+    font-family: var(--fonte-primaria);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.notasButton svg {width: 14px; height: 14px;}
+
+.notasButton:hover {
+    color: var(--cor-texto-primario);
+    border-color: var(--cor-rosa-claro);
+    background: rgba(174, 92, 166, 0.15);
+}
+
+/* =========================CARD ACTIONS========================= */
+
+.cardActions {gap: 4px; display: flex;}
 
 .editButton,
 .deleteButton {
-    width: 32px;
-    height: 32px;
+    width: 60px;
+    height: 60px;
     border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s ease;
     display: flex;
+    cursor: pointer;
+    border-radius: 6px;
     align-items: center;
+    transition: 0.2s ease;
     justify-content: center;
     background: transparent;
     color: var(--cor-texto-secundario);
 }
 
+/* Icone dos botões de excluir e editar*/
+
+.editButton svg,
+.deleteButton svg {
+    width: 20px; 
+    height: 20px;
+}
+
 .editButton:hover {
-    background-color: rgba(255, 255, 255, 0.08);
     color: var(--cor-rosa-claro);
+    background-color: var(--cor-fundo-escuro);
 }
 
 .deleteButton:hover {
+    color: #b51515;
     background-color: rgba(255, 0, 0, 0.1);
-    color: #ff6b6b;
 }
 
-/* =========================
-   RESPONSIVIDADE
-========================= */
+/* =========================RESPONSIVIDADE========================= */
 
 @media (max-width: 1024px) {
     .formGrid {
@@ -633,18 +698,9 @@ body {
         padding: 20px 10px;
     }
 
-    .sidebar .logo {
-        display: none;
-    }
-
-    .sidebar .navItem span {
-        display: none;
-    }
-
-    .sidebar .userName {
-        display: none;
-    }
-
+    .sidebar .logo,
+    .sidebar .navItem span,
+    .sidebar .userName,
     .sidebar .logoutButton span {
         display: none;
     }
@@ -672,8 +728,8 @@ body {
 
     .cardActions {
         width: 100%;
-        justify-content: flex-end;
         padding-top: 8px;
+        justify-content: flex-end;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 }

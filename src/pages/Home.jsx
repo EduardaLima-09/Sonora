@@ -13,32 +13,121 @@ import {
     FiLogOut,
     FiHeadphones,
     FiMic,
-    FiStar
+    FiStar,
+    FiMessageCircle
 } from "react-icons/fi";
 
 import logo from "../assets/LogoSomenteIconeCortada.png";
+import Notas from "../componentes/Notas";
 
 function Home() {
+    // Estado com músicas recentes + anotações
     const [musicasRecentes, setMusicasRecentes] = useState([
-        { nome: "United in Grief", artista: "Kendrick Lamar" },
-        { nome: "Flashing Lights", artista: "Kanye West" },
-        { nome: "Syss Without A Face", artista: "Unknown" },
-        { nome: "GONE, GONE, I THANK YOU", artista: "Tyler, The Creator" },
-        { nome: "What You Need", artista: "The Weeknd" },
-        { nome: "PRIDE.", artista: "Kendrick Lamar" },
-        { nome: "Duvet", artista: "bôa" },
-        { nome: "Moonlight", artista: "Kali Uchis" }
+        { 
+            id: 1,
+            nome: "United in Grief", 
+            artista: "Kendrick Lamar",
+            notas: [
+                { id: 1, texto: "Essa música me faz refletir sobre a vida...", criadoEm: "2024-01-15T10:30:00" }
+            ]
+        },
+        { 
+            id: 2,
+            nome: "Flashing Lights", 
+            artista: "Kanye West",
+            notas: []
+        },
+        { 
+            id: 3,
+            nome: "Syss Without A Face", 
+            artista: "Unknown",
+            notas: []
+        },
+        { 
+            id: 4,
+            nome: "GONE, GONE, I THANK YOU", 
+            artista: "Tyler, The Creator",
+            notas: []
+        },
+        { 
+            id: 5,
+            nome: "What You Need", 
+            artista: "The Weeknd",
+            notas: []
+        },
+        { 
+            id: 6,
+            nome: "PRIDE.", 
+            artista: "Kendrick Lamar",
+            notas: [
+                { id: 2, texto: "Minha música favorita do Kendrick!", criadoEm: "2024-01-16T14:20:00" }
+            ]
+        },
+        { 
+            id: 7,
+            nome: "Duvet", 
+            artista: "bôa",
+            notas: []
+        },
+        { 
+            id: 8,
+            nome: "Moonlight", 
+            artista: "Kali Uchis",
+            notas: []
+        }
     ]);
 
     const [favoritas, setFavoritas] = useState([
-        { nome: "Cigana", artista: "Jorge Ben Jor" },
-        { nome: "Palco", artista: "Gilberto Gil" },
-        { nome: "Domingaz", artista: "Jorge Ben Jor" },
-        { nome: "Te Gosto", artista: "Jorge Ben Jor" },
-        { nome: "Quais mais vocês gostam de listening?", artista: "Jorge Ben Jor" },
-        { nome: "Figa De Guiné", artista: "Jorge Ben Jor" },
-        { nome: "Alívio", artista: "Jorge Ben Jor" },
-        { nome: "Me Chamando de Paixão", artista: "Jorge Ben Jor" }
+        { 
+            id: 101, 
+            nome: "Cigana", 
+            artista: "Jorge Ben Jor",
+            notas: [
+                { id: 1011, texto: "Essa música me lembra do verão de 2019...", criadoEm: "2024-01-15T10:30:00" }
+            ]
+        },
+        { 
+            id: 102, 
+            nome: "Palco", 
+            artista: "Gilberto Gil",
+            notas: []
+        },
+        { 
+            id: 103, 
+            nome: "Domingaz", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        },
+        { 
+            id: 104, 
+            nome: "Te Gosto", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        },
+        { 
+            id: 105, 
+            nome: "Quais mais vocês gostam de listening?", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        },
+        { 
+            id: 106, 
+            nome: "Figa De Guiné", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        },
+        { 
+            id: 107, 
+            nome: "Alívio", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        },
+        { 
+            id: 108, 
+            nome: "Me Chamando de Paixão", 
+            artista: "Jorge Ben Jor",
+            notas: []
+        }
     ]);
 
     const [artistaDestaque, setArtistaDestaque] = useState({
@@ -47,14 +136,22 @@ function Home() {
         albuns: 4
     });
 
+    const [notasAbertas, setNotasAbertas] = useState({});
+
     const stats = {
         musicas: 30,
         artistas: 18,
         favoritas: 8
     };
 
-    // Nome do usuário logado
     const usuario = "du4ards_";
+
+    const toggleNotas = (musicaId) => {
+        setNotasAbertas(prev => ({
+            ...prev,
+            [musicaId]: !prev[musicaId]
+        }));
+    };
 
     return (
         <div className={styles.home}>
@@ -173,12 +270,29 @@ function Home() {
 
                     <div className={styles.listaMusicas}>
                         {musicasRecentes.map((musica, index) => (
-                            <div key={index} className={styles.cardMusica}>
+                            <div key={musica.id} className={styles.cardMusica}>
                                 <span className={styles.cardNumero}>{String(index + 1).padStart(2, '0')}</span>
                                 <FiMusic className={styles.cardMusicaIcon} />
                                 <div className={styles.cardInfo}>
                                     <span className={styles.cardNome}>{musica.nome}</span>
                                     <span className={styles.cardArtista}>{musica.artista}</span>
+                                    {/* BOTÃO ANOTAÇÕES */}
+                                    <button
+                                        onClick={() => toggleNotas(musica.id)}
+                                        className={styles.notasButton}
+                                    >
+                                        <FiMessageCircle />
+                                        {musica.notas?.length || 0}
+                                    </button>
+                                    {/* ANOTAÇÕES */}
+                                    {notasAbertas[musica.id] && (
+                                        <Notas
+                                            musicas={musicasRecentes}
+                                            setMusicas={setMusicasRecentes}
+                                            musicaId={musica.id}
+                                            onClose={() => toggleNotas(musica.id)}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -196,12 +310,29 @@ function Home() {
                     </div>
 
                     <div className={styles.listaFavoritas}>
-                        {favoritas.map((musica, index) => (
-                            <div key={index} className={styles.cardFavorita}>
+                        {favoritas.map((musica) => (
+                            <div key={musica.id} className={styles.cardFavorita}>
                                 <FiHeart className={styles.favoritaIcon} />
                                 <div className={styles.cardInfo}>
                                     <span className={styles.favoritaNome}>{musica.nome}</span>
                                     <span className={styles.favoritaArtista}>{musica.artista}</span>
+                                    {/* BOTÃO ANOTAÇÕES NAS FAVORITAS */}
+                                    <button
+                                        onClick={() => toggleNotas(musica.id)}
+                                        className={styles.notasButton}
+                                    >
+                                        <FiMessageCircle />
+                                        {musica.notas?.length || 0}
+                                    </button>
+                                    {/* ANOTAÇÕES NAS FAVORITAS */}
+                                    {notasAbertas[musica.id] && (
+                                        <Notas
+                                            musicas={favoritas}
+                                            setMusicas={setFavoritas}
+                                            musicaId={musica.id}
+                                            onClose={() => toggleNotas(musica.id)}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         ))}

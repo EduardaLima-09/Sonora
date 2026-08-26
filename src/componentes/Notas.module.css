@@ -1,0 +1,372 @@
+/* =========================
+   NOTAS
+========================= */
+
+.notas {
+    margin-top: 8px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.header h3 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cor-texto-primario);
+    font-family: var(--fonte-secundaria);
+    margin: 0;
+}
+
+.headerIcon {
+    width: 14px;
+    height: 14px;
+    color: var(--cor-rosa-claro);
+}
+
+.total {
+    font-size: 10px;
+    font-weight: 400;
+    padding: 1px 8px;
+    border-radius: 10px;
+    color: var(--cor-texto-secundario);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    color: var(--cor-texto-secundario);
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.closeButton:hover {
+    color: var(--cor-texto-primario);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.closeButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* =========================
+   LISTA
+========================= */
+
+.lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 4px;
+}
+
+.lista::-webkit-scrollbar {
+    width: 3px;
+}
+
+.lista::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: var(--cor-rosa-claro);
+}
+
+.lista::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* =========================
+   VAZIO
+========================= */
+
+.vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.vazioIcon {
+    width: 28px;
+    height: 28px;
+    opacity: 0.3;
+    color: var(--cor-rosa-claro);
+}
+
+.vazio p {
+    font-size: 13px;
+    color: var(--cor-texto-primario);
+    margin: 0;
+}
+
+.vazio span {
+    font-size: 11px;
+    opacity: 0.5;
+    color: var(--cor-texto-secundario);
+}
+
+/* =========================
+   NOTA INDIVIDUAL
+========================= */
+
+.nota {
+    position: relative;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: 0.2s ease;
+}
+
+.nota:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.nota:hover .editButton,
+.nota:hover .deleteButton {
+    opacity: 1;
+}
+
+.notaHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.notaUsuario {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--cor-rosa-claro);
+}
+
+.usuarioIcon {
+    width: 12px;
+    height: 12px;
+}
+
+.notaData {
+    font-size: 9px;
+    opacity: 0.4;
+    color: var(--cor-texto-secundario);
+}
+
+.texto {
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--cor-texto-secundario);
+    word-wrap: break-word;
+}
+
+/* =========================
+   EDITAR
+========================= */
+
+.editContainer {
+    width: 100%;
+}
+
+.editTextarea {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1.5px solid var(--cor-borda-foco);
+    font-size: 12px;
+    font-family: var(--fonte-primaria);
+    color: var(--cor-texto-primario);
+    background: rgba(255, 255, 255, 0.05);
+    resize: vertical;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.editTextarea:focus {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.editActions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.saveEditButton {
+    padding: 3px 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cor-texto-primario);
+    background: var(--cor-botao);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.saveEditButton:hover {
+    background: var(--cor-botao-hover);
+}
+
+.cancelEditButton {
+    padding: 3px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cor-texto-secundario);
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.cancelEditButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+   AÇÕES DA NOTA
+========================= */
+
+.notaActions {
+    display: flex;
+    gap: 2px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.editButton,
+.deleteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 4px;
+    color: var(--cor-texto-secundario);
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.editButton:hover {
+    color: var(--cor-rosa-claro);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.deleteButton:hover {
+    color: #ff6b6b;
+    background: rgba(255, 0, 0, 0.08);
+}
+
+.editButton svg,
+.deleteButton svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* =========================
+   FORMULÁRIO
+========================= */
+
+.form {
+    margin-top: 4px;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 3px 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+    transition: 0.2s ease;
+}
+
+.inputWrapper:focus-within {
+    border-color: var(--cor-borda-foco);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.input {
+    flex: 1;
+    padding: 6px 0;
+    border: none;
+    font-size: 12px;
+    color: var(--cor-texto-primario);
+    background: transparent;
+    outline: none;
+    font-family: var(--fonte-primaria);
+}
+
+.input::placeholder {
+    opacity: 0.4;
+    color: var(--cor-texto-secundario);
+}
+
+.sendButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    color: var(--cor-texto-primario);
+    background: var(--cor-botao);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.sendButton:hover:not(:disabled) {
+    background: var(--cor-botao-hover);
+    transform: scale(1.05);
+}
+
+.sendButton:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.sendButton svg {
+    width: 14px;
+    height: 14px;
+}
