@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "../pages/Login";
+import Cadastro from "../pages/Cadastro";
+import Home from "../pages/Home";
+import CadastrarMusica from "../pages/CadastrarMusica";
 
 function AppRoutes() {
   return (
@@ -8,14 +11,9 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Login />} />
 
-        <Route path="/cadastro" element={<h1>Cadastro</h1>} />
-        <Route path="/home" element={<h1>Home</h1>} />
-        <Route path="/diario" element={<h1>Meu Diário</h1>} />
-
-        <Route
-          path="/musicas/cadastrar"
-          element={<h1>Cadastrar Música</h1>}
-        />
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/cadastrarMusica" element={<CadastrarMusica/>}/>
 
         <Route
           path="/musicas/:id"

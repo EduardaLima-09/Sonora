@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import styles from "./Login.module.css";
+import styles from "./Cadastro.module.css";
 import Loading from "../componentes/Loading"; // 👈 IMPORTANDO O LOADING
 
-import dancer from "../assets/FotoLogin.png";
+import dancer from "../assets/FotoCadastro.png";
 import logo from "../assets/LogoBrancaSomenteNome.png";
 
-function Login() {
+function Cadastro() {
   const navigate = useNavigate();
 
+  const [nomeCompleto, setNomeCompleto] = useState("");
   const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -21,7 +23,7 @@ function Login() {
 
     setErro("");
 
-    if (!usuario || !senha) {
+    if (!nomeCompleto || !usuario || !email || !senha) {
       setErro("Preencha todos os campos.");
       return;
     }
@@ -30,7 +32,7 @@ function Login() {
 
     setTimeout(() => {
       setCarregando(false);
-      navigate("/home");
+      navigate("/");
     }, 2000); // Aumentei para 2s pra dar tempo de ver o loading
   }
 
@@ -46,7 +48,7 @@ function Login() {
   }
 
   return (
-    <main className={styles.login}>
+    <main className={styles.cadastro}>
       {/* LADO ESQUERDO */}
       <section className={styles.visual}>
         <div className={styles.shapePink}></div>
@@ -54,7 +56,7 @@ function Login() {
 
         <img
           src={dancer}
-          alt="Pessoa dançando"
+          alt="Pessoa"
           className={styles.dancer}
         />
       </section>
@@ -69,32 +71,49 @@ function Login() {
 
         <div className={styles.formContent}>
           <div className={styles.welcome}>
-            <h1>Bem-vindo de volta!</h1>
+            <h1>Crie seu espaço.</h1>
             <p>
-              <span>Porque algumas lembranças têm uma trilha sonora</span>
+              <span>Guarde suas músicas.</span>
+              <span>Viva suas memórias.</span>
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.field}>
-              <label htmlFor="usuario">
-                Nome de usuário
-              </label>
+              <label htmlFor="nomeCompleto">Nome completo</label>
+              <input
+                id="nomeCompleto"
+                type="text"
+                value={nomeCompleto}
+                onChange={(event) => setNomeCompleto(event.target.value)}
+                placeholder="Digite seu nome completo"
+              />
+            </div>
 
+            <div className={styles.field}>
+              <label htmlFor="usuario">Nome de usuário</label>
               <input
                 id="usuario"
                 type="text"
                 value={usuario}
                 onChange={handleUsuarioChange}
-                placeholder="Digite seu usuário"
+                placeholder="Digite seu nome de usuário"
               />
             </div>
 
             <div className={styles.field}>
-              <label htmlFor="senha">
-                Senha
-              </label>
+              <label htmlFor="email">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Digite seu e-mail"
+              />
+            </div>
 
+            <div className={styles.field}>
+              <label htmlFor="senha">Senha</label>
               <div className={styles.passwordWrapper}>
                 <input
                   id="senha"
@@ -103,7 +122,6 @@ function Login() {
                   onChange={(event) => setSenha(event.target.value)}
                   placeholder="Digite sua senha"
                 />
-
                 <button
                   type="button"
                   className={styles.togglePassword}
@@ -154,16 +172,13 @@ function Login() {
               className={styles.button}
               disabled={carregando}
             >
-              {carregando ? "Entrando..." : "Entrar"}
+              {carregando ? "Cadastrando..." : "Cadastrar"}
             </button>
           </form>
 
-          <div className={styles.register}>
-            <span>Não possui uma conta?</span>
-
-            <Link to="/cadastro">
-              Cadastre-se
-            </Link>
+          <div className={styles.loginLink}>
+            <span>Já possui uma conta?</span>
+            <Link to="/">Faça login</Link>
           </div>
         </div>
       </section>
@@ -171,4 +186,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Cadastro;

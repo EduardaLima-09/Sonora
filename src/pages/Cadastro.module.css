@@ -43,7 +43,8 @@ body {
   font-family: var(--fonte-primaria);
 }
 
-.login {
+
+.cadastro {
   width: 100%;
   display: flex;
   overflow: hidden;
@@ -74,11 +75,11 @@ body {
 }
 
 .dancer {
-  left: 52%;
+  left: 48%;
   z-index: 3;
   bottom: 0;
   width: 100vh;
-  height: 90%;
+  height: 100%;
   position: absolute;
   object-fit: contain;
   transform: translateX(-50%);
@@ -105,19 +106,19 @@ body {
 }
 
 .formContent {
-  width: 80%;
-  max-width: 500px;
-  margin-top: 20vh;
+  width: 65%;
+  max-width: 420px;
+  margin-top: 8vh;
 }
 
 .welcome {
-  margin-top: 30px;
+  margin-top: 80px;
   text-align: right;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .welcome h1 {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 38px;
   font-weight: 700;
   line-height: 1.2;
@@ -130,11 +131,12 @@ body {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+  gap: 2px;
 }
 
 .welcome p span {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   padding-right: 4px;
   color: var(--cor-texto-primario);
   font-family: var(--fonte-secundaria);
@@ -143,30 +145,30 @@ body {
 .form {
   gap: 10px;
   display: flex;
-  margin-top: 10px;
+  margin-top: 8px;
   flex-direction: column;
 }
 
 .field {
-  gap: 4px;
+  gap: 3px;
   display: flex;
   flex-direction: column;
 }
 
 .field label {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   text-align: right;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   color: var(--cor-texto-label);
 }
 
 .field input {
   width: 100%;
-  height: 50px;
+  height: 40px;
   outline: none;
-  font-size: 15px;
-  padding: 8px 16px;
+  font-size: 14px;
+  padding: 6px 14px;
   border-radius: 8px;
   transition: 0.2s ease;
   box-sizing: border-box;
@@ -178,7 +180,7 @@ body {
 }
 
 .field input::placeholder {
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(238, 132, 220, 0.25);
 }
 
@@ -195,13 +197,13 @@ body {
 
 .passwordWrapper input {
   width: 100%;
-  height: 50px;
+  height: 40px;
   outline: none;
-  font-size: 15px;
+  font-size: 14px;
   border-radius: 8px;
   transition: 0.2s ease;
   box-sizing: border-box;
-  padding: 8px 48px 8px 16px;
+  padding: 6px 44px 6px 14px;
   color: var(--cor-texto-primario);
   font-family: var(--fonte-primaria);
   border: 2px solid var(--cor-borda);
@@ -210,7 +212,7 @@ body {
 }
 
 .passwordWrapper input::placeholder {
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(238, 132, 220, 0.25);
 }
 
@@ -222,7 +224,7 @@ body {
 
 .togglePassword {
   top: 50%;
-  right: 14px;
+  right: 12px;
   border: none;
   padding: 4px;
   display: flex;
@@ -246,27 +248,27 @@ body {
 }
 
 .togglePassword svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 .error {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  margin-top: -8px;
+  margin-top: -6px;
   text-align: right;
   color: var(--cor-texto-erro);
 }
 
 .button {
   width: 100%;
-  height: 44px;
-  margin-top: 10px;
+  height: 40px;
+  margin-top: 18px;
   border: none;
   border-radius: 8px;
   background-color: var(--cor-botao);
   color: var(--cor-texto-primario);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   font-family: var(--fonte-primaria);
   cursor: pointer;
@@ -293,43 +295,50 @@ body {
   box-shadow: 0 4px 12px rgba(174, 92, 166, 0.15);
 }
 
-.register {
+.loginLink {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 28px;
+  gap: 6px;
+  margin-top: 20px;
   color: var(--cor-texto-secundario);
-  font-size: 16px;
+  font-size: 14px;
 }
 
-.register a {
+.loginLink a {
   color: var(--cor-texto-primario);
   font-weight: 600;
   text-decoration: none;
   transition: 0.2s ease;
-  font-size: 16px;
+  font-size: 14px;
 }
 
-.register a:hover {
-  text-decoration: none;
+.loginLink a:hover {
   color: var(--cor-rosa-claro);
 }
 
-/* RESPONSIVIDADE */
+.loginLink a:link,
+.loginLink a:visited,
+.loginLink a:hover,
+.loginLink a:active {
+  text-decoration: none;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
 
 @media (max-width: 1024px) {
   .formContent {
-    width: 85%;
-    max-width: 450px;
+    width: 70%;
+    max-width: 400px;
   }
 
   .welcome h1 {
-    font-size: 32px;
+    font-size: 30px;
   }
 
   .welcome p span {
-    font-size: 20px;
-    padding-right: 40px;
+    font-size: 18px;
   }
 }
 
@@ -343,18 +352,18 @@ body {
   }
 
   .formContent {
-    width: 80%;
-    max-width: 400px;
-    margin-top: 15vh;
+    width: 75%;
+    max-width: 380px;
+    margin-top: 6vh;
   }
 
   .logo {
-    width: 160px;
+    width: 140px;
   }
 }
 
 @media (max-width: 700px) {
-  .login {
+  .cadastro {
     min-height: 100vh;
   }
 
@@ -368,42 +377,41 @@ body {
   }
 
   .formContent {
-    width: 100%;
-    max-width: 400px;
-    margin-top: 10vh;
+    width: 90%;
+    max-width: 360px;
+    margin-top: 4vh;
   }
 
   .logo {
     position: relative;
     top: 0;
     right: 0;
-    margin-bottom: 20px;
-    width: 180px;
+    margin-bottom: 16px;
+    width: 160px;
   }
 
   .welcome h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .welcome p span {
-    font-size: 18px;
-    padding-right: 30px;
+    font-size: 16px;
   }
 
   .field input,
   .passwordWrapper input,
   .button {
-    height: 48px;
-    font-size: 16px;
+    height: 44px;
+    font-size: 15px;
   }
 
-  .register {
-    font-size: 14px;
+  .loginLink {
+    font-size: 13px;
     gap: 4px;
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
-  .register a {
-    font-size: 14px;
+  .loginLink a {
+    font-size: 13px;
   }
 }
