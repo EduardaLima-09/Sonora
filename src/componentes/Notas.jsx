@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styles from "./Notas.module.css";
-import { 
-    FiSend, 
-    FiTrash2, 
-    FiX, 
-    FiEdit2, 
+import {
+    FiSend,
+    FiTrash2,
+    FiX,
+    FiEdit2,
     FiFeather,
     FiUser
 } from "react-icons/fi";
@@ -56,9 +56,11 @@ function Notas({ musicas, setMusicas, musicaId, onClose }) {
 
         setMusicas(musicas.map(m =>
             m.id === musicaId
-                ? { ...m, notas: m.notas.map(n =>
-                    n.id === editandoId ? { ...n, texto: textoEditando } : n
-                )}
+                ? {
+                    ...m, notas: m.notas.map(n =>
+                        n.id === editandoId ? { ...n, texto: textoEditando } : n
+                    )
+                }
                 : m
         ));
 
@@ -89,11 +91,7 @@ function Notas({ musicas, setMusicas, musicaId, onClose }) {
     return (
         <div className={styles.notas}>
             <div className={styles.header}>
-                <h3>
-                    <FiFeather className={styles.headerIcon} />
-                    Minhas Anotações
-                    <span className={styles.total}>{notas.length}</span>
-                </h3>
+                <h3> Minhas Anotações <span className={styles.total}>{notas.length}</span></h3>
                 <button onClick={onClose} className={styles.closeButton}>
                     <FiX />
                 </button>
@@ -110,10 +108,6 @@ function Notas({ musicas, setMusicas, musicaId, onClose }) {
                     notas.map((nota) => (
                         <div key={nota.id} className={styles.nota}>
                             <div className={styles.notaHeader}>
-                                <span className={styles.notaUsuario}>
-                                    <FiUser className={styles.usuarioIcon} />
-                                    du4ards_
-                                </span>
                                 <span className={styles.notaData}>{formatarData(nota.criadoEm)}</span>
                             </div>
 
@@ -148,19 +142,11 @@ function Notas({ musicas, setMusicas, musicaId, onClose }) {
 
                             <div className={styles.notaActions}>
                                 {!editandoId && (
-                                    <button
-                                        onClick={() => handleEdit(nota)}
-                                        className={styles.editButton}
-                                        title="Editar"
-                                    >
+                                    <button onClick={() => handleEdit(nota)} className={styles.editButton} title="Editar">
                                         <FiEdit2 />
                                     </button>
                                 )}
-                                <button
-                                    onClick={() => handleDelete(nota.id)}
-                                    className={styles.deleteButton}
-                                    title="Excluir"
-                                >
+                                <button onClick={() => handleDelete(nota.id)} className={styles.deleteButton} title="Excluir">
                                     <FiTrash2 />
                                 </button>
                             </div>
@@ -178,11 +164,7 @@ function Notas({ musicas, setMusicas, musicaId, onClose }) {
                         placeholder="O que essa música significa para você?"
                         className={styles.input}
                     />
-                    <button
-                        type="submit"
-                        disabled={!novaNota.trim()}
-                        className={styles.sendButton}
-                    >
+                    <button type="submit" disabled={!novaNota.trim()} className={styles.sendButton}>
                         <FiSend />
                     </button>
                 </div>

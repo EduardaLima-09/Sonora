@@ -1,3 +1,5 @@
+/* FINALIZADO */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
 
 :root {
@@ -44,9 +46,7 @@ body {
     font-family: var(--fonte-primaria);
 }
 
-/* =========================
-   CADASTRAR
-========================= */
+/* =========================CADASTRAR========================= */
 
 .cadastrar {
     display: flex;
@@ -54,9 +54,7 @@ body {
     background-color: var(--cor-fundo-preto);
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* =========================SIDEBAR========================= */
 
 .sidebar {
     top: 0;
@@ -170,10 +168,6 @@ body {
     background-color: rgba(255, 0, 0, 0.1);
 }
 
-/* =========================
-   MAIN
-========================= */
-
 .main {
     flex: 1;
     overflow-y: auto;
@@ -212,9 +206,7 @@ body {
     color: var(--cor-texto-primario);
 }
 
-/* =========================
-   FORMULÁRIO
-========================= */
+/* =========================FORMULÁRIO========================= */
 
 .form {
     padding: 30px;
@@ -300,9 +292,7 @@ body {
     grid-template-columns: 1fr 1fr;
 }
 
-/* =========================
-   TEXTAREA - ANOTAÇÕES
-========================= */
+/* =========================TEXTAREA - ANOTAÇÕES========================= */
 
 .textarea {
     width: 100%;
@@ -330,10 +320,6 @@ body {
 .textarea::placeholder {
     color: rgba(255, 255, 255, 0.25);
 }
-
-/* =========================
-   CAPA
-========================= */
 
 .formRight {
     display: flex;
@@ -388,10 +374,6 @@ body {
 .capaInput {
     display: none;
 }
-
-/* =========================
-   FORM ACTIONS
-========================= */
 
 .formActions {
     gap: 10px;
