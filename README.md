@@ -1,4 +1,3 @@
-![Logo Sonora](./src/assets/SonoraGitHub.png)
 # 🎵 Sonora
 
 > **Onde cada música guarda uma história.**
