@@ -1,4 +1,8 @@
-# 🎵 Sonora
+<p align="center">
+  <img src="https://raw.githubusercontent.com/EduardaLima-09/Sonora/main/SonoraGitHub.png" width="800">
+</p>
+
+# Sonora
 
 > **Onde cada música guarda uma história.**
 
@@ -17,6 +21,13 @@ O Sonora nasceu da ideia de que algumas músicas são muito mais do que sons: el
 Na plataforma, o usuário pode construir seu próprio diário musical, registrando as músicas que fazem parte da sua história.
 
 A aplicação conta com uma interface simples, moderna e voltada para uma experiência visual relacionada ao universo da música.
+
+---
+## 🎯 Objetivo acadêmico
+
+O Sonora foi desenvolvido como projeto acadêmico com o objetivo de aplicar conceitos de desenvolvimento **Front-end com React**, integração com **API REST**, gerenciamento de estados, componentização, roteamento e persistência de dados.
+
+O projeto também busca demonstrar uma aplicação completa, desde a experiência do usuário até a comunicação com o back-end.
 
 ---
 
@@ -101,10 +112,9 @@ sonora/
 ├── public/
 ├── src/
 │   ├── assets/
-│   ├── components/
+│   ├── componentes/
 │   ├── pages/
 │   ├── routes/
-│   ├── services/
 │   ├── App.jsx
 │   └── main.jsx
 ├── package.json
@@ -141,24 +151,6 @@ npm run dev
 ```
 
 Após executar o comando, o Vite disponibilizará a aplicação no endereço indicado pelo terminal.
-
----
-
-## 🎨 Identidade
-
-O Sonora possui uma identidade visual inspirada no universo musical, utilizando uma estética moderna e delicada para representar a relação entre **música, memória e sentimentos**.
-
-### Slogan
-
-> **Sonora — Onde cada música guarda uma história.**
-
----
-
-## 🎯 Objetivo acadêmico
-
-O Sonora foi desenvolvido como projeto acadêmico com o objetivo de aplicar conceitos de desenvolvimento **Front-end com React**, integração com **API REST**, gerenciamento de estados, componentização, roteamento e persistência de dados.
-
-O projeto também busca demonstrar uma aplicação completa, desde a experiência do usuário até a comunicação com o back-end.
 
 ---
 
