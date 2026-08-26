@@ -1,4 +1,3 @@
-![Logo Sonora](./src/assets/LogoCompletaBranca.png)
 
 # 🎵 Sonora
 
