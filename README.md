@@ -1,3 +1,5 @@
+![Logo Sonora](./src/assets/LogoCompletaBranca.png)
+
 # 🎵 Sonora
 
 > **Onde cada música guarda uma história.**
