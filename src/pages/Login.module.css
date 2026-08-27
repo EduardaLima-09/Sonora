@@ -1,3 +1,5 @@
+/* FINALIZADO ÚLTIMA VERSÃO */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
 
 :root {
@@ -74,18 +76,18 @@ body {
 }
 
 .dancer {
-  left: 52%;
+  left: 48%;
   z-index: 3;
   bottom: 0;
   width: 100vh;
-  height: 90%;
+  height: 100%;
   position: absolute;
   object-fit: contain;
   transform: translateX(-50%);
 }
 
 .formSide {
-  width: 46%;
+  width: 50%;
   display: flex;
   padding: 40px 0;
   min-height: 100vh;
@@ -98,7 +100,7 @@ body {
 .logo {
   top: 10px;
   right: 10px;
-  width: 220px;
+  width: 200px;
   height: auto;
   position: absolute;
   object-fit: contain;
@@ -118,7 +120,7 @@ body {
 
 .welcome h1 {
   margin: 0 0 8px;
-  font-size: 38px;
+  font-size: 40px;
   font-weight: 700;
   line-height: 1.2;
   color: var(--cor-texto-primario);
@@ -133,7 +135,7 @@ body {
 }
 
 .welcome p span {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   padding-right: 4px;
   color: var(--cor-texto-primario);
@@ -143,7 +145,7 @@ body {
 .form {
   gap: 10px;
   display: flex;
-  margin-top: 10px;
+  margin-top: 20px;
   flex-direction: column;
 }
 
@@ -154,7 +156,7 @@ body {
 }
 
 .field label {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   text-align: right;
   letter-spacing: 0.6px;
@@ -165,16 +167,16 @@ body {
   width: 100%;
   height: 50px;
   outline: none;
-  font-size: 15px;
+  font-size: 16px;
   padding: 8px 16px;
   border-radius: 8px;
   transition: 0.2s ease;
   box-sizing: border-box;
   color: var(--cor-texto-primario);
   font-family: var(--fonte-primaria);
-  border: 2px solid var(--cor-borda);
+  border: 2.5px solid var(--cor-borda);
   background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .field input::placeholder {
@@ -197,16 +199,16 @@ body {
   width: 100%;
   height: 50px;
   outline: none;
-  font-size: 15px;
+  font-size: 16px;
   border-radius: 8px;
   transition: 0.2s ease;
   box-sizing: border-box;
   padding: 8px 48px 8px 16px;
   color: var(--cor-texto-primario);
   font-family: var(--fonte-primaria);
-  border: 2px solid var(--cor-borda);
+  border: 2.5px solid var(--cor-borda);
   background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .passwordWrapper input::placeholder {
@@ -246,14 +248,14 @@ body {
 }
 
 .togglePassword svg {
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
 }
 
 .error {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
-  margin-top: -8px;
+  margin-top: -4px;
   text-align: right;
   color: var(--cor-texto-erro);
 }
@@ -266,13 +268,13 @@ body {
   border-radius: 8px;
   background-color: var(--cor-botao);
   color: var(--cor-texto-primario);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   font-family: var(--fonte-primaria);
   cursor: pointer;
   transition: 0.2s ease;
-  letter-spacing: 1px;
-  box-shadow: 0 8px 24px rgba(174, 92, 166, 0.4);
+  letter-spacing: 1.5px;
+  box-shadow: 0 8px 24px rgba(174, 92, 166, 0.5);
 }
 
 .button:hover {
@@ -299,7 +301,7 @@ body {
   gap: 8px;
   margin-top: 28px;
   color: var(--cor-texto-secundario);
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .register a {
@@ -307,7 +309,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   transition: 0.2s ease;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .register a:hover {
