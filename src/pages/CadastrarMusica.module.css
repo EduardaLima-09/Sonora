@@ -715,3 +715,68 @@ body {
         border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 }
+
+.favoritaLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.coracaoButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.coracaoButton:hover {
+    transform: scale(1.1);
+}
+
+.favoritoAtivo {
+    color: #ff6b9d;
+    fill: #ff6b9d;
+    transition: all 0.3s;
+}
+
+.favoritoInativo {
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.favoritoInativo:hover {
+    color: #ff6b9d;
+}
+
+/* 👈 ESTILOS PARA O CORAÇÃO NA LISTA */
+.favoritarButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.favoritarButton:hover {
+    transform: scale(1.15);
+}
+
+.cardTitulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cardTitulo h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 1rem;
+}

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styles from "./Notas.module.css";
+import { api } from "../api/api"; // 👈 IMPORTAR API
 import { 
     FiSend, 
     FiTrash2, 
     FiX, 
     FiEdit2, 
-    FiFeather,
-    FiUser
+    FiFeather
 } from "react-icons/fi";
 
 function Notas({ 
@@ -14,7 +14,7 @@ function Notas({
     setMusicas, 
     musicaId, 
     onClose,
-    somenteLeitura = false
+    somenteLeitura = false 
 }) {
     const [novaNota, setNovaNota] = useState("");
     const [editandoId, setEditandoId] = useState(null);
@@ -38,6 +38,22 @@ function Notas({
         return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
     };
 
+    // 👈 CARREGAR ANOTAÇÕES DA API
+    const carregarAnotacoes = async () => {
+        try {
+            const anotacoes = await api.getAnotacoes(musicaId);
+            
+            // Atualizar a música com as anotações
+            setMusicas(musicas.map(m => 
+                m.id === musicaId 
+                    ? { ...m, notas: anotacoes } 
+                    : m
+            ));
+        } catch (error) {
+            console.error("Erro ao carregar anotações:", error);
+        }
+    };
+
     // ============================
     // MODO SOMENTE LEITURA
     // ============================
@@ -55,16 +71,24 @@ function Notas({
                 </div>
 
                 <div className={styles.lista}>
-                    {notas.map((nota) => (
-                        <div key={nota.id} className={styles.nota}>
-                            <div className={styles.notaHeader}>
-                                <span className={styles.notaData}>
-                                    {formatarData(nota.criadoEm)}
-                                </span>
-                            </div>
-                            <p className={styles.texto}>{nota.texto}</p>
+                    {notas.length === 0 ? (
+                        <div className={styles.vazio}>
+                            <FiFeather className={styles.vazioIcon} />
+                            <p>Nenhuma anotação ainda.</p>
+                            <span>Escreva algo sobre essa música...</span>
                         </div>
-                    ))}
+                    ) : (
+                        notas.map((nota) => (
+                            <div key={nota.id} className={styles.nota}>
+                                <div className={styles.notaHeader}>
+                                    <span className={styles.notaData}>
+                                        {formatarData(nota.criadoEm)}
+                                    </span>
+                                </div>
+                                <p className={styles.texto}>{nota.texto}</p>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         );
@@ -73,33 +97,53 @@ function Notas({
     // ============================
     // MODO EDIÇÃO
     // ============================
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!novaNota.trim()) return;
 
-        const novaNotaObj = {
-            id: Date.now(),
-            texto: novaNota,
-            criadoEm: new Date().toISOString()
-        };
+        try {
+            // 👈 SALVAR NO BANCO
+            const novaNotaSalva = await api.postAnotacao({
+                texto: novaNota,
+                musicaId: musicaId
+            });
 
-        setMusicas(musicas.map(m =>
-            m.id === musicaId
-                ? { ...m, notas: [...(m.notas || []), novaNotaObj] }
-                : m
-        ));
+            // 👈 ATUALIZAR LOCALMENTE
+            setMusicas(musicas.map(m =>
+                m.id === musicaId
+                    ? { ...m, notas: [...(m.notas || []), novaNotaSalva] }
+                    : m
+            ));
 
-        setNovaNota("");
+            setNovaNota("");
+            
+            // 👈 RECARREGAR PARA GARANTIR
+            await carregarAnotacoes();
+
+        } catch (error) {
+            console.error("Erro ao salvar anotação:", error);
+            alert("Erro ao salvar anotação.");
+        }
     };
 
-    const handleDelete = (notaId) => {
+    const handleDelete = async (notaId) => {
         if (!window.confirm("Tem certeza que deseja excluir esta anotação?")) return;
 
-        setMusicas(musicas.map(m =>
-            m.id === musicaId
-                ? { ...m, notas: m.notas.filter(n => n.id !== notaId) }
-                : m
-        ));
+        try {
+            // 👈 DELETAR DO BANCO
+            await api.deleteAnotacao(notaId);
+
+            // 👈 ATUALIZAR LOCALMENTE
+            setMusicas(musicas.map(m =>
+                m.id === musicaId
+                    ? { ...m, notas: m.notas.filter(n => n.id !== notaId) }
+                    : m
+            ));
+
+        } catch (error) {
+            console.error("Erro ao deletar anotação:", error);
+            alert("Erro ao deletar anotação.");
+        }
     };
 
     const handleEdit = (nota) => {
@@ -107,19 +151,32 @@ function Notas({
         setTextoEditando(nota.texto);
     };
 
-    const handleSaveEdit = () => {
+    const handleSaveEdit = async () => {
         if (!textoEditando.trim()) return;
 
-        setMusicas(musicas.map(m =>
-            m.id === musicaId
-                ? { ...m, notas: m.notas.map(n =>
-                    n.id === editandoId ? { ...n, texto: textoEditando } : n
-                )}
-                : m
-        ));
+        try {
+            // 👈 ATUALIZAR NO BANCO
+            await api.putAnotacao(editandoId, { texto: textoEditando });
 
-        setEditandoId(null);
-        setTextoEditando("");
+            // 👈 ATUALIZAR LOCALMENTE
+            setMusicas(musicas.map(m =>
+                m.id === musicaId
+                    ? { ...m, notas: m.notas.map(n =>
+                        n.id === editandoId ? { ...n, texto: textoEditando } : n
+                    )}
+                    : m
+            ));
+
+            setEditandoId(null);
+            setTextoEditando("");
+            
+            // 👈 RECARREGAR PARA GARANTIR
+            await carregarAnotacoes();
+
+        } catch (error) {
+            console.error("Erro ao editar anotação:", error);
+            alert("Erro ao editar anotação.");
+        }
     };
 
     const cancelarEdit = () => {

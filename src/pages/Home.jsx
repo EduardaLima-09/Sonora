@@ -1,23 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
+import { api } from "../api/api";
+import Loading from "../componentes/Loading";
 
 import {
-    FiHome,
-    FiMusic,
-    FiHeart,
-    FiUser,
-    FiSearch,
-    FiPlus,
-    FiLogOut,
-    FiHeadphones,
-    FiStar,
-    FiMessageCircle
+    FiHome, FiMusic, FiHeart, FiUser, FiSearch,
+    FiPlus, FiLogOut, FiHeadphones, FiStar, FiMessageCircle
 } from "react-icons/fi";
 
 import logo from "../assets/LogoSomenteIconeCortada.png";
 
-// Cores para as capas das músicas
 const coresCapas = [
     "#6C3D5F", "#A63088", "#D79FC4", "#40265C",
     "#AE5CA6", "#BB6AB0", "#8B4A82", "#5A2D50",
@@ -25,150 +18,102 @@ const coresCapas = [
 ];
 
 function Home() {
-    const usuario = "du4ards_";
+    const usuarioSalvo = JSON.parse(localStorage.getItem('usuario'));
+    const usuario = usuarioSalvo?.usuario || "Visitante";
+    const usuarioId = usuarioSalvo?.id;
 
-    // ============================
-    // MÚSICAS RECENTES
-    // ============================
-    const [musicasRecentes, setMusicasRecentes] = useState([
-        {
-            id: 1,
-            nome: "United in Grief",
-            artista: "Kendrick Lamar",
-            notas: [{ id: 1, texto: "Essa música me faz refletir sobre a vida...", criadoEm: "2024-01-15T10:30:00" }]
-        },
-        {
-            id: 2,
-            nome: "Flashing Lights",
-            artista: "Kanye West",
-            notas: []
-        },
-        {
-            id: 3,
-            nome: "Syss Without A Face",
-            artista: "Unknown",
-            notas: []
-        },
-        {
-            id: 4,
-            nome: "GONE, GONE, I THANK YOU",
-            artista: "Tyler, The Creator",
-            notas: []
-        },
-        {
-            id: 5,
-            nome: "What You Need",
-            artista: "The Weeknd",
-            notas: []
-        },
-        {
-            id: 6,
-            nome: "PRIDE.",
-            artista: "Kendrick Lamar",
-            notas: [{ id: 2, texto: "Minha música favorita do Kendrick!", criadoEm: "2024-01-16T14:20:00" }]
-        },
-        {
-            id: 7,
-            nome: "Duvet",
-            artista: "bôa",
-            notas: []
-        },
-        {
-            id: 8,
-            nome: "Moonlight",
-            artista: "Kali Uchis",
-            notas: []
-        }
-    ]);
-
-    // ============================
-    // FAVORITAS
-    // ============================
-    const [favoritas, setFavoritas] = useState([
-        {
-            id: 101,
-            nome: "Cigana",
-            artista: "Jorge Ben Jor",
-            notas: [{ id: 1011, texto: "Essa música me lembra do verão de 2019...", criadoEm: "2024-01-15T10:30:00" }]
-        },
-        {
-            id: 102,
-            nome: "Palco",
-            artista: "Gilberto Gil",
-            notas: []
-        },
-        {
-            id: 103,
-            nome: "Domingaz",
-            artista: "Jorge Ben Jor",
-            notas: []
-        },
-        {
-            id: 104,
-            nome: "Te Gosto",
-            artista: "Jorge Ben Jor",
-            notas: []
-        },
-        {
-            id: 105,
-            nome: "Quais mais vocês gostam de listening?",
-            artista: "Jorge Ben Jor",
-            notas: []
-        },
-        {
-            id: 106,
-            nome: "Figa De Guiné",
-            artista: "Jorge Ben Jor",
-            notas: []
-        },
-        {
-            id: 107,
-            nome: "Alívio",
-            artista: "Jorge Ben Jor",
-            notas: []
-        },
-        {
-            id: 108,
-            nome: "Me Chamando de Paixão",
-            artista: "Jorge Ben Jor",
-            notas: []
-        }
-    ]);
-
-    // ============================
-    // ESTADOS
-    // ============================
-    const [artistaDestaque, setArtistaDestaque] = useState({
-        nome: "Jorge Ben Jor",
-        musicas: 12,
-        albuns: 4
-    });
-
+    const [musicasRecentes, setMusicasRecentes] = useState([]);
+    const [favoritas, setFavoritas] = useState([]);
+    const [stats, setStats] = useState({ musicas: 0, artistas: 0, favoritas: 0 });
+    const [artistaDestaque, setArtistaDestaque] = useState({ nome: "", musicas: 0 });
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
     const [modalNotas, setModalNotas] = useState({ musicaId: null, notas: [] });
 
-    const stats = {
-        musicas: 30,
-        artistas: 18,
-        favoritas: 8
+    // 👈 CARREGAR ANOTAÇÕES QUANDO ABRIR MODAL
+    const carregarAnotacoes = async (musicaId) => {
+        try {
+            const anotacoes = await api.getAnotacoes(musicaId);
+            setModalNotas({ musicaId, notas: anotacoes });
+        } catch (error) {
+            console.error("Erro ao carregar anotações:", error);
+            setModalNotas({ musicaId, notas: [] });
+        }
     };
 
-    // ============================
-    // FUNÇÕES
-    // ============================
+    useEffect(() => {
+        const carregarDados = async () => {
+            setCarregando(true);
+            try {
+                const musicas = await api.getMusicas(usuarioId);
+                
+                // Carregar anotações para cada música
+                const musicasComNotas = await Promise.all(
+                    musicas.map(async (musica) => {
+                        try {
+                            const anotacoes = await api.getAnotacoes(musica.id);
+                            return { ...musica, notas: anotacoes };
+                        } catch {
+                            return { ...musica, notas: [] };
+                        }
+                    })
+                );
+                
+                setMusicasRecentes(musicasComNotas.slice(0, 8));
+                
+                const favoritasList = musicasComNotas.filter(m => m.favorita);
+                setFavoritas(favoritasList);
+                
+                const artistasUnicos = new Set(musicasComNotas.map(m => m.artista));
+                setStats({
+                    musicas: musicasComNotas.length,
+                    artistas: artistasUnicos.size,
+                    favoritas: favoritasList.length
+                });
+
+                if (musicasComNotas.length > 0) {
+                    const contagemArtistas = {};
+                    musicasComNotas.forEach(m => {
+                        contagemArtistas[m.artista] = (contagemArtistas[m.artista] || 0) + 1;
+                    });
+                    
+                    let artistaTop = "";
+                    let maxMusicas = 0;
+                    for (const [artista, count] of Object.entries(contagemArtistas)) {
+                        if (count > maxMusicas) {
+                            maxMusicas = count;
+                            artistaTop = artista;
+                        }
+                    }
+                    
+                    setArtistaDestaque({
+                        nome: artistaTop,
+                        musicas: maxMusicas
+                    });
+                }
+                
+            } catch (error) {
+                setErro("Erro ao carregar músicas.");
+            } finally {
+                setCarregando(false);
+            }
+        };
+        carregarDados();
+    }, [usuarioId]);
+
+    if (carregando) return <Loading />;
+    if (erro) return <div className={styles.errorContainer}>{erro}</div>;
+
     const abrirModalNotas = (musica) => {
-        setModalNotas({ musicaId: musica.id, notas: musica.notas || [] });
+        carregarAnotacoes(musica.id);
     };
 
     const fecharModalNotas = () => {
         setModalNotas({ musicaId: null, notas: [] });
     };
 
-    // ============================
-    // RENDER
-    // ============================
     return (
         <div className={styles.home}>
-            {/* SIDEBAR */}
             <aside className={styles.sidebar}>
                 <div className={styles.logoContainer}>
                     <img src={logo} alt="Sonora" className={styles.logo} />
@@ -187,7 +132,9 @@ function Home() {
 
                 <div className={styles.sidebarFooter}>
                     <div className={styles.userInfo}>
-                        <div className={styles.userAvatar}>{usuario.charAt(0).toUpperCase()}</div>
+                        <div className={styles.userAvatar}>
+                            {usuario.charAt(0).toUpperCase()}
+                        </div>
                         <span className={styles.userName}>{usuario}</span>
                     </div>
                     <Link to="/" className={styles.logoutButton}>
@@ -197,9 +144,7 @@ function Home() {
                 </div>
             </aside>
 
-            {/* CONTEÚDO */}
             <main className={styles.main}>
-                {/* HEADER */}
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
                         <h1 className={styles.title}>Olá, {usuario}!</h1>
@@ -213,7 +158,6 @@ function Home() {
                     </div>
                 </header>
 
-                {/* STATS */}
                 <section className={styles.stats}>
                     <div className={styles.statCard}>
                         <div className={styles.statIconWrapper}>
@@ -244,21 +188,18 @@ function Home() {
                     </div>
                 </section>
 
-                {/* ARTISTA EM DESTAQUE */}
                 <section className={styles.destaque}>
                     <div className={styles.destaqueCard}>
                         <div className={styles.destaqueTop}>
                             <div className={styles.destaqueLeft}>
                                 <span className={styles.destaqueLabel}>Artista em destaque</span>
-                                <h3 className={styles.destaqueNome}>{artistaDestaque.nome}</h3>
+                                <h3 className={styles.destaqueNome}>
+                                    {artistaDestaque.nome || "Nenhum artista cadastrado"}
+                                </h3>
                                 <div className={styles.destaqueStats}>
                                     <span>
                                         <FiMusic className={styles.destaqueStatIcon} />
                                         {artistaDestaque.musicas} músicas cadastradas
-                                    </span>
-                                    <span>
-                                        <FiStar className={styles.destaqueStatIcon} />
-                                        {artistaDestaque.albuns} álbuns
                                     </span>
                                 </div>
                             </div>
@@ -269,7 +210,6 @@ function Home() {
                     </div>
                 </section>
 
-                {/* MÚSICAS RECENTES */}
                 <section className={styles.secao}>
                     <div className={styles.secaoHeader}>
                         <h2>Cadastradas Recentemente</h2>
@@ -277,33 +217,48 @@ function Home() {
                     </div>
 
                     <div className={styles.listaMusicas}>
-                        {musicasRecentes.map((musica, index) => (
-                            <div key={musica.id} className={styles.cardMusica}>
-                                <div 
-                                    className={styles.cardCapa} 
-                                    style={{ backgroundColor: coresCapas[index % coresCapas.length] }}
-                                >
-                                    <FiMusic className={styles.cardCapaIcon} />
-                                </div>
-                                <div className={styles.cardInfo}>
-                                    <span className={styles.cardNome}>{musica.nome}</span>
-                                    <span className={styles.cardArtista}>{musica.artista}</span>
-                                </div>
-                                {musica.notas && musica.notas.length > 0 && (
-                                    <button
-                                        onClick={() => abrirModalNotas(musica)}
-                                        className={styles.notasButton}
+                        {musicasRecentes.length === 0 ? (
+                            <p className={styles.emptyMessage}>
+                                Nenhuma música cadastrada ainda. 
+                                <Link to="/cadastrarMusica"> Cadastre sua primeira música!</Link>
+                            </p>
+                        ) : (
+                            musicasRecentes.map((musica, index) => (
+                                <div key={musica.id} className={styles.cardMusica}>
+                                    <div 
+                                        className={styles.cardCapa} 
+                                        style={{ backgroundColor: coresCapas[index % coresCapas.length] }}
                                     >
-                                        <FiMessageCircle />
-                                        {musica.notas.length}
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                                        {musica.capa ? (
+                                            <img 
+                                                src={musica.capa} 
+                                                alt={musica.nome} 
+                                                className={styles.cardCapaImagem}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        ) : (
+                                            <FiMusic className={styles.cardCapaIcon} />
+                                        )}
+                                    </div>
+                                    <div className={styles.cardInfo}>
+                                        <span className={styles.cardNome}>{musica.nome}</span>
+                                        <span className={styles.cardArtista}>{musica.artista}</span>
+                                    </div>
+                                    {musica.notas && musica.notas.length > 0 && (
+                                        <button
+                                            onClick={() => abrirModalNotas(musica)}
+                                            className={styles.notasButton}
+                                        >
+                                            <FiMessageCircle />
+                                            {musica.notas.length}
+                                        </button>
+                                    )}
+                                </div>
+                            ))
+                        )}
                     </div>
                 </section>
 
-                {/* FAVORITAS */}
                 <section className={styles.secao}>
                     <div className={styles.secaoHeader}>
                         <h2>
@@ -314,34 +269,40 @@ function Home() {
                     </div>
 
                     <div className={styles.listaFavoritas}>
-                        {favoritas.map((musica, index) => (
-                            <div key={musica.id} className={styles.cardFavorita}>
-                                <div 
-                                    className={styles.cardCapa} 
-                                    style={{ backgroundColor: coresCapas[(index + 4) % coresCapas.length] }}
-                                >
-                                    <FiHeart className={styles.cardCapaIcon} />
-                                </div>
-                                <div className={styles.cardInfo}>
-                                    <span className={styles.favoritaNome}>{musica.nome}</span>
-                                    <span className={styles.favoritaArtista}>{musica.artista}</span>
-                                </div>
-                                {musica.notas && musica.notas.length > 0 && (
-                                    <button
-                                        onClick={() => abrirModalNotas(musica)}
-                                        className={styles.notasButton}
+                        {favoritas.length === 0 ? (
+                            <p className={styles.emptyMessage}>
+                                Nenhuma música favorita ainda. 
+                                Marque uma como favorita!
+                            </p>
+                        ) : (
+                            favoritas.map((musica, index) => (
+                                <div key={musica.id} className={styles.cardFavorita}>
+                                    <div 
+                                        className={styles.cardCapa} 
+                                        style={{ backgroundColor: coresCapas[(index + 4) % coresCapas.length] }}
                                     >
-                                        <FiMessageCircle />
-                                        {musica.notas.length}
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                                        {musica.capa ? (
+                                            <img 
+                                                src={musica.capa} 
+                                                alt={musica.nome} 
+                                                className={styles.cardCapaImagem}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        ) : (
+                                            <FiHeart className={styles.cardCapaIcon} />
+                                        )}
+                                    </div>
+                                    <div className={styles.cardInfo}>
+                                        <span className={styles.favoritaNome}>{musica.nome}</span>
+                                        <span className={styles.favoritaArtista}>{musica.artista}</span>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </section>
             </main>
 
-            {/* ===== MODAL NOTAS ===== */}
             {modalNotas.musicaId && (
                 <div className={styles.modalOverlay} onClick={fecharModalNotas}>
                     <div className={styles.modal} onClick={(e) => e.stopPropagation()}>

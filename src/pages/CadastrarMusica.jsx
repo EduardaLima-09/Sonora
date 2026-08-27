@@ -1,37 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./CadastrarMusica.module.css";
 import Notas from "../componentes/Notas";
+import { api } from "../api/api";
+import Loading from "../componentes/Loading";
 
-// Imagem - Logo
 import logo from "../assets/LogoSomenteIconeCortada.png";
 
-// Importando ícones do react-icons
 import {
-    FiHome,
-    FiPlus,
-    FiLogOut,
-    FiMusic,
-    FiHeart,
-    FiTrash2,
-    FiEdit,
-    FiSave,
-    FiX,
-    FiUpload,
-    FiClock,
-    FiUser,
-    FiDisc,
-    FiTag,
-    FiMessageCircle,
-    FiFeather
+    FiHome, FiPlus, FiLogOut, FiMusic, FiHeart, FiTrash2,
+    FiEdit, FiSave, FiX, FiUpload, FiClock, FiUser,
+    FiDisc, FiTag, FiMessageCircle, FiFeather
 } from "react-icons/fi";
 
 function CadastrarMusica() {
-    const usuario = "du4ards_";
+    const usuarioSalvo = JSON.parse(localStorage.getItem('usuario'));
+    const usuario = usuarioSalvo?.usuario || "Visitante";
+    const usuarioId = usuarioSalvo?.id;
 
-    // ============================
-    // ESTADO DO FORMULÁRIO
-    // ============================
     const [formData, setFormData] = useState({
         nome: "",
         artista: "",
@@ -43,223 +29,197 @@ function CadastrarMusica() {
         anotacao: ""
     });
 
-    // ============================
-    // LISTA DE MÚSICAS CADASTRADAS
-    // ============================
-    const [musicas, setMusicas] = useState([
-        {
-            id: 1,
-            nome: "Mal de Amor",
-            artista: "Mano Brown, Lino Krizz",
-            album: "Boogie Naïpe - Soul",
-            genero: "Soul",
-            duracao: "04:38",
-            favorita: true,
-            capa: null,
-            notas: [
-                {
-                    id: 1,
-                    texto: "Essa música me lembra do meu primeiro amor. A gente ouvia juntos no carro.",
-                    criadoEm: "2024-01-15T10:30:00"
-                },
-                {
-                    id: 2,
-                    texto: "A letra é tão profunda, cada vez que ouço descubro algo novo.",
-                    criadoEm: "2024-01-16T14:20:00"
-                }
-            ]
-        },
-        {
-            id: 2,
-            nome: "Cigana",
-            artista: "Jorge Ben Jor",
-            album: "A Tábua de Esmeralda",
-            genero: "MPB",
-            duracao: "03:45",
-            favorita: true,
-            capa: null,
-            notas: [
-                {
-                    id: 3,
-                    texto: "Minha avó adorava essa música. Toda vez que ouço, lembro dela.",
-                    criadoEm: "2024-01-17T09:15:00"
-                }
-            ]
-        },
-        {
-            id: 3,
-            nome: "Palco",
-            artista: "Gilberto Gil",
-            album: "Realce",
-            genero: "MPB",
-            duracao: "04:12",
-            favorita: false,
-            capa: null,
-            notas: []
-        }
-    ]);
-
-    // ============================
-    // ESTADOS AUXILIARES
-    // ============================
+    const [musicas, setMusicas] = useState([]);
     const [editandoId, setEditandoId] = useState(null);
     const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState("");
+    const [carregando, setCarregando] = useState(false);
+    const [carregandoLista, setCarregandoLista] = useState(true);
     const [notasAbertas, setNotasAbertas] = useState({});
 
-    // ============================
-    // LISTA DE GÊNEROS
-    // ============================
-    const generos = [
-        "Selecionar",
-        "MPB",
-        "Rock",
-        "Samba",
-        "Pagode",
-        "Funk",
-        "Soul",
-        "Jazz",
-        "Blues",
-        "Eletrônica",
-        "Indie",
-        "Alternativo",
-        "Outro"
-    ];
+    const generos = ["MPB", "Rock", "Samba", "Pagode", "Funk", "Soul", "Jazz", "Blues", "Eletrônica", "Indie", "Alternativo", "Outro"];
 
-    // ============================
-    // HANDLERS DO FORMULÁRIO
-    // ============================
-
-    // Quando o usuário digita em algum campo
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const formatarDuracao = (segundos) => {
+        if (!segundos || segundos <= 0) return "00:00";
+        const min = Math.floor(segundos / 60);
+        const sec = segundos % 60;
+        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
     };
 
-    // Quando o usuário seleciona uma imagem
+    const converterDuracao = (duracaoStr) => {
+        if (!duracaoStr || duracaoStr === "00:00") return 0;
+        const partes = duracaoStr.split(':');
+        if (partes.length === 2) {
+            return parseInt(partes[0]) * 60 + parseInt(partes[1]);
+        }
+        return 0;
+    };
+
+    const carregarMusicas = async () => {
+        try {
+            setCarregandoLista(true);
+            const data = await api.getMusicas(usuarioId);
+            
+            const musicasComNotas = await Promise.all(
+                data.map(async (musica) => {
+                    try {
+                        const anotacoes = await api.getAnotacoes(musica.id);
+                        return { ...musica, notas: anotacoes };
+                    } catch {
+                        return { ...musica, notas: [] };
+                    }
+                })
+            );
+            
+            setMusicas(musicasComNotas);
+        } catch (error) {
+            console.error("Erro ao carregar músicas:", error);
+            // Não seta erro aqui para não atrapalhar
+        } finally {
+            setCarregandoLista(false);
+        }
+    };
+
+    useEffect(() => {
+        if (usuarioId) {
+            carregarMusicas();
+        }
+    }, [usuarioId]);
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
+    };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-
         if (file) {
             const reader = new FileReader();
-
             reader.onloadend = () => {
                 setFormData({ ...formData, capa: reader.result });
             };
-
             reader.readAsDataURL(file);
         }
     };
 
-    // Quando o usuário envia o formulário
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const toggleFavorita = () => {
+        setFormData({ ...formData, favorita: !formData.favorita });
+    };
 
-        // Validação: nome e artista são obrigatórios
-        if (!formData.nome || !formData.artista) {
-            setErro("Preencha pelo menos o nome da música e o artista.");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErro("");
+        setSucesso("");
+
+        if (!formData.nome || !formData.artista || !formData.album) {
+            setErro("Preencha nome, artista e álbum.");
             return;
         }
 
-        setErro("");
+        setCarregando(true);
 
-        // Cria o objeto da nova música
-        const novaMusica = {
-            id: editandoId || Date.now(),
-            nome: formData.nome,
-            artista: formData.artista,
-            album: formData.album || "",
-            genero: formData.genero || "",
-            duracao: formData.duracao || "00:00",
-            favorita: formData.favorita || false,
-            capa: formData.capa || null,
-            notas: formData.anotacao
-                ? [
-                    {
-                        id: Date.now(),
-                        texto: formData.anotacao,
-                        criadoEm: new Date().toISOString()
-                    }
-                ]
-                : []
-        };
+        try {
+            const musicaParaEnviar = {
+                nome: formData.nome,
+                artista: formData.artista,
+                album: formData.album,
+                duracao: converterDuracao(formData.duracao),
+                genero: formData.genero || "",
+                favorita: formData.favorita || false,
+                capa: formData.capa || "",
+                usuarioId: usuarioId
+            };
 
-        // Se estiver editando
-        if (editandoId) {
-            const musicaExistente = musicas.find((m) => m.id === editandoId);
-            const notasExistentes = musicaExistente?.notas || [];
+            let musicaSalva;
 
-            const notasAtualizadas = formData.anotacao
-                ? [
-                    ...notasExistentes,
-                    {
-                        id: Date.now(),
-                        texto: formData.anotacao,
-                        criadoEm: new Date().toISOString()
-                    }
-                ]
-                : notasExistentes;
+            if (editandoId) {
+                musicaSalva = await api.putMusica(editandoId, musicaParaEnviar);
+                setSucesso("Música atualizada com sucesso!");
+            } else {
+                musicaSalva = await api.postMusica(musicaParaEnviar);
+                setSucesso("Música cadastrada com sucesso!");
+            }
 
-            setMusicas(
-                musicas.map((m) =>
-                    m.id === editandoId
-                        ? { ...novaMusica, id: m.id, notas: notasAtualizadas }
-                        : m
-                )
-            );
+            // Se tiver anotação, salvar
+            if (formData.anotacao) {
+                await api.postAnotacao({
+                    texto: formData.anotacao,
+                    musicaId: musicaSalva.id
+                });
+            }
 
+            // 👈 RECARREGAR A LISTA
+            await carregarMusicas();
+
+            // 👈 LIMPAR FORMULÁRIO
+            setFormData({
+                nome: "",
+                artista: "",
+                album: "",
+                genero: "",
+                duracao: "00:00",
+                capa: null,
+                favorita: false,
+                anotacao: ""
+            });
             setEditandoId(null);
-        } else {
-            // Se for uma nova música
-            setMusicas([...musicas, novaMusica]);
-        }
 
-        // Limpa o formulário
-        setFormData({
-            nome: "",
-            artista: "",
-            album: "",
-            genero: "",
-            duracao: "00:00",
-            capa: null,
-            favorita: false,
-            anotacao: ""
-        });
+            // 👈 LIMPAR MENSAGENS DEPOIS DE 3 SEGUNDOS
+            setTimeout(() => {
+                setSucesso("");
+            }, 3000);
+
+        } catch (error) {
+            console.error("Erro ao salvar música:", error);
+            setErro("Erro ao salvar música.");
+            
+            // 👈 LIMPAR ERRO DEPOIS DE 3 SEGUNDOS
+            setTimeout(() => {
+                setErro("");
+            }, 3000);
+        } finally {
+            setCarregando(false);
+        }
     };
 
-    // Quando o usuário clica em editar
     const handleEdit = (musica) => {
         setFormData({
             nome: musica.nome,
             artista: musica.artista,
             album: musica.album || "",
             genero: musica.genero || "",
-            duracao: musica.duracao || "00:00",
+            duracao: formatarDuracao(musica.duracao),
             capa: musica.capa || null,
             favorita: musica.favorita || false,
             anotacao: ""
         });
-
         setEditandoId(musica.id);
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    // Quando o usuário clica em deletar
-    const handleDelete = (id) => {
-        if (window.confirm("Tem certeza que deseja excluir esta música?")) {
-            setMusicas(musicas.filter((m) => m.id !== id));
+    const handleDelete = async (id) => {
+        if (!window.confirm("Tem certeza que deseja excluir esta música?")) return;
+        try {
+            await api.deleteMusica(id, usuarioId);
+            await carregarMusicas();
+            setSucesso("Música excluída com sucesso!");
+            setTimeout(() => setSucesso(""), 3000);
+        } catch (error) {
+            setErro(error.message || "Erro ao excluir música.");
+            setTimeout(() => setErro(""), 3000);
         }
     };
 
-    // Quando o usuário clica em favoritar
-    const handleFavoritar = (id) => {
-        setMusicas(
-            musicas.map((m) =>
-                m.id === id ? { ...m, favorita: !m.favorita } : m
-            )
-        );
+    const handleFavoritar = async (id) => {
+        try {
+            await api.patchFavoritar(id, usuarioId);
+            await carregarMusicas();
+        } catch (error) {
+            setErro(error.message || "Erro ao favoritar música.");
+            setTimeout(() => setErro(""), 3000);
+        }
     };
 
-    // Quando o usuário cancela a edição
     const cancelarEdicao = () => {
         setEditandoId(null);
         setFormData({
@@ -275,11 +235,6 @@ function CadastrarMusica() {
         setErro("");
     };
 
-    // ============================
-    // FUNÇÕES DAS ANOTAÇÕES
-    // ============================
-
-    // Abrir/fechar anotações de uma música
     const toggleNotas = (musicaId) => {
         setNotasAbertas((prev) => ({
             ...prev,
@@ -287,13 +242,12 @@ function CadastrarMusica() {
         }));
     };
 
-    // ============================
-    // RENDERIZAÇÃO
-    // ============================
+    if (carregandoLista) {
+        return <Loading mensagem="Carregando suas músicas..." />;
+    }
 
     return (
         <div className={styles.cadastrar}>
-            {/* ===== SIDEBAR ===== */}
             <aside className={styles.sidebar}>
                 <div className={styles.logoContainer}>
                     <img src={logo} alt="Logo-Sonora" className={styles.logo} />
@@ -304,11 +258,7 @@ function CadastrarMusica() {
                         <FiHome className={styles.navIcon} />
                         <span>Início</span>
                     </Link>
-
-                    <Link
-                        to="/cadastrarMusica"
-                        className={`${styles.navItem} ${styles.active}`}
-                    >
+                    <Link to="/cadastrarMusica" className={`${styles.navItem} ${styles.active}`}>
                         <FiPlus className={styles.navIcon} />
                         <span>Cadastrar Música</span>
                     </Link>
@@ -316,10 +266,11 @@ function CadastrarMusica() {
 
                 <div className={styles.sidebarFooter}>
                     <div className={styles.userInfo}>
-                        <div className={styles.userAvatar}>D</div>
+                        <div className={styles.userAvatar}>
+                            {usuario.charAt(0).toUpperCase()}
+                        </div>
                         <span className={styles.userName}>{usuario}</span>
                     </div>
-
                     <Link to="/" className={styles.logoutButton}>
                         <FiLogOut className={styles.navIcon} />
                         <span>Sair</span>
@@ -327,30 +278,25 @@ function CadastrarMusica() {
                 </div>
             </aside>
 
-            {/* ===== CONTEÚDO PRINCIPAL ===== */}
             <main className={styles.main}>
-                {/* ===== HEADER ===== */}
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
                         <h1 className={styles.title}>
                             {editandoId ? "Editando Música" : "Cadastrar nova música"}
                         </h1>
-
                         <p className={styles.subtitle}>
-                            Adicione uma música à sua coleção e mantenha suas memórias
-                            musicais organizadas.
+                            Adicione uma música à sua coleção e mantenha suas memórias musicais organizadas.
                         </p>
                     </div>
                 </header>
 
-                {/* ===== FORMULÁRIO ===== */}
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {erro && <span className={styles.error}>{erro}</span>}
+                {/* 👈 MOSTRAR MENSAGENS */}
+                {erro && <div className={styles.errorMessage}>{erro}</div>}
+                {sucesso && <div className={styles.successMessage}>{sucesso}</div>}
 
+                <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formGrid}>
-                        {/* Lado esquerdo do formulário */}
                         <div className={styles.formLeft}>
-                            {/* Nome da música */}
                             <div className={styles.field}>
                                 <label htmlFor="nome">Nome da música</label>
                                 <input
@@ -363,7 +309,6 @@ function CadastrarMusica() {
                                 />
                             </div>
 
-                            {/* Artista */}
                             <div className={styles.field}>
                                 <label htmlFor="artista">Artista</label>
                                 <input
@@ -376,7 +321,6 @@ function CadastrarMusica() {
                                 />
                             </div>
 
-                            {/* Álbum */}
                             <div className={styles.field}>
                                 <label htmlFor="album">Álbum</label>
                                 <input
@@ -389,7 +333,6 @@ function CadastrarMusica() {
                                 />
                             </div>
 
-                            {/* Gênero + Duração */}
                             <div className={styles.fieldRow}>
                                 <div className={styles.field}>
                                     <label htmlFor="genero">Gênero</label>
@@ -399,13 +342,9 @@ function CadastrarMusica() {
                                         value={formData.genero}
                                         onChange={handleChange}
                                     >
+                                        <option value="">Selecione</option>
                                         {generos.map((g) => (
-                                            <option
-                                                key={g}
-                                                value={g === "Selecionar" ? "" : g}
-                                            >
-                                                {g}
-                                            </option>
+                                            <option key={g} value={g}>{g}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -423,12 +362,24 @@ function CadastrarMusica() {
                                 </div>
                             </div>
 
-                            {/* Anotações */}
                             <div className={styles.field}>
-                                <label htmlFor="anotacao">
-                                    Anotações sobre a música
+                                <label className={styles.favoritaLabel}>
+                                    <span>Marcar como favorita</span>
+                                    <button
+                                        type="button"
+                                        onClick={toggleFavorita}
+                                        className={styles.coracaoButton}
+                                    >
+                                        <FiHeart 
+                                            className={formData.favorita ? styles.favoritoAtivo : styles.favoritoInativo}
+                                            size={28}
+                                        />
+                                    </button>
                                 </label>
+                            </div>
 
+                            <div className={styles.field}>
+                                <label htmlFor="anotacao">Anotações sobre a música</label>
                                 <textarea
                                     id="anotacao"
                                     name="anotacao"
@@ -441,16 +392,11 @@ function CadastrarMusica() {
                             </div>
                         </div>
 
-                        {/* Lado direito do formulário - Capa */}
                         <div className={styles.formRight}>
                             <div className={styles.capaContainer}>
                                 <label htmlFor="capa" className={styles.capaLabel}>
                                     {formData.capa ? (
-                                        <img
-                                            src={formData.capa}
-                                            alt="Capa"
-                                            className={styles.capaPreview}
-                                        />
+                                        <img src={formData.capa} alt="Capa" className={styles.capaPreview} />
                                     ) : (
                                         <>
                                             <FiUpload className={styles.capaIcon} />
@@ -458,7 +404,6 @@ function CadastrarMusica() {
                                         </>
                                     )}
                                 </label>
-
                                 <input
                                     id="capa"
                                     name="capa"
@@ -471,120 +416,84 @@ function CadastrarMusica() {
                         </div>
                     </div>
 
-                    {/* Botões do formulário */}
                     <div className={styles.formActions}>
-                        <button
-                            type="button"
-                            onClick={cancelarEdicao}
-                            className={styles.cancelButton}
-                        >
-                            <FiX />
-                            Cancelar
-                        </button>
-
-                        <button type="submit" className={styles.saveButton}>
+                        {editandoId && (
+                            <button type="button" onClick={cancelarEdicao} className={styles.cancelButton}>
+                                <FiX /> Cancelar
+                            </button>
+                        )}
+                        <button type="submit" className={styles.saveButton} disabled={carregando}>
                             <FiSave />
-                            {editandoId ? "Atualizar" : "Salvar"}
+                            {carregando ? "Salvando..." : (editandoId ? "Atualizar" : "Salvar")}
                         </button>
                     </div>
                 </form>
 
-                {/* ===== LISTA DE MÚSICAS ===== */}
                 <section className={styles.listaSection}>
                     <div className={styles.listaHeader}>
-                        <h2>
-                            Músicas Cadastradas
-                        </h2>
-
-                        <span className={styles.totalMusicas}>
-                            {musicas.length} músicas
-                        </span>
+                        <h2>Músicas Cadastradas</h2>
+                        <span className={styles.totalMusicas}>{musicas.length} músicas</span>
                     </div>
 
                     <div className={styles.listaMusicas}>
                         {musicas.length === 0 ? (
                             <p className={styles.emptyMessage}>
-                                Nenhuma música cadastrada ainda.
-                                Adicione sua primeira música!
+                                Nenhuma música cadastrada ainda. Adicione sua primeira música!
                             </p>
                         ) : (
                             musicas.map((musica) => (
                                 <div key={musica.id} className={styles.cardMusica}>
-                                    {/* Capa da música */}
                                     <div className={styles.cardCapa}>
                                         {musica.capa ? (
-                                            <img
-                                                src={musica.capa}
-                                                alt={musica.nome}
+                                            <img 
+                                                src={musica.capa} 
+                                                alt={musica.nome} 
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />
                                         ) : (
-                                            <FiMusic
-                                                className={styles.cardCapaIcon}
-                                            />
+                                            <FiMusic className={styles.cardCapaIcon} />
                                         )}
                                     </div>
 
-                                    {/* Informações da música */}
                                     <div className={styles.cardInfo}>
                                         <div className={styles.cardHeader}>
                                             <div className={styles.cardTitulo}>
                                                 <h4>{musica.nome}</h4>
-
                                                 <button
-                                                    onClick={() =>
-                                                        handleFavoritar(musica.id)
-                                                    }
-                                                    className={
-                                                        styles.favoritarButton
-                                                    }
+                                                    onClick={() => handleFavoritar(musica.id)}
+                                                    className={styles.favoritarButton}
+                                                    title={musica.favorita ? "Desfavoritar" : "Favoritar"}
                                                 >
                                                     <FiHeart
-                                                        className={
-                                                            musica.favorita
-                                                                ? styles
-                                                                    .favoritoAtivo
-                                                                : styles
-                                                                    .favoritoInativo
-                                                        }
+                                                        className={musica.favorita ? styles.favoritoAtivo : styles.favoritoInativo}
+                                                        size={20}
                                                     />
                                                 </button>
                                             </div>
-
-                                            <span className={styles.cardArtista}>
-                                                {musica.artista}
-                                            </span>
+                                            <span className={styles.cardArtista}>{musica.artista}</span>
                                         </div>
 
-                                        {/* Detalhes */}
                                         <div className={styles.cardDetalhes}>
                                             {musica.album && (
                                                 <span className={styles.cardAlbum}>
-                                                    <FiDisc />
-                                                    {musica.album}
+                                                    <FiDisc /> {musica.album}
                                                 </span>
                                             )}
-
                                             {musica.genero && (
                                                 <span className={styles.cardGenero}>
-                                                    <FiTag />
-                                                    {musica.genero}
+                                                    <FiTag /> {musica.genero}
                                                 </span>
                                             )}
-
-                                            {musica.duracao && (
+                                            {musica.duracao > 0 && (
                                                 <span className={styles.cardDuracao}>
-                                                    <FiClock />
-                                                    {musica.duracao}
+                                                    <FiClock /> {formatarDuracao(musica.duracao)}
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Botão anotações */}
                                         <div className={styles.cardFooter}>
                                             <button
-                                                onClick={() =>
-                                                    toggleNotas(musica.id)
-                                                }
+                                                onClick={() => toggleNotas(musica.id)}
                                                 className={styles.notasButton}
                                             >
                                                 <FiMessageCircle />
@@ -592,28 +501,20 @@ function CadastrarMusica() {
                                             </button>
                                         </div>
 
-                                        {/* Componente Notas */}
                                         {notasAbertas[musica.id] && (
                                             <Notas
                                                 musicas={musicas}
                                                 setMusicas={setMusicas}
                                                 musicaId={musica.id}
-                                                onClose={() =>
-                                                    toggleNotas(musica.id)
-                                                }
+                                                onClose={() => toggleNotas(musica.id)}
                                             />
                                         )}
                                     </div>
 
-                                    {/* Botões de ação */}
                                     <div className={styles.cardActions}>
-                                        <button
-                                            onClick={() => handleEdit(musica)}
-                                            className={styles.editButton}
-                                        >
+                                        <button onClick={() => handleEdit(musica)} className={styles.editButton}>
                                             <FiEdit />
                                         </button>
-
                                         <button onClick={() => handleDelete(musica.id)} className={styles.deleteButton}>
                                             <FiTrash2 />
                                         </button>
