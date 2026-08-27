@@ -44,6 +44,13 @@ O projeto também busca demonstrar uma aplicação completa, desde a experiênci
 * 🗑️ **Excluir músicas**
 ---
 
+## 📸 Preview do projeto
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/EduardaLima-09/Sonora/main/Login.png" width="400">
+  <img src="https://raw.githubusercontent.com/EduardaLima-09/Sonora/main/Cadastro.png" width="400">
+</p>
+
 ## 🏠 Página inicial
 
 A Home apresenta um resumo da experiência musical do usuário, com informações como:
@@ -111,6 +118,7 @@ A aplicação não utiliza dados estáticos para representar as músicas cadastr
 sonora/
 ├── public/
 ├── src/
+│   ├── api/
 │   ├── assets/
 │   ├── componentes/
 │   ├── pages/
