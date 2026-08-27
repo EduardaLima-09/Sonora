@@ -1,17 +1,15 @@
-// src/api/api.js
 const API_URL = 'http://localhost:8080';
 
 export const api = {
-    // ==========================================
-    // USUÁRIOS
-    // ==========================================
+
+    // Cadastrando usuários
     cadastrarUsuario: async (dados) => {
         const response = await fetch(`${API_URL}/usuarios/cadastro`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        
+
         if (response.status === 409) {
             throw new Error('Usuário ou e-mail já cadastrado');
         }
@@ -21,13 +19,14 @@ export const api = {
         return await response.json();
     },
 
+    // Cadastrado ele faz o login na Sonora
     login: async (dados) => {
         const response = await fetch(`${API_URL}/usuarios/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        
+
         if (response.status === 401) {
             throw new Error('Usuário ou senha incorretos');
         }
@@ -37,22 +36,22 @@ export const api = {
         return await response.json();
     },
 
-    // ==========================================
-    // MÚSICAS (COM CAPA)
-    // ==========================================
+
+    // Pega as músicas com a capa(imagem)
     getMusicas: async (usuarioId) => {
         const response = await fetch(`${API_URL}/musicas?usuarioId=${usuarioId}`);
         if (!response.ok) throw new Error('Erro ao buscar músicas');
         return await response.json();
     },
 
+    // Mostra as músicas na tela, verifica se ela existe e tals...
     postMusica: async (musica) => {
         const response = await fetch(`${API_URL}/musicas`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(musica)
         });
-        
+
         if (response.status === 409) {
             throw new Error('Música já cadastrada');
         }
@@ -62,13 +61,14 @@ export const api = {
         return await response.json();
     },
 
+    // Podemos editar as informações das músicas
     putMusica: async (id, musica) => {
         const response = await fetch(`${API_URL}/musicas/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(musica)
         });
-        
+
         if (response.status === 403) {
             throw new Error('Você não tem permissão para editar esta música');
         }
@@ -78,11 +78,12 @@ export const api = {
         return await response.json();
     },
 
+    // Deletamos as músicas
     deleteMusica: async (id, usuarioId) => {
         const response = await fetch(`${API_URL}/musicas/${id}?usuarioId=${usuarioId}`, {
             method: 'DELETE'
         });
-        
+
         if (response.status === 403) {
             throw new Error('Você não tem permissão para excluir esta música');
         }
@@ -92,11 +93,17 @@ export const api = {
         return true;
     },
 
+    // Função responsável por favoritar uma música.
+    // Recebe o ID da música e o ID do usuário e envia uma requisição PATCH para a API.
+    // Se o usuário não tiver permissão, retorna um erro 403.
+    // Caso aconteça outro erro, também informa que não foi possível favoritar.
+    // Se der tudo certo, retorna os dados atualizados da música.
+    
     patchFavoritar: async (id, usuarioId) => {
         const response = await fetch(`${API_URL}/musicas/${id}/favoritar?usuarioId=${usuarioId}`, {
             method: 'PATCH'
         });
-        
+
         if (response.status === 403) {
             throw new Error('Você não tem permissão para favoritar esta música');
         }
@@ -121,7 +128,7 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        
+
         if (!response.ok) {
             throw new Error('Erro ao adicionar anotação');
         }
@@ -134,7 +141,7 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        
+
         if (!response.ok) {
             throw new Error('Erro ao atualizar anotação');
         }
@@ -145,7 +152,7 @@ export const api = {
         const response = await fetch(`${API_URL}/anotacoes/${id}`, {
             method: 'DELETE'
         });
-        
+
         if (!response.ok) {
             throw new Error('Erro ao deletar anotação');
         }
