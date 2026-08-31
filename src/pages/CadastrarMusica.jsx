@@ -1,20 +1,33 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import styles from "./CadastrarMusica.module.css";
-import Notas from "../componentes/Notas";
 import { api } from "../api/api";
+import { Link } from "react-router-dom";
+import Notas from "../componentes/Notas";
+import { useState, useEffect } from "react";
 import Loading from "../componentes/Loading";
-
+import styles from "./CadastrarMusica.module.css";
 import logo from "../assets/LogoSomenteIconeCortada.png";
 
 import {
-    FiHome, FiPlus, FiLogOut, FiMusic, FiHeart, FiTrash2,
-    FiEdit, FiSave, FiX, FiUpload, FiClock, FiUser,
-    FiDisc, FiTag, FiMessageCircle, FiFeather
+    FiHome,
+    FiPlus,
+    FiLogOut,
+    FiMusic,
+    FiHeart,
+    FiTrash2,
+    FiEdit,
+    FiSave,
+    FiX,
+    FiUpload,
+    FiClock,
+    FiDisc,
+    FiTag,
+    FiMessageCircle,
+    FiUser
 } from "react-icons/fi";
 
 function CadastrarMusica() {
-    const usuarioSalvo = JSON.parse(localStorage.getItem('usuario'));
+
+    const usuarioSalvo = JSON.parse(localStorage.getItem("usuario"));
+
     const usuario = usuarioSalvo?.usuario || "Visitante";
     const usuarioId = usuarioSalvo?.id;
 
@@ -37,121 +50,294 @@ function CadastrarMusica() {
     const [carregandoLista, setCarregandoLista] = useState(true);
     const [notasAbertas, setNotasAbertas] = useState({});
 
-    const generos = ["MPB", "Rock", "Samba", "Pagode", "Funk", "Soul", "Jazz", "Blues", "Eletrônica", "Indie", "Alternativo", "Outro"];
+    const generos = [
+        "MPB",
+        "Rock",
+        "Samba",
+        "Pagode",
+        "Funk",
+        "Soul",
+        "R&B",
+        "Pop",
+        "Jazz",
+        "Blues",
+        "Eletrônica",
+        "Indie",
+        "Alternativo",
+        "Trap",
+        "Rap",
+        "Hip-Hop"
+    ];
 
+    // Formata a duração que vem do Back-end em segundos
+    // para o formato MM:SS.
     const formatarDuracao = (segundos) => {
-        if (!segundos || segundos <= 0) return "00:00";
-        const min = Math.floor(segundos / 60);
-        const sec = segundos % 60;
-        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+
+        if (!segundos || segundos <= 0) {
+            return "00:00";
+        }
+
+        const minutos = Math.floor(segundos / 60);
+        const segundosRestantes = segundos % 60;
+
+        return `${String(minutos).padStart(2, "0")}:${String(
+            segundosRestantes
+        ).padStart(2, "0")}`;
     };
 
-    const converterDuracao = (duracaoStr) => {
-        if (!duracaoStr || duracaoStr === "00:00") return 0;
-        const partes = duracaoStr.split(':');
-        if (partes.length === 2) {
-            return parseInt(partes[0]) * 60 + parseInt(partes[1]);
+    // Converte a duração digitada no formulário
+    // de MM:SS para segundos.
+    const converterDuracao = (duracao) => {
+
+        if (!duracao || duracao === "00:00") {
+            return 0;
         }
+
+        const partes = duracao.split(":");
+
+        if (partes.length === 2) {
+
+            const minutos = parseInt(partes[0]);
+            const segundos = parseInt(partes[1]);
+
+            return minutos * 60 + segundos;
+        }
+
         return 0;
     };
 
+    // Busca todas as músicas do usuário.
     const carregarMusicas = async () => {
+
         try {
+
             setCarregandoLista(true);
-            const data = await api.getMusicas(usuarioId);
-            
+
+            const dados = await api.getMusicas(usuarioId);
+
             const musicasComNotas = await Promise.all(
-                data.map(async (musica) => {
+
+                dados.map(async (musica) => {
+
                     try {
-                        const anotacoes = await api.getAnotacoes(musica.id);
-                        return { ...musica, notas: anotacoes };
-                    } catch {
-                        return { ...musica, notas: [] };
+
+                        const anotacoes = await api.getAnotacoes(
+                            musica.id
+                        );
+
+                        return {
+                            ...musica,
+                            notas: anotacoes
+                        };
+
+                    } catch (erro) {
+
+                        console.error(
+                            "Erro ao carregar anotações:",
+                            erro
+                        );
+
+                        return {
+                            ...musica,
+                            notas: []
+                        };
                     }
                 })
             );
-            
+
             setMusicas(musicasComNotas);
-        } catch (error) {
-            console.error("Erro ao carregar músicas:", error);
-            // Não seta erro aqui para não atrapalhar
+
+            return musicasComNotas;
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar músicas:",
+                erro
+            );
+
+            setErro(
+                "Não foi possível carregar suas músicas."
+            );
+
+            return [];
+
         } finally {
+
             setCarregandoLista(false);
         }
     };
 
+    // Carrega as músicas quando a página é aberta.
     useEffect(() => {
+
         if (usuarioId) {
             carregarMusicas();
         }
+
     }, [usuarioId]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
+    // Altera os campos do formulário.
+    const alterarCampo = (e) => {
+
+        const {
+            name,
+            value,
+            type,
+            checked
+        } = e.target;
+
+        setFormData({
+            ...formData,
+            [name]: type === "checkbox"
+                ? checked
+                : value
+        });
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData({ ...formData, capa: reader.result });
-            };
-            reader.readAsDataURL(file);
+    // Carrega a imagem escolhida pelo usuário.
+    const alterarCapa = (e) => {
+
+        const arquivo = e.target.files[0];
+
+        if (!arquivo) {
+            return;
         }
+
+        const leitor = new FileReader();
+
+        leitor.onloadend = () => {
+
+            setFormData({
+                ...formData,
+                capa: leitor.result
+            });
+        };
+
+        leitor.readAsDataURL(arquivo);
     };
 
-    const toggleFavorita = () => {
-        setFormData({ ...formData, favorita: !formData.favorita });
+    // Marca ou desmarca a música como favorita.
+    const alternarFavorita = () => {
+
+        setFormData({
+            ...formData,
+            favorita: !formData.favorita
+        });
     };
 
-    const handleSubmit = async (e) => {
+    // Salva ou atualiza uma música.
+    const enviarFormulario = async (e) => {
+
         e.preventDefault();
+
         setErro("");
         setSucesso("");
 
-        if (!formData.nome || !formData.artista || !formData.album) {
-            setErro("Preencha nome, artista e álbum.");
+        // Validação dos campos obrigatórios.
+        if (
+            !formData.nome ||
+            !formData.artista ||
+            !formData.album
+        ) {
+
+            setErro(
+                "Preencha nome, artista e álbum."
+            );
+
             return;
         }
 
         setCarregando(true);
 
         try {
+
             const musicaParaEnviar = {
+
                 nome: formData.nome,
+
                 artista: formData.artista,
+
                 album: formData.album,
-                duracao: converterDuracao(formData.duracao),
+
+                duracao: converterDuracao(
+                    formData.duracao
+                ),
+
                 genero: formData.genero || "",
+
                 favorita: formData.favorita || false,
+
                 capa: formData.capa || "",
+
                 usuarioId: usuarioId
             };
 
             let musicaSalva;
 
+            // Atualização
             if (editandoId) {
-                musicaSalva = await api.putMusica(editandoId, musicaParaEnviar);
-                setSucesso("Música atualizada com sucesso!");
-            } else {
-                musicaSalva = await api.postMusica(musicaParaEnviar);
-                setSucesso("Música cadastrada com sucesso!");
+
+                musicaSalva = await api.putMusica(
+                    editandoId,
+                    musicaParaEnviar
+                );
+
+                setSucesso(
+                    "Música atualizada com sucesso!"
+                );
+
             }
 
-            // Se tiver anotação, salvar
-            if (formData.anotacao) {
-                await api.postAnotacao({
-                    texto: formData.anotacao,
-                    musicaId: musicaSalva.id
-                });
+            // Cadastro
+            else {
+
+                musicaSalva = await api.postMusica(
+                    musicaParaEnviar
+                );
+
+                setSucesso(
+                    "Música cadastrada com sucesso!"
+                );
             }
 
-            // 👈 RECARREGAR A LISTA
+            /*
+             * A música já foi salva no Back-end.
+             *
+             * A anotação é tratada separadamente para que
+             * um erro ao salvar a anotação não faça o sistema
+             * informar que a música não foi cadastrada.
+             */
+            if (
+                formData.anotacao &&
+                musicaSalva?.id
+            ) {
+
+                try {
+
+                    await api.postAnotacao({
+                        texto: formData.anotacao,
+                        musicaId: musicaSalva.id
+                    });
+
+                } catch (erroAnotacao) {
+
+                    console.error(
+                        "Música salva, mas houve erro ao salvar a anotação:",
+                        erroAnotacao
+                    );
+                }
+            }
+
+            /*
+             * Busca novamente as músicas depois do cadastro.
+             *
+             * Isso atualiza a lista imediatamente,
+             * sem precisar apertar F5.
+             */
             await carregarMusicas();
 
-            // 👈 LIMPAR FORMULÁRIO
+            // Limpa o formulário.
             setFormData({
                 nome: "",
                 artista: "",
@@ -162,66 +348,159 @@ function CadastrarMusica() {
                 favorita: false,
                 anotacao: ""
             });
+
             setEditandoId(null);
 
-            // 👈 LIMPAR MENSAGENS DEPOIS DE 3 SEGUNDOS
+            // Limpa a mensagem de sucesso.
             setTimeout(() => {
+
                 setSucesso("");
+
             }, 3000);
 
-        } catch (error) {
-            console.error("Erro ao salvar música:", error);
-            setErro("Erro ao salvar música.");
-            
-            // 👈 LIMPAR ERRO DEPOIS DE 3 SEGUNDOS
+        } catch (erro) {
+
+            console.error(
+                "Erro ao salvar música:",
+                erro
+            );
+
+            setErro(
+                erro.message ||
+                "Erro ao salvar música."
+            );
+
             setTimeout(() => {
+
                 setErro("");
+
             }, 3000);
+
         } finally {
+
             setCarregando(false);
         }
     };
 
-    const handleEdit = (musica) => {
+    // Coloca uma música no formulário para edição.
+    const editarMusica = (musica) => {
+
         setFormData({
+
             nome: musica.nome,
+
             artista: musica.artista,
+
             album: musica.album || "",
+
             genero: musica.genero || "",
-            duracao: formatarDuracao(musica.duracao),
+
+            duracao: formatarDuracao(
+                musica.duracao
+            ),
+
             capa: musica.capa || null,
+
             favorita: musica.favorita || false,
+
             anotacao: ""
         });
+
         setEditandoId(musica.id);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Tem certeza que deseja excluir esta música?")) return;
+    // Exclui uma música.
+    const excluirMusica = async (id) => {
+
+        if (
+            !window.confirm(
+                "Tem certeza que deseja excluir esta música?"
+            )
+        ) {
+            return;
+        }
+
         try {
-            await api.deleteMusica(id, usuarioId);
+
+            await api.deleteMusica(
+                id,
+                usuarioId
+            );
+
             await carregarMusicas();
-            setSucesso("Música excluída com sucesso!");
-            setTimeout(() => setSucesso(""), 3000);
-        } catch (error) {
-            setErro(error.message || "Erro ao excluir música.");
-            setTimeout(() => setErro(""), 3000);
+
+            setSucesso(
+                "Música excluída com sucesso!"
+            );
+
+            setTimeout(() => {
+
+                setSucesso("");
+
+            }, 3000);
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao excluir música:",
+                erro
+            );
+
+            setErro(
+                erro.message ||
+                "Erro ao excluir música."
+            );
+
+            setTimeout(() => {
+
+                setErro("");
+
+            }, 3000);
         }
     };
 
-    const handleFavoritar = async (id) => {
+    // Favorita ou desfavorita uma música.
+    const favoritarMusica = async (id) => {
+
         try {
-            await api.patchFavoritar(id, usuarioId);
+
+            await api.patchFavoritar(
+                id,
+                usuarioId
+            );
+
             await carregarMusicas();
-        } catch (error) {
-            setErro(error.message || "Erro ao favoritar música.");
-            setTimeout(() => setErro(""), 3000);
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao favoritar música:",
+                erro
+            );
+
+            setErro(
+                erro.message ||
+                "Erro ao favoritar música."
+            );
+
+            setTimeout(() => {
+
+                setErro("");
+
+            }, 3000);
         }
     };
 
+    // Cancela o modo de edição.
     const cancelarEdicao = () => {
+
         setEditandoId(null);
+
         setFormData({
             nome: "",
             artista: "",
@@ -232,301 +511,838 @@ function CadastrarMusica() {
             favorita: false,
             anotacao: ""
         });
+
         setErro("");
     };
 
-    const toggleNotas = (musicaId) => {
-        setNotasAbertas((prev) => ({
-            ...prev,
-            [musicaId]: !prev[musicaId]
+    // Abre ou fecha as anotações de uma música.
+    const alternarNotas = (musicaId) => {
+
+        setNotasAbertas((anterior) => ({
+
+            ...anterior,
+
+            [musicaId]: !anterior[musicaId]
+
         }));
     };
 
+    // Enquanto as músicas estão sendo carregadas.
     if (carregandoLista) {
-        return <Loading mensagem="Carregando suas músicas..." />;
+
+        return (
+            <Loading mensagem="Carregando suas músicas..." />
+        );
     }
 
     return (
+
         <div className={styles.cadastrar}>
+
             <aside className={styles.sidebar}>
+
                 <div className={styles.logoContainer}>
-                    <img src={logo} alt="Logo-Sonora" className={styles.logo} />
+
+                    <img
+                        src={logo}
+                        alt="Logo-Sonora"
+                        className={styles.logo}
+                    />
+
                 </div>
 
                 <nav className={styles.nav}>
+
                     <Link to="/home" className={styles.navItem}>
                         <FiHome className={styles.navIcon} />
                         <span>Início</span>
                     </Link>
+
                     <Link to="/cadastrarMusica" className={`${styles.navItem} ${styles.active}`}>
                         <FiPlus className={styles.navIcon} />
-                        <span>Cadastrar Música</span>
+                        <span>Música</span>
                     </Link>
+
                 </nav>
 
                 <div className={styles.sidebarFooter}>
+
                     <div className={styles.userInfo}>
+
                         <div className={styles.userAvatar}>
                             {usuario.charAt(0).toUpperCase()}
                         </div>
-                        <span className={styles.userName}>{usuario}</span>
+
+                        <span className={styles.userName}>
+                            {usuario}
+                        </span>
+
                     </div>
-                    <Link to="/" className={styles.logoutButton}>
+
+                    <Link
+                        to="/"
+                        className={styles.logoutButton}
+                    >
                         <FiLogOut className={styles.navIcon} />
-                        <span>Sair</span>
+                        <span className={styles.span}>
+                            Sair
+                        </span>
                     </Link>
+
                 </div>
+
             </aside>
 
             <main className={styles.main}>
+
                 <header className={styles.header}>
+
                     <div className={styles.headerLeft}>
+
                         <h1 className={styles.title}>
-                            {editandoId ? "Editando Música" : "Cadastrar nova música"}
+                            {editandoId
+                                ? "Editando Música"
+                                : "Cadastrar nova música"}
                         </h1>
+
                         <p className={styles.subtitle}>
-                            Adicione uma música à sua coleção e mantenha suas memórias musicais organizadas.
+                            Adicione uma música à sua coleção
+                            e mantenha suas memórias musicais
+                            organizadas.
                         </p>
+
                     </div>
+
                 </header>
 
-                {/* 👈 MOSTRAR MENSAGENS */}
-                {erro && <div className={styles.errorMessage}>{erro}</div>}
-                {sucesso && <div className={styles.successMessage}>{sucesso}</div>}
+                {erro && (
 
-                <form onSubmit={handleSubmit} className={styles.form}>
+                    <div
+                        className={styles.modalOverlay}
+                        onClick={() => setErro("")}
+                    >
+
+                        <div
+                            className={`${styles.modal} ${styles.modalError}`}
+                            onClick={(e) =>
+                                e.stopPropagation()
+                            }
+                        >
+
+                            <button
+                                className={styles.modalClose}
+                                onClick={() => setErro("")}
+                            >
+                                ✕
+                            </button>
+
+                            <h3 className={styles.modalTitle}>
+                                Ops! Algo deu errado
+                            </h3>
+
+                            <p className={styles.modalMessage}>
+                                {erro}
+                            </p>
+
+                            <button
+                                className={styles.modalButtonError}
+                                onClick={() => setErro("")}
+                            >
+                                Entendi
+                            </button>
+
+                        </div>
+
+                    </div>
+                )}
+
+                {sucesso && (
+
+                    <div
+                        className={styles.modalOverlay}
+                        onClick={() => setSucesso("")}
+                    >
+
+                        <div
+                            className={`${styles.modal} ${styles.modalSuccess}`}
+                            onClick={(e) =>
+                                e.stopPropagation()
+                            }
+                        >
+
+                            <button
+                                className={styles.modalClose}
+                                onClick={() =>
+                                    setSucesso("")
+                                }
+                            >
+                                ✕
+                            </button>
+
+                            <h3 className={styles.modalTitle}>
+                                Sucesso!
+                            </h3>
+
+                            <p className={styles.modalMessage}>
+                                {sucesso}
+                            </p>
+
+                            <button
+                                className={styles.modalButtonSuccess}
+                                onClick={() =>
+                                    setSucesso("")
+                                }
+                            >
+                                Ok
+                            </button>
+
+                        </div>
+
+                    </div>
+                )}
+
+                <form
+                    onSubmit={enviarFormulario}
+                    className={styles.form}
+                >
+
                     <div className={styles.formGrid}>
+
                         <div className={styles.formLeft}>
+
                             <div className={styles.field}>
-                                <label htmlFor="nome">Nome da música</label>
+
+                                <label htmlFor="nome">
+
+                                    <FiMusic
+                                        className={styles.fieldIcon}
+                                    />
+
+                                    Nome da música
+
+                                </label>
+
                                 <input
                                     id="nome"
                                     name="nome"
                                     type="text"
                                     value={formData.nome}
-                                    onChange={handleChange}
+                                    onChange={alterarCampo}
                                     placeholder="Digite o nome da música"
                                 />
+
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="artista">Artista</label>
+
+                                <label htmlFor="artista">
+
+                                    <FiUser
+                                        className={styles.fieldIcon}
+                                    />
+
+                                    Artista
+
+                                </label>
+
                                 <input
                                     id="artista"
                                     name="artista"
                                     type="text"
                                     value={formData.artista}
-                                    onChange={handleChange}
+                                    onChange={alterarCampo}
                                     placeholder="Digite o nome do artista"
                                 />
+
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="album">Álbum</label>
+
+                                <label htmlFor="album">
+
+                                    <FiDisc
+                                        className={styles.fieldIcon}
+                                    />
+
+                                    Álbum
+
+                                </label>
+
                                 <input
                                     id="album"
                                     name="album"
                                     type="text"
                                     value={formData.album}
-                                    onChange={handleChange}
+                                    onChange={alterarCampo}
                                     placeholder="Digite o nome do álbum"
                                 />
+
                             </div>
 
                             <div className={styles.fieldRow}>
+
                                 <div className={styles.field}>
-                                    <label htmlFor="genero">Gênero</label>
+
+                                    <label htmlFor="genero">
+
+                                        <FiTag
+                                            className={styles.fieldIcon}
+                                        />
+
+                                        Gênero
+
+                                    </label>
+
                                     <select
                                         id="genero"
                                         name="genero"
                                         value={formData.genero}
-                                        onChange={handleChange}
+                                        onChange={alterarCampo}
                                     >
-                                        <option value="">Selecione</option>
-                                        {generos.map((g) => (
-                                            <option key={g} value={g}>{g}</option>
+
+                                        <option value="">
+                                            Selecione
+                                        </option>
+
+                                        {generos.map((genero) => (
+
+                                            <option
+                                                key={genero}
+                                                value={genero}
+                                            >
+                                                {genero}
+                                            </option>
+
                                         ))}
+
                                     </select>
+
                                 </div>
 
                                 <div className={styles.field}>
-                                    <label htmlFor="duracao">Duração</label>
+
+                                    <label htmlFor="duracao">
+
+                                        <FiClock
+                                            className={styles.fieldIcon}
+                                        />
+
+                                        Duração
+
+                                    </label>
+
                                     <input
                                         id="duracao"
                                         name="duracao"
                                         type="text"
                                         value={formData.duracao}
-                                        onChange={handleChange}
+                                        onChange={alterarCampo}
                                         placeholder="00:00"
                                     />
+
                                 </div>
+
                             </div>
 
-                            <div className={styles.field}>
-                                <label className={styles.favoritaLabel}>
-                                    <span>Marcar como favorita</span>
+                            <div className={styles.fieldFavorita}>
+
+                                <label
+                                    className={
+                                        styles.favoritaLabel
+                                    }
+                                >
+
+                                    <span>
+
+                                        <FiHeart
+                                            className={
+                                                styles.fieldIcon
+                                            }
+                                        />
+
+                                        Marcar como favorita
+
+                                    </span>
+
                                     <button
                                         type="button"
-                                        onClick={toggleFavorita}
-                                        className={styles.coracaoButton}
+                                        onClick={
+                                            alternarFavorita
+                                        }
+                                        className={
+                                            styles.coracaoButton
+                                        }
                                     >
-                                        <FiHeart 
-                                            className={formData.favorita ? styles.favoritoAtivo : styles.favoritoInativo}
+
+                                        <FiHeart
+                                            className={
+                                                formData.favorita
+                                                    ? styles.favoritoAtivo
+                                                    : styles.favoritoInativo
+                                            }
                                             size={28}
                                         />
+
                                     </button>
+
                                 </label>
+
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="anotacao">Anotações sobre a música</label>
+
+                                <label htmlFor="anotacao">
+
+                                    <FiMessageCircle
+                                        className={
+                                            styles.fieldIcon
+                                        }
+                                    />
+
+                                    Anotações sobre a música
+
+                                </label>
+
                                 <textarea
                                     id="anotacao"
                                     name="anotacao"
                                     value={formData.anotacao}
-                                    onChange={handleChange}
+                                    onChange={alterarCampo}
                                     placeholder="O que essa música significa para você?"
                                     className={styles.textarea}
                                     rows={4}
                                 />
+
                             </div>
+
                         </div>
 
                         <div className={styles.formRight}>
-                            <div className={styles.capaContainer}>
-                                <label htmlFor="capa" className={styles.capaLabel}>
+
+                            <div
+                                className={
+                                    styles.capaContainer
+                                }
+                            >
+
+                                <label
+                                    htmlFor="capa"
+                                    className={
+                                        styles.capaLabel
+                                    }
+                                >
+
                                     {formData.capa ? (
-                                        <img src={formData.capa} alt="Capa" className={styles.capaPreview} />
+
+                                        <img
+                                            src={formData.capa}
+                                            alt="Capa"
+                                            className={
+                                                styles.capaPreview
+                                            }
+                                        />
+
                                     ) : (
+
                                         <>
-                                            <FiUpload className={styles.capaIcon} />
-                                            <span>Adicionar imagem</span>
+
+                                            <FiUpload
+                                                className={
+                                                    styles.capaIcon
+                                                }
+                                            />
+
+                                            <span>
+                                                Adicionar imagem
+                                            </span>
+
+                                            <span
+                                                className={
+                                                    styles.capaSubtext
+                                                }
+                                            >
+                                                Clique para fazer upload
+                                            </span>
+
                                         </>
+
                                     )}
+
                                 </label>
+
                                 <input
                                     id="capa"
                                     name="capa"
                                     type="file"
                                     accept="image/*"
-                                    onChange={handleFileChange}
-                                    className={styles.capaInput}
+                                    onChange={alterarCapa}
+                                    className={
+                                        styles.capaInput
+                                    }
                                 />
+
                             </div>
+
                         </div>
+
                     </div>
 
                     <div className={styles.formActions}>
+
                         {editandoId && (
-                            <button type="button" onClick={cancelarEdicao} className={styles.cancelButton}>
-                                <FiX /> Cancelar
+
+                            <button
+                                type="button"
+                                onClick={cancelarEdicao}
+                                className={
+                                    styles.cancelButton
+                                }
+                            >
+
+                                <FiX />
+
+                                Cancelar
+
                             </button>
+
                         )}
-                        <button type="submit" className={styles.saveButton} disabled={carregando}>
+
+                        <button
+                            type="submit"
+                            className={styles.saveButton}
+                            disabled={carregando}
+                        >
+
                             <FiSave />
-                            {carregando ? "Salvando..." : (editandoId ? "Atualizar" : "Salvar")}
+
+                            {carregando
+                                ? "Salvando..."
+                                : editandoId
+                                    ? "Atualizar"
+                                    : "Salvar"}
+
                         </button>
+
                     </div>
+
                 </form>
 
                 <section className={styles.listaSection}>
+
                     <div className={styles.listaHeader}>
-                        <h2>Músicas Cadastradas</h2>
-                        <span className={styles.totalMusicas}>{musicas.length} músicas</span>
+
+                        <h2>
+                            Músicas Cadastradas
+                        </h2>
+
+                        <span
+                            className={
+                                styles.totalMusicas
+                            }
+                        >
+                            {musicas.length} músicas
+                        </span>
+
                     </div>
 
                     <div className={styles.listaMusicas}>
+
                         {musicas.length === 0 ? (
-                            <p className={styles.emptyMessage}>
-                                Nenhuma música cadastrada ainda. Adicione sua primeira música!
-                            </p>
+
+                            <div
+                                className={
+                                    styles.emptyStateCadastro
+                                }
+                            >
+
+                                <p
+                                    className={
+                                        styles.emptyStateMessage
+                                    }
+                                >
+                                    Você ainda não cadastrou
+                                    nenhuma música.
+                                </p>
+
+                                <p
+                                    className={
+                                        styles.emptyStateSubMessage
+                                    }
+                                >
+                                    Preencha o formulário acima
+                                    e comece a construir sua
+                                    coleção musical!
+                                </p>
+
+                            </div>
+
                         ) : (
+
                             musicas.map((musica) => (
-                                <div key={musica.id} className={styles.cardMusica}>
-                                    <div className={styles.cardCapa}>
+
+                                <div
+                                    key={musica.id}
+                                    className={
+                                        styles.cardMusica
+                                    }
+                                >
+
+                                    <div
+                                        className={
+                                            styles.cardCapa
+                                        }
+                                    >
+
                                         {musica.capa ? (
-                                            <img 
-                                                src={musica.capa} 
-                                                alt={musica.nome} 
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+
+                                            <img
+                                                src={musica.capa}
+                                                alt={musica.nome}
+                                                style={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "cover"
+                                                }}
                                             />
+
                                         ) : (
-                                            <FiMusic className={styles.cardCapaIcon} />
+
+                                            <FiMusic
+                                                className={
+                                                    styles.cardCapaIcon
+                                                }
+                                            />
+
                                         )}
+
                                     </div>
 
-                                    <div className={styles.cardInfo}>
-                                        <div className={styles.cardHeader}>
-                                            <div className={styles.cardTitulo}>
-                                                <h4>{musica.nome}</h4>
+                                    <div
+                                        className={
+                                            styles.cardInfo
+                                        }
+                                    >
+
+                                        <div
+                                            className={
+                                                styles.cardHeader
+                                            }
+                                        >
+
+                                            <div
+                                                className={
+                                                    styles.cardTitulo
+                                                }
+                                            >
+
+                                                <h4>
+                                                    {musica.nome}
+                                                </h4>
+
                                                 <button
-                                                    onClick={() => handleFavoritar(musica.id)}
-                                                    className={styles.favoritarButton}
-                                                    title={musica.favorita ? "Desfavoritar" : "Favoritar"}
+                                                    type="button"
+                                                    onClick={() =>
+                                                        favoritarMusica(
+                                                            musica.id
+                                                        )
+                                                    }
+                                                    className={
+                                                        styles.favoritarButton
+                                                    }
+                                                    title={
+                                                        musica.favorita
+                                                            ? "Desfavoritar"
+                                                            : "Favoritar"
+                                                    }
                                                 >
+
                                                     <FiHeart
-                                                        className={musica.favorita ? styles.favoritoAtivo : styles.favoritoInativo}
+                                                        className={
+                                                            musica.favorita
+                                                                ? styles.favoritoAtivo
+                                                                : styles.favoritoInativo
+                                                        }
                                                         size={20}
                                                     />
+
                                                 </button>
+
                                             </div>
-                                            <span className={styles.cardArtista}>{musica.artista}</span>
-                                        </div>
 
-                                        <div className={styles.cardDetalhes}>
-                                            {musica.album && (
-                                                <span className={styles.cardAlbum}>
-                                                    <FiDisc /> {musica.album}
-                                                </span>
-                                            )}
-                                            {musica.genero && (
-                                                <span className={styles.cardGenero}>
-                                                    <FiTag /> {musica.genero}
-                                                </span>
-                                            )}
-                                            {musica.duracao > 0 && (
-                                                <span className={styles.cardDuracao}>
-                                                    <FiClock /> {formatarDuracao(musica.duracao)}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div className={styles.cardFooter}>
-                                            <button
-                                                onClick={() => toggleNotas(musica.id)}
-                                                className={styles.notasButton}
+                                            <span
+                                                className={
+                                                    styles.cardArtista
+                                                }
                                             >
-                                                <FiMessageCircle />
-                                                {musica.notas?.length || 0} anotações
-                                            </button>
+                                                {musica.artista}
+                                            </span>
+
                                         </div>
 
-                                        {notasAbertas[musica.id] && (
+                                        <div
+                                            className={
+                                                styles.cardDetalhes
+                                            }
+                                        >
+
+                                            {musica.album && (
+
+                                                <span
+                                                    className={
+                                                        styles.cardAlbum
+                                                    }
+                                                >
+
+                                                    <FiDisc />
+
+                                                    {musica.album}
+
+                                                </span>
+
+                                            )}
+
+                                            {musica.genero && (
+
+                                                <span
+                                                    className={
+                                                        styles.cardGenero
+                                                    }
+                                                >
+
+                                                    <FiTag />
+
+                                                    {musica.genero}
+
+                                                </span>
+
+                                            )}
+
+                                            {musica.duracao > 0 && (
+
+                                                <span
+                                                    className={
+                                                        styles.cardDuracao
+                                                    }
+                                                >
+
+                                                    <FiClock />
+
+                                                    {formatarDuracao(
+                                                        musica.duracao
+                                                    )}
+
+                                                </span>
+
+                                            )}
+
+                                        </div>
+
+                                        <div
+                                            className={
+                                                styles.cardFooter
+                                            }
+                                        >
+
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    alternarNotas(
+                                                        musica.id
+                                                    )
+                                                }
+                                                className={
+                                                    styles.notasButton
+                                                }
+                                            >
+
+                                                <FiMessageCircle />
+
+                                                {musica.notas?.length || 0}
+                                                {" "}
+                                                anotações
+
+                                            </button>
+
+                                        </div>
+
+                                        {notasAbertas[
+                                            musica.id
+                                        ] && (
+
                                             <Notas
                                                 musicas={musicas}
-                                                setMusicas={setMusicas}
-                                                musicaId={musica.id}
-                                                onClose={() => toggleNotas(musica.id)}
+                                                setMusicas={
+                                                    setMusicas
+                                                }
+                                                musicaId={
+                                                    musica.id
+                                                }
+                                                onClose={() =>
+                                                    alternarNotas(
+                                                        musica.id
+                                                    )
+                                                }
                                             />
+
                                         )}
+
                                     </div>
 
-                                    <div className={styles.cardActions}>
-                                        <button onClick={() => handleEdit(musica)} className={styles.editButton}>
+                                    <div
+                                        className={
+                                            styles.cardActions
+                                        }
+                                    >
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                editarMusica(
+                                                    musica
+                                                )
+                                            }
+                                            className={
+                                                styles.editButton
+                                            }
+                                        >
+
                                             <FiEdit />
+
                                         </button>
-                                        <button onClick={() => handleDelete(musica.id)} className={styles.deleteButton}>
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                excluirMusica(
+                                                    musica.id
+                                                )
+                                            }
+                                            className={
+                                                styles.deleteButton
+                                            }
+                                        >
+
                                             <FiTrash2 />
+
                                         </button>
+
                                     </div>
+
                                 </div>
+
                             ))
+
                         )}
+
                     </div>
+
                 </section>
+
             </main>
+
         </div>
     );
 }
 
 export default CadastrarMusica;
+

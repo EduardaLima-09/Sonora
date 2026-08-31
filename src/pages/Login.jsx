@@ -31,11 +31,10 @@ function Login() {
       const dadosLogin = { usuario, senha };
       const usuarioLogado = await api.login(dadosLogin);
       
-      // 👈 SALVAR O NOME DE USUÁRIO (username)
       localStorage.setItem('usuario', JSON.stringify({
         id: usuarioLogado.id,
-        nome: usuarioLogado.usuario,        // 👈 USA O USERNAME
-        nomeCompleto: usuarioLogado.nomeCompleto, // Mantém para referência
+        nome: usuarioLogado.usuario,    
+        nomeCompleto: usuarioLogado.nomeCompleto, 
         usuario: usuarioLogado.usuario
       }));
       

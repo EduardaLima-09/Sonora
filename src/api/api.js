@@ -113,9 +113,6 @@ export const api = {
         return await response.json();
     },
 
-    // ==========================================
-    // ANOTAÇÕES
-    // ==========================================
     getAnotacoes: async (musicaId) => {
         const response = await fetch(`${API_URL}/anotacoes/musica/${musicaId}`);
         if (!response.ok) throw new Error('Erro ao buscar anotações');

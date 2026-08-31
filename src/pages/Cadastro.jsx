@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Cadastro.module.css";
 import Loading from "../componentes/Loading";
-import { api } from "../api/api"; // 👈 ADICIONAR ESTA LINHA
+import { api } from "../api/api"; 
 
 import dancer from "../assets/FotoCadastro.png";
 import logo from "../assets/LogoBrancaSomenteNome.png";
@@ -18,7 +18,6 @@ function Cadastro() {
   const [carregando, setCarregando] = useState(false);
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-  // 👈 SUBSTITUIR ESTA FUNÇÃO
   async function handleSubmit(event) {
     event.preventDefault();
     setErro("");
