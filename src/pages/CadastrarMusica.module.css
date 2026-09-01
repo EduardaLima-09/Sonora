@@ -1,12 +1,19 @@
-/* FINALIZADO */
+/* ============================================================
+   IMPORTAÇÃO DE FONTES
+============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+
+/* ============================================================
+   VARIÁVEIS
+============================================================ */
 
 :root {
-    /* ===== CORES ===== */
     --cor-roxo-escuro: #40265c;
     --cor-roxo-medio: #6c3d5f;
     --cor-roxo-claro: #a65d9a;
+
     --cor-rosa-medio: #aa5b9e;
     --cor-rosa-claro: #d79fc4;
     --cor-rosa-vibrante: #a63088;
@@ -21,20 +28,19 @@
     --cor-texto-erro: #ffb6c9;
 
     --cor-fundo-escuro: #40265c;
-    --cor-fundo-forma-claro: #d79fc4;
-    --cor-fundo-forma-medio: #aa5b9e;
     --cor-fundo-preto: #191717;
-
-    --cor-borda: #ae5ca6;
-    --cor-borda-foco: #d79fc4;
 
     --cor-branco: #ffffff;
     --cor-cinza-claro: #f2f2f2;
 
-    /* ===== FONTES ===== */
     --fonte-primaria: 'Inter', sans-serif;
     --fonte-secundaria: 'Poppins', sans-serif;
 }
+
+
+/* ============================================================
+   RESET
+============================================================ */
 
 * {
     margin: 0;
@@ -46,20 +52,34 @@ body {
     font-family: var(--fonte-primaria);
 }
 
+
+/* ============================================================
+   ESTRUTURA PRINCIPAL
+============================================================ */
+
 .cadastrar {
     display: flex;
-    min-height: 80vh;
+    min-height: 100vh;
     background-color: var(--cor-fundo-preto);
 }
 
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
 .sidebar {
-    top: 0;
-    width: 170px;
-    display: flex;
     position: sticky;
-    padding: 8px 8px;
+    top: 0;
+
+    width: 170px;
     min-height: 100vh;
+
+    display: flex;
     flex-direction: column;
+
+    padding: 8px;
+
     background-color: var(--cor-fundo-escuro);
 }
 
@@ -76,23 +96,32 @@ body {
 
 .nav {
     flex: 1;
-    gap: 20px;
+
     display: flex;
-    margin-top: 60px;
     flex-direction: column;
+
+    gap: 20px;
+    margin-top: 60px;
 }
 
 .navItem {
-    gap: 16px;
     display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    color: var(--cor-texto-secundario);
+
     font-size: 16px;
     font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 8px;
-    align-items: center;
+
     text-decoration: none;
+
     transition: 0.2s ease;
-    color: var(--cor-texto-secundario);
 }
 
 .navItem:hover {
@@ -108,60 +137,97 @@ body {
 .navIcon {
     width: 18px;
     height: 18px;
+
     flex-shrink: 0;
 }
 
+
+/* ============================================================
+   USUÁRIO / LOGOUT
+============================================================ */
+
 .sidebarFooter {
-    gap: 6px;
     display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
     margin-top: auto;
     padding-bottom: 30px;
-    flex-direction: column;
+
     border-top: 2px solid rgba(255, 255, 255, 0.08);
 }
 
 .userInfo {
-    gap: 6px;
     display: flex;
+    align-items: center;
+
+    gap: 6px;
+
     margin-top: 10px;
     padding: 6px 16px;
+
     border-radius: 8px;
-    align-items: center;
+
     background-color: rgba(255, 255, 255, 0.06);
 }
 
 .userAvatar {
     width: 24px;
     height: 24px;
+
     display: flex;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 50%;
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 16px;
+    font-weight: 700;
+
     color: var(--cor-texto-primario);
-    background: linear-gradient(135deg, var(--cor-botao), var(--cor-rosa-claro));
+
+    background: linear-gradient(
+        135deg,
+        var(--cor-botao),
+        var(--cor-rosa-claro)
+    );
 }
 
 .userName {
+    margin-left: 9px;
+
     font-size: 16px;
     font-weight: 600;
-    margin-left: 9px;
+
     color: var(--cor-texto-primario);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .logoutButton {
-    gap: 10px;
     display: flex;
-    font-size: 16px;
-    margin-top: 6px;
-    font-weight: 700;
-    padding: 6px 18px;
-    border-radius: 6px;
     align-items: center;
-    transition: 0.2s ease;
-    text-decoration: none;
+
+    gap: 10px;
+
+    margin-top: 6px;
+    padding: 6px 18px;
+
+    border-radius: 6px;
+
     color: var(--cor-texto-secundario);
+
+    font-size: 16px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
 }
 
 .logoutButton:hover {
@@ -169,13 +235,16 @@ body {
     background-color: rgba(255, 0, 0, 0.1);
 }
 
-.span {
-    margin-left: 10px;
-}
+
+/* ============================================================
+   CONTEÚDO PRINCIPAL
+============================================================ */
 
 .main {
     flex: 1;
+
     overflow-y: auto;
+
     padding: 30px 40px 60px;
 }
 
@@ -184,373 +253,497 @@ body {
 }
 
 .headerLeft {
-    gap: 4px;
     display: flex;
-    margin-top: 10px;
     flex-direction: column;
     align-items: flex-start;
+
+    gap: 8px;
+
+    margin-top: 10px;
 }
 
 .title {
     margin: 0;
+
+    color: var(--cor-texto-primario);
+
+    font-family: var(--fonte-secundaria);
+
     font-size: 30px;
     font-weight: 700;
-    text-align: left;
-    line-height: 0.8;
-    color: var(--cor-texto-primario);
-    font-family: var(--fonte-secundaria);
+
+    line-height: 1.2;
 }
 
 .subtitle {
     margin: 0;
-    opacity: 0.5;
-    font-size: 18px;
-    margin-top: 4px;
-    font-weight: 400;
-    text-align: left;
+
     color: var(--cor-texto-primario);
+
+    opacity: 0.5;
+
+    font-size: 18px;
+    font-weight: 400;
+
+    line-height: 1.5;
 }
 
-/* FORMULÁRIO */
+
+/* ============================================================
+   FORMULÁRIO
+============================================================ */
 
 .form {
-    padding: 2.5rem;
     margin-bottom: 3rem;
+    padding: 2.5rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    transition: all 0.3s ease;
+
+    background: linear-gradient(
+        135deg,
+        var(--cor-fundo-escuro) 0%,
+        rgba(166, 48, 136, 0.3) 100%
+    );
+
+    box-shadow:
+        0 12px 48px rgba(166, 48, 136, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 48px rgba(166, 48, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    background: linear-gradient(135deg, var(--cor-fundo-escuro) 0%, rgba(166, 48, 136, 0.3) 100%);
 }
 
 .formGrid {
-    gap: 2rem;
     display: grid;
+
     grid-template-columns: 2fr 1fr;
+
+    gap: 2rem;
 }
 
 .formLeft {
-    gap: 1.25rem;
     display: flex;
     flex-direction: column;
+
+    gap: 1.25rem;
 }
 
 .field {
-    gap: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    width: 100%;
+
+    gap: 0.5rem;
 }
 
 .field label {
-    gap: 0.5rem;
     display: flex;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    color: var(--cor-rosa-claro);
+
     font-size: 16px;
     font-weight: 600;
-    align-items: center;
+
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: var(--cor-rosa-claro);
-    transition: color 0.2s ease;
 }
 
 .fieldIcon {
+    width: 16px;
+    height: 16px;
+
     opacity: 0.8;
-    font-size: 0.9rem;
+
     color: var(--cor-rosa-vibrante);
+}
+
+
+/* ============================================================
+   INPUTS
+============================================================ */
+
+.field input,
+.field select,
+.textarea {
+    width: 100%;
+
+    outline: none;
+
+    color: var(--cor-texto-primario);
+
+    font-family: var(--fonte-primaria);
+    font-size: 0.95rem;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border: 2px solid rgba(166, 48, 136, 0.2);
+
+    border-radius: 12px;
+
+    transition: all 0.3s ease;
 }
 
 .field input,
 .field select {
-    width: 100%;
     height: 46px;
-    outline: none;
+
     padding: 0 1rem;
-    font-size: 0.95rem;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    color: var(--cor-texto-primario);
-    font-family: var(--fonte-primaria);
-    background: rgba(255, 255, 255, 0.04);
-    border: 2px solid rgba(166, 48, 136, 0.2);
 }
 
 .field input:hover,
-.field select:hover {
+.field select:hover,
+.textarea:hover {
     border-color: rgba(166, 48, 136, 0.4);
+
     background: rgba(255, 255, 255, 0.06);
 }
 
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.textarea:focus {
     border-color: var(--cor-rosa-vibrante);
+
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(166, 48, 136, 0.15);
+
+    box-shadow:
+        0 0 0 4px rgba(166, 48, 136, 0.15);
 }
 
-.field input::placeholder {color: rgba(255, 255, 255, 0.25);}
+.field input::placeholder,
+.textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* ============================================================
+   SELECT
+============================================================ */
 
 .field select {
     cursor: pointer;
+
     appearance: none;
+
     padding-right: 2.5rem;
+
     background-repeat: no-repeat;
+
     background-position: right 1rem center;
+
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d79fc4' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
 }
 
 .field select option {
     padding: 0.5rem;
+
     color: var(--cor-texto-primario);
+
     background-color: var(--cor-roxo-escuro);
 }
 
+
+/* ============================================================
+   CAMPOS LADO A LADO
+============================================================ */
+
 .fieldRow {
-    gap: 1rem;
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
+    gap: 1rem;
 }
+
+
+/* ============================================================
+   FAVORITA
+============================================================ */
 
 .fieldFavorita {
     display: flex;
-    gap: 0.5rem;
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
     flex-direction: column;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.03);
+
+    padding: 0.75rem 1rem;
+
     border: 2px solid rgba(166, 48, 136, 0.15);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.03);
+
+    transition: all 0.3s ease;
 }
 
 .fieldFavorita:hover {
     border-color: rgba(166, 48, 136, 0.3);
+
     background: rgba(255, 255, 255, 0.05);
 }
 
 .favoritaLabel {
     width: 100%;
-    display: flex !important;
-    letter-spacing: 0 !important;
-    align-items: center !important;
-    text-transform: none !important;
-    justify-content: space-between !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: default;
 }
 
 .favoritaLabel span {
-    gap: 0.5rem;
     display: flex;
-    font-weight: 600;
-    font-size: 0.85rem;
     align-items: center;
+
+    gap: 0.5rem;
+
     color: var(--cor-rosa-claro);
+
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
-.coracaoButton {
-    border: none;
+.coracaoButton,
+.favoritarButton {
     display: flex;
-    cursor: pointer;
-    background: none;
-    padding: 0.25rem;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+
+    padding: 4px;
+
+    border: none;
+
+    cursor: pointer;
+
+    background: none;
+
+    transition: transform 0.2s ease;
 }
 
-.coracaoButton:hover {transform: scale(1.15);}
+.coracaoButton:hover,
+.favoritarButton:hover {
+    transform: scale(1.15);
+}
 
 .favoritoAtivo {
-    color: #ff6b6b;
-    fill: #ff6b6b;
+    color: #ff6b9d;
+
+    fill: #ff6b9d;
+
     transition: all 0.3s ease;
 }
 
-.favoritoInativo {color: rgba(255, 255, 255, 0.3); transition: all 0.3s ease;} 
+.favoritoInativo {
+    color: rgba(255, 255, 255, 0.3);
 
-.favoritoInativo:hover {color: rgba(255, 107, 107, 0.6);}
+    transition: all 0.3s ease;
+}
+
+.favoritoInativo:hover {
+    color: #ff6b9d;
+}
+
+
+/* ============================================================
+   TEXTAREA
+============================================================ */
 
 .textarea {
-    width: 100%;
-    outline: none;
-    padding: 1rem;
-    resize: vertical;
     min-height: 100px;
-    font-size: 0.95rem;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    color: var(--cor-texto-primario);
-    font-family: var(--fonte-primaria);
-    background: rgba(255, 255, 255, 0.04);
-    border: 2px solid rgba(166, 48, 136, 0.2);
+
+    padding: 1rem;
+
+    resize: vertical;
+
+    line-height: 1.5;
 }
 
-.textarea:hover {border-color: rgba(166, 48, 136, 0.4); background: rgba(255, 255, 255, 0.06);}
 
-.textarea:focus {
-    border-color: var(--cor-rosa-vibrante);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(166, 48, 136, 0.15);
-}
-
-.textarea::placeholder {color: rgba(255, 255, 255, 0.25);}
+/* ============================================================
+   UPLOAD DA CAPA
+============================================================ */
 
 .formRight {
     display: flex;
     align-items: flex-start;
+    justify-content: center;
 }
 
 .capaContainer {
     width: 100%;
     max-width: 400px;
+
     margin-top: 1.5rem;
 }
 
 .capaLabel {
-    gap: 0.5rem;
     width: 100%;
+
     display: flex;
-    aspect-ratio: 1;
-    cursor: pointer;
-    align-items: center;
-    border-radius: 16px;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.03);
+
+    aspect-ratio: 1;
+
+    gap: 0.5rem;
+
+    cursor: pointer;
+
     border: 2px dashed rgba(166, 48, 136, 0.25);
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.03);
+
+    transition: all 0.3s ease;
+
+    overflow: hidden;
 }
 
 .capaLabel:hover {
     border-color: var(--cor-rosa-vibrante);
+
     background: rgba(255, 255, 255, 0.06);
 }
 
 .capaIcon {
     width: 48px;
-    opacity: 0.7;
     height: 48px;
-    transition: all 0.3s ease;
+
     color: var(--cor-rosa-claro);
+
+    opacity: 0.7;
+
+    transition: all 0.3s ease;
 }
 
 .capaLabel:hover .capaIcon {
     opacity: 1;
+
     transform: translateY(-4px);
 }
 
 .capaLabel span {
-    font-weight: 500;
-    font-size: 0.9rem;
     color: var(--cor-texto-secundario);
+
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .capaSubtext {
     opacity: 0.5;
-    font-weight: 400 !important;
+
     font-size: 0.75rem !important;
+    font-weight: 400 !important;
 }
 
 .capaPreview {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
     border-radius: 16px;
 }
 
-.capaInput {display: none;}
+.capaInput {
+    display: none;
+}
+
+
+/* ============================================================
+   BOTÕES DO FORMULÁRIO
+============================================================ */
 
 .formActions {
-    gap: 0.75rem;
     display: flex;
+    justify-content: flex-end;
+
+    gap: 0.75rem;
+
     margin-top: 2rem;
     padding-top: 2rem;
-    justify-content: flex-end;
+
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.cancelButton {
-    gap: 0.5rem;
+.cancelButton,
+.saveButton {
     display: flex;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
     align-items: center;
-    border-radius: 12px;
+    justify-content: center;
+
+    gap: 0.5rem;
+
     padding: 0.8rem 2rem;
-    background: transparent;
-    transition: all 0.3s ease;
-    color: var(--cor-texto-primario);
+
+    border-radius: 12px;
+
     font-family: var(--fonte-primaria);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.cancelButton {
+    color: var(--cor-texto-primario);
+
+    background: transparent;
+
     border: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 .cancelButton:hover {
     transform: translateY(-2px);
+
     border-color: rgba(255, 255, 255, 0.3);
+
     background: rgba(255, 255, 255, 0.05);
 }
 
 .saveButton {
-    gap: 0.5rem;
-    border: none;
-    display: flex;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-radius: 12px;
-    align-items: center;
-    padding: 0.8rem 2.5rem;
-    transition: all 0.3s ease;
+    min-width: 150px;
+
     color: var(--cor-texto-primario);
-    font-family: var(--fonte-primaria);
+
     background: var(--cor-fundo-escuro);
+
+    border: none;
+
     box-shadow: 0 4px 20px rgba(32, 31, 32, 0.4);
 }
 
 .saveButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    background: linear-gradient(
+        135deg,
+        var(--cor-roxo-claro) 0%,
+        var(--cor-rosa-vibrante) 100%
+    );
+
     box-shadow: 0 8px 30px rgba(166, 48, 136, 0.4);
-    background: linear-gradient(135deg, var(--cor-roxo-claro) 0%, var(--cor-rosa-vibrante) 100%);
 }
 
 .saveButton:disabled {
     opacity: 0.6;
+
     cursor: not-allowed;
 }
 
-.saveButton:active:not(:disabled) {transform: translateY(0);}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =========================LISTA DE MÚSICAS========================= */
+/* ============================================================
+   LISTA DE MÚSICAS
+============================================================ */
 
 .listaSection {
     margin-top: 16px;
@@ -559,51 +752,70 @@ body {
 .listaHeader {
     display: flex;
     align-items: center;
-    margin-bottom: 18px;
     justify-content: space-between;
+
+    margin-bottom: 18px;
 }
 
 .listaHeader h2 {
-    gap: 10px;
     margin: 0;
-    display: flex;
+
+    color: var(--cor-texto-primario);
+
+    font-family: var(--fonte-secundaria);
+
     font-size: 22px;
     font-weight: 700;
-    align-items: center;
-    color: var(--cor-texto-primario);
-    font-family: var(--fonte-secundaria);
 }
 
 .totalMusicas {
+    padding: 4px 12px;
+
+    color: var(--cor-texto-secundario);
+
     font-size: 16px;
     font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    color: var(--cor-texto-secundario);
-    background-color: var(--cor-fundo-escuro);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
 
-/* =========================LISTA MÚSICAS========================= */
+    border-radius: 20px;
+
+    background-color: var(--cor-fundo-escuro);
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
 
 .listaMusicas {
-    gap: 8px;
     display: flex;
     flex-direction: column;
+
+    gap: 8px;
 }
 
-/* =========================CARD MÚSICA========================= */
+
+/* ============================================================
+   CARD DA MÚSICA
+============================================================ */
 
 .cardMusica {
-    gap: 16px;
     display: flex;
-    padding: 16px 20px;
     align-items: center;
-    border-radius: 12px;
-    transition: 0.2s ease;
+
+    gap: 16px;
+
+    padding: 16px 20px;
+
     border: 1px solid rgba(255, 255, 255, 0.05);
+
+    border-radius: 12px;
+
     background-color: rgba(255, 255, 255, 0.03);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    transition: 0.2s ease;
 }
 
 .cardMusica:hover {
@@ -613,130 +825,157 @@ body {
 .cardCapa {
     width: 56px;
     height: 56px;
+
     display: flex;
-    flex-shrink: 0;
-    overflow: hidden;
-    border-radius: 8px;
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
     background: var(--cor-fundo-escuro);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .cardCapa img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
 }
 
 .cardCapaIcon {
     width: 28px;
     height: 28px;
-    opacity: 0.6;
+
     color: var(--cor-texto-primario);
+
+    opacity: 0.6;
 }
 
 .cardInfo {
     flex: 1;
+
     min-width: 0;
 }
 
 .cardHeader {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+
+    gap: 2px;
 }
 
 .cardTitulo {
-    gap: 8px;
     display: flex;
     align-items: center;
+
+    gap: 8px;
+
+    min-width: 0;
 }
 
 .cardTitulo h4 {
     margin: 0;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    color: var(--cor-texto-primario);
+
+    font-family: var(--fonte-secundaria);
+
     font-size: 18px;
     font-weight: 600;
-    color: var(--cor-texto-primario);
-    font-family: var(--fonte-secundaria);
-}
 
-.favoritarButton {
-    padding: 0;
-    border: none;
-    cursor: pointer;
-    background: none;
-}
-
-.favoritoAtivo {
-    width: 18px;
-    height: 18px;
-    fill: #ff4d6d;
-    color: #ff4d6d;
-}
-
-.favoritoInativo {
-    width: 18px;
-    height: 18px;
-    opacity: 0.4;
-    color: var(--cor-texto-secundario);
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .cardArtista {
-    gap: 4px;
-    display: flex;
-    font-size: 14px;
-    align-items: flex-end;
     color: var(--cor-texto-secundario);
+
+    font-size: 14px;
 }
 
 .cardDetalhes {
-    gap: 12px;
     display: flex;
-    margin-top: 4px;
     flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 5px;
 }
 
 .cardDetalhes span {
-    gap: 4px;
-    opacity: 0.5;
     display: flex;
-    font-size: 16px;
     align-items: center;
+
+    gap: 4px;
+
     color: var(--cor-texto-primario);
+
+    opacity: 0.5;
+
+    font-size: 14px;
 }
 
 .cardDetalhes span svg {
-    width: 34px;
+    width: 14px;
     height: 14px;
+
+    flex-shrink: 0;
 }
 
-/* =========================CARD FOOTER - ANOTAÇÕES========================= */
+
+/* ============================================================
+   FOOTER DO CARD / ANOTAÇÕES
+============================================================ */
 
 .cardFooter {
-    gap: 8px;
     display: flex;
+    align-items: center;
+
     margin-top: 10px;
     padding-top: 6px;
-    align-items: center;
+
     border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .notasButton {
-    gap: 4px;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 2px 8px;
-    cursor: pointer;
     width: fit-content;
-    align-items: center;
-    border-radius: 12px;
+
     display: inline-flex;
-    transition: 0.2s ease;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 3px 8px;
+
     color: var(--cor-texto-secundario);
+
     font-family: var(--fonte-primaria);
-    background: rgba(255, 255, 255, 0.03);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
     border: 1px solid rgba(255, 255, 255, 0.04);
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.03);
+
+    transition: 0.2s ease;
 }
 
 .notasButton svg {
@@ -746,33 +985,46 @@ body {
 
 .notasButton:hover {
     color: var(--cor-texto-primario);
+
     border-color: var(--cor-rosa-claro);
+
     background: rgba(174, 92, 166, 0.15);
 }
 
-/* =========================CARD ACTIONS========================= */
+
+/* ============================================================
+   AÇÕES DO CARD
+============================================================ */
 
 .cardActions {
-    gap: 4px;
     display: flex;
+
+    gap: 4px;
 }
 
 .editButton,
 .deleteButton {
-    width: 60px;
-    height: 60px;
-    border: none;
-    display: flex;
-    cursor: pointer;
-    border-radius: 6px;
-    align-items: center;
-    transition: 0.2s ease;
-    justify-content: center;
-    background: transparent;
-    color: var(--cor-texto-secundario);
-}
+    width: 48px;
+    height: 48px;
 
-/* Icone dos botões de excluir e editar*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    background: transparent;
+
+    color: var(--cor-texto-secundario);
+
+    transition: 0.2s ease;
+}
 
 .editButton svg,
 .deleteButton svg {
@@ -782,305 +1034,110 @@ body {
 
 .editButton:hover {
     color: var(--cor-rosa-claro);
+
     background-color: var(--cor-fundo-escuro);
 }
 
 .deleteButton:hover {
     color: #b51515;
+
     background-color: rgba(255, 0, 0, 0.1);
 }
 
-/* =========================RESPONSIVIDADE========================= */
 
-@media (max-width: 1024px) {
-    .formGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .formRight {
-        justify-content: center;
-    }
-
-    .capaContainer {
-        max-width: 160px;
-    }
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        width: 60px;
-        padding: 20px 10px;
-    }
-
-    .sidebar .logo,
-    .sidebar .navItem span,
-    .sidebar .userName,
-    .sidebar .logoutButton span {
-        display: none;
-    }
-
-    .sidebar .userInfo {
-        padding: 8px;
-        justify-content: center;
-    }
-
-    .main {
-        padding: 20px;
-    }
-
-    .form {
-        padding: 20px;
-    }
-
-    .fieldRow {
-        grid-template-columns: 1fr;
-    }
-
-    .cardMusica {
-        flex-wrap: wrap;
-    }
-
-    .cardActions {
-        width: 100%;
-        padding-top: 8px;
-        justify-content: flex-end;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-}
-
-.favoritaLabel {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.coracaoButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    transition: transform 0.2s;
-}
-
-.coracaoButton:hover {
-    transform: scale(1.1);
-}
-
-.favoritoAtivo {
-    color: #ff6b9d;
-    fill: #ff6b9d;
-    transition: all 0.3s;
-}
-
-.favoritoInativo {
-    color: rgba(255, 255, 255, 0.3);
-    transition: all 0.3s;
-}
-
-.favoritoInativo:hover {
-    color: #ff6b9d;
-}
-
-/* 👈 ESTILOS PARA O CORAÇÃO NA LISTA */
-.favoritarButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    transition: transform 0.2s;
-}
-
-.favoritarButton:hover {
-    transform: scale(1.15);
-}
-
-.cardTitulo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.cardTitulo h4 {
-    margin: 0;
-    color: #fff;
-    font-size: 1rem;
-}
-
-
-
-
-
-
-
-/* Quando não tem nada cadastrado */
+/* ============================================================
+   ESTADO VAZIO
+============================================================ */
 
 .emptyStateCadastro {
     width: 100%;
+
+    min-height: 250px;
+
     display: flex;
-    min-height: 80px;
-    padding: 4rem 2rem;
-    text-align: center;
     align-items: center;
-    border-radius: 20px;
-    flex-direction: column;
     justify-content: center;
-    transition: all 0.3s ease;
+
+    flex-direction: column;
+
+    padding: 4rem 2rem;
+
+    text-align: center;
+
     border: 2.5px dashed var(--cor-fundo-escuro);
-    background: linear-gradient(135deg, rgba(108, 61, 95, 0.05) 0%, rgba(166, 48, 136, 0.08) 100%);
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(108, 61, 95, 0.05) 0%,
+        rgba(166, 48, 136, 0.08) 100%
+    );
 }
 
+.emptyStateMessage {
+    margin-bottom: 1rem;
 
-@keyframes float {
+    color: var(--cor-cinza-claro);
 
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
+    font-family: var(--fonte-secundaria);
 
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.emptyStateCadastro .emptyStateMessage {
     font-size: 26px;
     font-weight: 500;
-    text-align: center;
-    margin-bottom: 1rem;
-    color: var(--cor-cinza-claro);
-    font-family: var(--fonte-secundaria);
 }
 
-.emptyStateCadastro .emptyStateSubMessage {
+.emptyStateSubMessage {
+    color: var(--cor-cinza-claro);
+
+    font-family: var(--fonte-secundaria);
+
     font-size: 20px;
     font-weight: 500;
-    text-align: center;
-    margin-bottom: 1rem;
-    color: var(--cor-cinza-claro);
-    font-family: var(--fonte-secundaria);
 }
 
 
-/* Versão responsiva */
-@media (max-width: 768px) {
-    .emptyStateCadastro {
-        padding: 3rem 1.5rem;
-        min-height: 250px;
-    }
-
-    .emptyStateCadastro .emptyStateIcon {
-        font-size: 3rem;
-    }
-
-    .emptyStateCadastro .emptyStateMessage {
-        font-size: 1rem;
-    }
-
-    .emptyStateCadastro .emptyStateSubMessage {
-        font-size: 0.9rem;
-        padding: 0 1rem;
-    }
-
-    .emptyStateCadastro .emptyStateButton {
-        padding: 0.8rem 2rem;
-        font-size: 0.9rem;
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .emptyStateCadastro {
-        padding: 2rem 1rem;
-        min-height: 200px;
-    }
-
-    .emptyStateCadastro .emptyStateIcon {
-        font-size: 2.5rem;
-    }
-
-    .emptyStateCadastro .emptyStateMessage {
-        font-size: 0.95rem;
-    }
-
-    .emptyStateCadastro .emptyStateSubMessage {
-        font-size: 0.85rem;
-    }
-
-    .emptyStateCadastro .emptyStateButton {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.85rem;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ===== MODAL ===== */
+/* ============================================================
+   MODAIS
+============================================================ */
 
 .modalOverlay {
+    position: fixed;
+
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+
     z-index: 1000;
+
     display: flex;
-    position: fixed;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(8px);
-    animation: fadeIn 0.3s ease;
+
+    padding: 20px;
+
     background: rgba(7, 7, 7, 0.9);
-}
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+    backdrop-filter: blur(8px);
 
-    to {
-        opacity: 1;
-    }
+    animation: fadeIn 0.3s ease;
 }
 
 .modal {
     width: 90%;
-    padding: 2.5rem;
     max-width: 420px;
+
     position: relative;
-    border-radius: 8px;
-    animation: slideUp 0.4s ease;
+
+    padding: 2.5rem;
+
+    border-radius: 12px;
+
     background: var(--cor-branco);
+
     box-shadow: 0 20px 60px rgba(64, 38, 92, 0.2);
-}
 
-@keyframes slideUp {
-    from {
-        transform: translateY(40px) scale(0.95);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
+    animation: slideUp 0.4s ease;
 }
 
 .modalError {
@@ -1092,95 +1149,351 @@ body {
 }
 
 .modalClose {
+    position: absolute;
+
     top: 12px;
     right: 16px;
-    border: none;
+
     width: 32px;
     height: 32px;
+
     display: flex;
-    cursor: pointer;
-    background: none;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    position: absolute;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    background: none;
+
     color: var(--cor-roxo-escuro);
+
+    transition: 0.2s ease;
+}
+
+.modalClose:hover {
+    background: rgba(64, 38, 92, 0.08);
+}
+
+.modalClose svg {
+    width: 20px;
+    height: 20px;
 }
 
 .modalTitle {
-    font-weight: 700;
-    font-size: 1.4rem;
-    text-align: center;
     margin-bottom: 0.75rem;
+
     color: var(--cor-roxo-escuro);
+
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    text-align: center;
 }
 
 .modalMessage {
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: center;
     margin-bottom: 1.75rem;
+
     color: var(--cor-roxo-escuro);
-}
 
-.modalButtonError {
-    width: 100%;
-    border: none;
-    padding: 0.9rem;
     font-size: 1rem;
-    cursor: pointer;
-    font-weight: 600;
-    border-radius: 12px;
-    letter-spacing: 0.5px;
-    color: var(--cor-branco);
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    background: var(--cor-botao-hover);
+
+    line-height: 1.6;
+
+    text-align: center;
 }
 
-.modalButtonError:hover {
-    transform: translateY(-2px);
-    background: var(--cor-fundo-escuro);
-    box-shadow: 0 8px 25px rgba(255, 182, 201, 0.4);
-}
-
-.modalButtonError:active {
-    transform: translateY(0);
-}
-
+.modalButtonError,
 .modalButtonSuccess {
     width: 100%;
-    border: none;
+
     padding: 0.9rem;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 600;
+
+    border: none;
+
     border-radius: 12px;
-    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
     color: var(--cor-branco);
-    transition: all 0.3s ease;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
     text-transform: uppercase;
+
     background: var(--cor-botao-hover);
+
+    transition: all 0.3s ease;
 }
 
+.modalButtonError:hover,
 .modalButtonSuccess:hover {
     transform: translateY(-2px);
+
     background: var(--cor-fundo-escuro);
+
     box-shadow: 0 8px 25px rgba(255, 182, 201, 0.4);
 }
 
-.modalButtonSuccess:active {
-    transform: translateY(0);
+
+/* ============================================================
+   ANIMAÇÕES
+============================================================ */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* Versão responsiva */
+@keyframes slideUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(40px)
+            scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — TABLET
+============================================================ */
+
+@media (max-width: 1024px) {
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .formRight {
+        justify-content: center;
+    }
+
+    .capaContainer {
+        max-width: 260px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 60px;
+
+        padding: 20px 10px;
+    }
+
+    .sidebar .logo,
+    .sidebar .navItem span,
+    .sidebar .userName,
+    .sidebar .logoutText {
+        display: none;
+    }
+
+    .sidebar .userInfo {
+        padding: 8px;
+
+        justify-content: center;
+    }
+
+    .nav {
+        margin-top: 30px;
+
+        align-items: center;
+    }
+
+    .navItem {
+        padding: 10px;
+    }
+
+    .main {
+        padding: 20px;
+    }
+
+    .form {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+    }
+
+    .fieldRow {
+        grid-template-columns: 1fr;
+    }
+
+    .formRight {
+        order: -1;
+    }
+
+    .capaContainer {
+        max-width: 200px;
+
+        margin-top: 0;
+    }
+
+    .cardMusica {
+        flex-wrap: wrap;
+
+        padding: 14px;
+    }
+
+    .cardInfo {
+        width: calc(100% - 72px);
+    }
+
+    .cardActions {
+        width: 100%;
+
+        justify-content: flex-end;
+
+        padding-top: 8px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .emptyStateCadastro {
+        min-height: 250px;
+
+        padding: 3rem 1.5rem;
+    }
+
+    .emptyStateMessage {
+        font-size: 1.1rem;
+    }
+
+    .emptyStateSubMessage {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — CELULAR PEQUENO
+============================================================ */
 
 @media (max-width: 480px) {
+
+    .sidebar {
+        width: 52px;
+
+        padding: 15px 7px;
+    }
+
+    .main {
+        padding: 16px;
+    }
+
+    .form {
+        padding: 16px;
+
+        border-radius: 16px;
+    }
+
+    .title {
+        font-size: 21px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .listaHeader {
+        align-items: flex-start;
+
+        gap: 10px;
+
+        flex-direction: column;
+    }
+
+    .listaHeader h2 {
+        font-size: 19px;
+    }
+
+    .totalMusicas {
+        font-size: 13px;
+    }
+
+    .cardMusica {
+        gap: 12px;
+    }
+
+    .cardCapa {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cardInfo {
+        width: calc(100% - 62px);
+    }
+
+    .cardTitulo h4 {
+        font-size: 16px;
+    }
+
+    .cardArtista {
+        font-size: 13px;
+    }
+
+    .cardDetalhes {
+        gap: 8px;
+    }
+
+    .cardDetalhes span {
+        font-size: 12px;
+    }
+
+    .editButton,
+    .deleteButton {
+        width: 42px;
+        height: 42px;
+    }
+
+    .formActions {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .saveButton {
+        width: 100%;
+    }
+
     .modal {
-        padding: 2rem 1.5rem;
         width: 95%;
+
+        padding: 2rem 1.5rem;
     }
 
     .modalTitle {
@@ -1194,14 +1507,26 @@ body {
     .modalButtonError,
     .modalButtonSuccess {
         padding: 0.8rem;
+
         font-size: 0.9rem;
     }
 
     .modalClose {
         top: 8px;
         right: 12px;
-        font-size: 1.2rem;
-        width: 28px;
-        height: 28px;
+    }
+
+    .emptyStateCadastro {
+        min-height: 200px;
+
+        padding: 2rem 1rem;
+    }
+
+    .emptyStateMessage {
+        font-size: 0.95rem;
+    }
+
+    .emptyStateSubMessage {
+        font-size: 0.85rem;
     }
 }

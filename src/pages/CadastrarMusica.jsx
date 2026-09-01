@@ -1,28 +1,29 @@
-import { api } from "../api/api";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Notas from "../componentes/Notas";
-import { useState, useEffect } from "react";
-import Loading from "../componentes/Loading";
-import styles from "./CadastrarMusica.module.css";
-import logo from "../assets/LogoSomenteIconeCortada.png";
-
 import {
-    FiHome,
-    FiPlus,
-    FiLogOut,
-    FiMusic,
-    FiHeart,
-    FiTrash2,
-    FiEdit,
-    FiSave,
-    FiX,
-    FiUpload,
     FiClock,
     FiDisc,
-    FiTag,
+    FiEdit,
+    FiHeart,
+    FiHome,
+    FiLogOut,
     FiMessageCircle,
-    FiUser
+    FiMusic,
+    FiPlus,
+    FiSave,
+    FiTag,
+    FiTrash2,
+    FiUpload,
+    FiUser,
+    FiX
 } from "react-icons/fi";
+
+import { api } from "../api/api";
+import Loading from "../componentes/Loading";
+import Notas from "../componentes/Notas";
+
+import logo from "../assets/LogoSomenteIconeCortada.png";
+import styles from "./CadastrarMusica.module.css";
 
 function CadastrarMusica() {
 
@@ -31,7 +32,7 @@ function CadastrarMusica() {
     const usuario = usuarioSalvo?.usuario || "Visitante";
     const usuarioId = usuarioSalvo?.id;
 
-    const [formData, setFormData] = useState({
+    const formularioInicial = {
         nome: "",
         artista: "",
         album: "",
@@ -40,14 +41,19 @@ function CadastrarMusica() {
         capa: null,
         favorita: false,
         anotacao: ""
-    });
+    };
 
+    const [formData, setFormData] = useState(formularioInicial);
     const [musicas, setMusicas] = useState([]);
+
     const [editandoId, setEditandoId] = useState(null);
+
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState("");
+
     const [carregando, setCarregando] = useState(false);
     const [carregandoLista, setCarregandoLista] = useState(true);
+
     const [notasAbertas, setNotasAbertas] = useState({});
 
     const generos = [
@@ -69,8 +75,10 @@ function CadastrarMusica() {
         "Hip-Hop"
     ];
 
-    // Formata a duração que vem do Back-end em segundos
-    // para o formato MM:SS.
+    // ============================================================
+    // DURAÇÃO
+    // ============================================================
+
     const formatarDuracao = (segundos) => {
 
         if (!segundos || segundos <= 0) {
@@ -85,8 +93,6 @@ function CadastrarMusica() {
         ).padStart(2, "0")}`;
     };
 
-    // Converte a duração digitada no formulário
-    // de MM:SS para segundos.
     const converterDuracao = (duracao) => {
 
         if (!duracao || duracao === "00:00") {
@@ -95,28 +101,34 @@ function CadastrarMusica() {
 
         const partes = duracao.split(":");
 
-        if (partes.length === 2) {
-
-            const minutos = parseInt(partes[0]);
-            const segundos = parseInt(partes[1]);
-
-            return minutos * 60 + segundos;
+        if (partes.length !== 2) {
+            return 0;
         }
 
-        return 0;
+        const minutos = parseInt(partes[0], 10);
+        const segundos = parseInt(partes[1], 10);
+
+        if (isNaN(minutos) || isNaN(segundos)) {
+            return 0;
+        }
+
+        return minutos * 60 + segundos;
     };
 
-    // Busca todas as músicas do usuário.
+    // ============================================================
+    // CARREGAR MÚSICAS
+    // ============================================================
+
     const carregarMusicas = async () => {
 
         try {
 
             setCarregandoLista(true);
+            setErro("");
 
             const dados = await api.getMusicas(usuarioId);
 
             const musicasComNotas = await Promise.all(
-
                 dados.map(async (musica) => {
 
                     try {
@@ -168,16 +180,20 @@ function CadastrarMusica() {
         }
     };
 
-    // Carrega as músicas quando a página é aberta.
     useEffect(() => {
 
         if (usuarioId) {
             carregarMusicas();
+        } else {
+            setCarregandoLista(false);
         }
 
     }, [usuarioId]);
 
-    // Altera os campos do formulário.
+    // ============================================================
+    // FORMULÁRIO
+    // ============================================================
+
     const alterarCampo = (e) => {
 
         const {
@@ -187,18 +203,17 @@ function CadastrarMusica() {
             checked
         } = e.target;
 
-        setFormData({
-            ...formData,
+        setFormData((anterior) => ({
+            ...anterior,
             [name]: type === "checkbox"
                 ? checked
                 : value
-        });
+        }));
     };
 
-    // Carrega a imagem escolhida pelo usuário.
     const alterarCapa = (e) => {
 
-        const arquivo = e.target.files[0];
+        const arquivo = e.target.files?.[0];
 
         if (!arquivo) {
             return;
@@ -208,25 +223,27 @@ function CadastrarMusica() {
 
         leitor.onloadend = () => {
 
-            setFormData({
-                ...formData,
+            setFormData((anterior) => ({
+                ...anterior,
                 capa: leitor.result
-            });
+            }));
         };
 
         leitor.readAsDataURL(arquivo);
     };
 
-    // Marca ou desmarca a música como favorita.
     const alternarFavorita = () => {
 
-        setFormData({
-            ...formData,
-            favorita: !formData.favorita
-        });
+        setFormData((anterior) => ({
+            ...anterior,
+            favorita: !anterior.favorita
+        }));
     };
 
-    // Salva ou atualiza uma música.
+    // ============================================================
+    // SALVAR / ATUALIZAR
+    // ============================================================
+
     const enviarFormulario = async (e) => {
 
         e.preventDefault();
@@ -234,11 +251,10 @@ function CadastrarMusica() {
         setErro("");
         setSucesso("");
 
-        // Validação dos campos obrigatórios.
         if (
-            !formData.nome ||
-            !formData.artista ||
-            !formData.album
+            !formData.nome.trim() ||
+            !formData.artista.trim() ||
+            !formData.album.trim()
         ) {
 
             setErro(
@@ -253,29 +269,19 @@ function CadastrarMusica() {
         try {
 
             const musicaParaEnviar = {
-
-                nome: formData.nome,
-
-                artista: formData.artista,
-
-                album: formData.album,
-
-                duracao: converterDuracao(
-                    formData.duracao
-                ),
-
+                nome: formData.nome.trim(),
+                artista: formData.artista.trim(),
+                album: formData.album.trim(),
+                duracao: converterDuracao(formData.duracao),
                 genero: formData.genero || "",
-
                 favorita: formData.favorita || false,
-
                 capa: formData.capa || "",
-
-                usuarioId: usuarioId
+                usuarioId
             };
 
             let musicaSalva;
 
-            // Atualização
+            // ATUALIZAR
             if (editandoId) {
 
                 musicaSalva = await api.putMusica(
@@ -289,7 +295,7 @@ function CadastrarMusica() {
 
             }
 
-            // Cadastro
+            // CADASTRAR
             else {
 
                 musicaSalva = await api.postMusica(
@@ -301,22 +307,19 @@ function CadastrarMusica() {
                 );
             }
 
-            /*
-             * A música já foi salva no Back-end.
-             *
-             * A anotação é tratada separadamente para que
-             * um erro ao salvar a anotação não faça o sistema
-             * informar que a música não foi cadastrada.
-             */
+            // ====================================================
+            // ANOTAÇÃO
+            // ====================================================
+
             if (
-                formData.anotacao &&
+                formData.anotacao.trim() &&
                 musicaSalva?.id
             ) {
 
                 try {
 
                     await api.postAnotacao({
-                        texto: formData.anotacao,
+                        texto: formData.anotacao.trim(),
                         musicaId: musicaSalva.id
                     });
 
@@ -329,33 +332,14 @@ function CadastrarMusica() {
                 }
             }
 
-            /*
-             * Busca novamente as músicas depois do cadastro.
-             *
-             * Isso atualiza a lista imediatamente,
-             * sem precisar apertar F5.
-             */
+            // Atualiza a lista
             await carregarMusicas();
 
-            // Limpa o formulário.
-            setFormData({
-                nome: "",
-                artista: "",
-                album: "",
-                genero: "",
-                duracao: "00:00",
-                capa: null,
-                favorita: false,
-                anotacao: ""
-            });
+            // Limpa formulário
+            limparFormulario();
 
-            setEditandoId(null);
-
-            // Limpa a mensagem de sucesso.
             setTimeout(() => {
-
                 setSucesso("");
-
             }, 3000);
 
         } catch (erro) {
@@ -371,9 +355,7 @@ function CadastrarMusica() {
             );
 
             setTimeout(() => {
-
                 setErro("");
-
             }, 3000);
 
         } finally {
@@ -382,27 +364,20 @@ function CadastrarMusica() {
         }
     };
 
-    // Coloca uma música no formulário para edição.
+    // ============================================================
+    // EDITAR
+    // ============================================================
+
     const editarMusica = (musica) => {
 
         setFormData({
-
-            nome: musica.nome,
-
-            artista: musica.artista,
-
+            nome: musica.nome || "",
+            artista: musica.artista || "",
             album: musica.album || "",
-
             genero: musica.genero || "",
-
-            duracao: formatarDuracao(
-                musica.duracao
-            ),
-
+            duracao: formatarDuracao(musica.duracao),
             capa: musica.capa || null,
-
             favorita: musica.favorita || false,
-
             anotacao: ""
         });
 
@@ -414,14 +389,17 @@ function CadastrarMusica() {
         });
     };
 
-    // Exclui uma música.
+    // ============================================================
+    // EXCLUIR
+    // ============================================================
+
     const excluirMusica = async (id) => {
 
-        if (
-            !window.confirm(
-                "Tem certeza que deseja excluir esta música?"
-            )
-        ) {
+        const confirmar = window.confirm(
+            "Tem certeza que deseja excluir esta música?"
+        );
+
+        if (!confirmar) {
             return;
         }
 
@@ -439,9 +417,7 @@ function CadastrarMusica() {
             );
 
             setTimeout(() => {
-
                 setSucesso("");
-
             }, 3000);
 
         } catch (erro) {
@@ -457,14 +433,15 @@ function CadastrarMusica() {
             );
 
             setTimeout(() => {
-
                 setErro("");
-
             }, 3000);
         }
     };
 
-    // Favorita ou desfavorita uma música.
+    // ============================================================
+    // FAVORITAR
+    // ============================================================
+
     const favoritarMusica = async (id) => {
 
         try {
@@ -489,45 +466,43 @@ function CadastrarMusica() {
             );
 
             setTimeout(() => {
-
                 setErro("");
-
             }, 3000);
         }
     };
 
-    // Cancela o modo de edição.
+    // ============================================================
+    // CANCELAR E LIMPAR
+    // ============================================================
+
+    const limparFormulario = () => {
+
+        setFormData(formularioInicial);
+        setEditandoId(null);
+    };
+
     const cancelarEdicao = () => {
 
-        setEditandoId(null);
-
-        setFormData({
-            nome: "",
-            artista: "",
-            album: "",
-            genero: "",
-            duracao: "00:00",
-            capa: null,
-            favorita: false,
-            anotacao: ""
-        });
-
+        limparFormulario();
         setErro("");
     };
 
-    // Abre ou fecha as anotações de uma música.
+    // ============================================================
+    // ANOTAÇÕES
+    // ============================================================
+
     const alternarNotas = (musicaId) => {
 
         setNotasAbertas((anterior) => ({
-
             ...anterior,
-
             [musicaId]: !anterior[musicaId]
-
         }));
     };
 
-    // Enquanto as músicas estão sendo carregadas.
+    // ============================================================
+    // LOADING
+    // ============================================================
+
     if (carregandoLista) {
 
         return (
@@ -535,9 +510,17 @@ function CadastrarMusica() {
         );
     }
 
+    // ============================================================
+    // TELA
+    // ============================================================
+
     return (
 
         <div className={styles.cadastrar}>
+
+            {/* ==================================================
+                SIDEBAR
+            ================================================== */}
 
             <aside className={styles.sidebar}>
 
@@ -545,7 +528,7 @@ function CadastrarMusica() {
 
                     <img
                         src={logo}
-                        alt="Logo-Sonora"
+                        alt="Logo Sonora"
                         className={styles.logo}
                     />
 
@@ -553,12 +536,18 @@ function CadastrarMusica() {
 
                 <nav className={styles.nav}>
 
-                    <Link to="/home" className={styles.navItem}>
+                    <Link
+                        to="/home"
+                        className={styles.navItem}
+                    >
                         <FiHome className={styles.navIcon} />
                         <span>Início</span>
                     </Link>
 
-                    <Link to="/cadastrarMusica" className={`${styles.navItem} ${styles.active}`}>
+                    <Link
+                        to="/cadastrarMusica"
+                        className={`${styles.navItem} ${styles.active}`}
+                    >
                         <FiPlus className={styles.navIcon} />
                         <span>Música</span>
                     </Link>
@@ -584,7 +573,8 @@ function CadastrarMusica() {
                         className={styles.logoutButton}
                     >
                         <FiLogOut className={styles.navIcon} />
-                        <span className={styles.span}>
+
+                        <span className={styles.logoutText}>
                             Sair
                         </span>
                     </Link>
@@ -592,6 +582,10 @@ function CadastrarMusica() {
                 </div>
 
             </aside>
+
+            {/* ==================================================
+                CONTEÚDO PRINCIPAL
+            ================================================== */}
 
             <main className={styles.main}>
 
@@ -615,6 +609,10 @@ function CadastrarMusica() {
 
                 </header>
 
+                {/* ==================================================
+                    MODAL DE ERRO
+                ================================================== */}
+
                 {erro && (
 
                     <div
@@ -624,16 +622,14 @@ function CadastrarMusica() {
 
                         <div
                             className={`${styles.modal} ${styles.modalError}`}
-                            onClick={(e) =>
-                                e.stopPropagation()
-                            }
+                            onClick={(e) => e.stopPropagation()}
                         >
 
                             <button
                                 className={styles.modalClose}
                                 onClick={() => setErro("")}
                             >
-                                ✕
+                                <FiX />
                             </button>
 
                             <h3 className={styles.modalTitle}>
@@ -656,6 +652,10 @@ function CadastrarMusica() {
                     </div>
                 )}
 
+                {/* ==================================================
+                    MODAL DE SUCESSO
+                ================================================== */}
+
                 {sucesso && (
 
                     <div
@@ -665,18 +665,14 @@ function CadastrarMusica() {
 
                         <div
                             className={`${styles.modal} ${styles.modalSuccess}`}
-                            onClick={(e) =>
-                                e.stopPropagation()
-                            }
+                            onClick={(e) => e.stopPropagation()}
                         >
 
                             <button
                                 className={styles.modalClose}
-                                onClick={() =>
-                                    setSucesso("")
-                                }
+                                onClick={() => setSucesso("")}
                             >
-                                ✕
+                                <FiX />
                             </button>
 
                             <h3 className={styles.modalTitle}>
@@ -689,9 +685,7 @@ function CadastrarMusica() {
 
                             <button
                                 className={styles.modalButtonSuccess}
-                                onClick={() =>
-                                    setSucesso("")
-                                }
+                                onClick={() => setSucesso("")}
                             >
                                 Ok
                             </button>
@@ -701,6 +695,10 @@ function CadastrarMusica() {
                     </div>
                 )}
 
+                {/* ==================================================
+                    FORMULÁRIO
+                ================================================== */}
+
                 <form
                     onSubmit={enviarFormulario}
                     className={styles.form}
@@ -708,18 +706,17 @@ function CadastrarMusica() {
 
                     <div className={styles.formGrid}>
 
+                        {/* ==============================
+                            CAMPOS
+                        ============================== */}
+
                         <div className={styles.formLeft}>
 
                             <div className={styles.field}>
 
                                 <label htmlFor="nome">
-
-                                    <FiMusic
-                                        className={styles.fieldIcon}
-                                    />
-
+                                    <FiMusic className={styles.fieldIcon} />
                                     Nome da música
-
                                 </label>
 
                                 <input
@@ -736,13 +733,8 @@ function CadastrarMusica() {
                             <div className={styles.field}>
 
                                 <label htmlFor="artista">
-
-                                    <FiUser
-                                        className={styles.fieldIcon}
-                                    />
-
+                                    <FiUser className={styles.fieldIcon} />
                                     Artista
-
                                 </label>
 
                                 <input
@@ -759,13 +751,8 @@ function CadastrarMusica() {
                             <div className={styles.field}>
 
                                 <label htmlFor="album">
-
-                                    <FiDisc
-                                        className={styles.fieldIcon}
-                                    />
-
+                                    <FiDisc className={styles.fieldIcon} />
                                     Álbum
-
                                 </label>
 
                                 <input
@@ -784,13 +771,8 @@ function CadastrarMusica() {
                                 <div className={styles.field}>
 
                                     <label htmlFor="genero">
-
-                                        <FiTag
-                                            className={styles.fieldIcon}
-                                        />
-
+                                        <FiTag className={styles.fieldIcon} />
                                         Gênero
-
                                     </label>
 
                                     <select
@@ -822,13 +804,8 @@ function CadastrarMusica() {
                                 <div className={styles.field}>
 
                                     <label htmlFor="duracao">
-
-                                        <FiClock
-                                            className={styles.fieldIcon}
-                                        />
-
+                                        <FiClock className={styles.fieldIcon} />
                                         Duração
-
                                     </label>
 
                                     <input
@@ -844,63 +821,52 @@ function CadastrarMusica() {
 
                             </div>
 
+                            {/* FAVORITA */}
+
                             <div className={styles.fieldFavorita}>
 
-                                <label
-                                    className={
-                                        styles.favoritaLabel
-                                    }
-                                >
+                                <div className={styles.favoritaLabel}>
 
                                     <span>
-
-                                        <FiHeart
-                                            className={
-                                                styles.fieldIcon
-                                            }
-                                        />
-
+                                        <FiHeart className={styles.fieldIcon} />
                                         Marcar como favorita
-
                                     </span>
 
                                     <button
                                         type="button"
-                                        onClick={
-                                            alternarFavorita
-                                        }
-                                        className={
-                                            styles.coracaoButton
+                                        onClick={alternarFavorita}
+                                        className={styles.coracaoButton}
+                                        aria-label={
+                                            formData.favorita
+                                                ? "Desmarcar favorita"
+                                                : "Marcar como favorita"
                                         }
                                     >
 
                                         <FiHeart
+                                            size={28}
                                             className={
                                                 formData.favorita
                                                     ? styles.favoritoAtivo
                                                     : styles.favoritoInativo
                                             }
-                                            size={28}
                                         />
 
                                     </button>
 
-                                </label>
+                                </div>
 
                             </div>
+
+                            {/* ANOTAÇÃO */}
 
                             <div className={styles.field}>
 
                                 <label htmlFor="anotacao">
-
                                     <FiMessageCircle
-                                        className={
-                                            styles.fieldIcon
-                                        }
+                                        className={styles.fieldIcon}
                                     />
-
                                     Anotações sobre a música
-
                                 </label>
 
                                 <textarea
@@ -917,39 +883,32 @@ function CadastrarMusica() {
 
                         </div>
 
+                        {/* ==============================
+                            CAPA
+                        ============================== */}
+
                         <div className={styles.formRight}>
 
-                            <div
-                                className={
-                                    styles.capaContainer
-                                }
-                            >
+                            <div className={styles.capaContainer}>
 
                                 <label
                                     htmlFor="capa"
-                                    className={
-                                        styles.capaLabel
-                                    }
+                                    className={styles.capaLabel}
                                 >
 
                                     {formData.capa ? (
 
                                         <img
                                             src={formData.capa}
-                                            alt="Capa"
-                                            className={
-                                                styles.capaPreview
-                                            }
+                                            alt="Prévia da capa"
+                                            className={styles.capaPreview}
                                         />
 
                                     ) : (
 
                                         <>
-
                                             <FiUpload
-                                                className={
-                                                    styles.capaIcon
-                                                }
+                                                className={styles.capaIcon}
                                             />
 
                                             <span>
@@ -957,13 +916,10 @@ function CadastrarMusica() {
                                             </span>
 
                                             <span
-                                                className={
-                                                    styles.capaSubtext
-                                                }
+                                                className={styles.capaSubtext}
                                             >
                                                 Clique para fazer upload
                                             </span>
-
                                         </>
 
                                     )}
@@ -976,9 +932,7 @@ function CadastrarMusica() {
                                     type="file"
                                     accept="image/*"
                                     onChange={alterarCapa}
-                                    className={
-                                        styles.capaInput
-                                    }
+                                    className={styles.capaInput}
                                 />
 
                             </div>
@@ -987,6 +941,8 @@ function CadastrarMusica() {
 
                     </div>
 
+                    {/* BOTÕES */}
+
                     <div className={styles.formActions}>
 
                         {editandoId && (
@@ -994,15 +950,10 @@ function CadastrarMusica() {
                             <button
                                 type="button"
                                 onClick={cancelarEdicao}
-                                className={
-                                    styles.cancelButton
-                                }
+                                className={styles.cancelButton}
                             >
-
                                 <FiX />
-
                                 Cancelar
-
                             </button>
 
                         )}
@@ -1027,6 +978,10 @@ function CadastrarMusica() {
 
                 </form>
 
+                {/* ==================================================
+                    LISTA DE MÚSICAS
+                ================================================== */}
+
                 <section className={styles.listaSection}>
 
                     <div className={styles.listaHeader}>
@@ -1035,12 +990,11 @@ function CadastrarMusica() {
                             Músicas Cadastradas
                         </h2>
 
-                        <span
-                            className={
-                                styles.totalMusicas
-                            }
-                        >
-                            {musicas.length} músicas
+                        <span className={styles.totalMusicas}>
+                            {musicas.length}{" "}
+                            {musicas.length === 1
+                                ? "música"
+                                : "músicas"}
                         </span>
 
                     </div>
@@ -1049,26 +1003,14 @@ function CadastrarMusica() {
 
                         {musicas.length === 0 ? (
 
-                            <div
-                                className={
-                                    styles.emptyStateCadastro
-                                }
-                            >
+                            <div className={styles.emptyStateCadastro}>
 
-                                <p
-                                    className={
-                                        styles.emptyStateMessage
-                                    }
-                                >
+                                <p className={styles.emptyStateMessage}>
                                     Você ainda não cadastrou
                                     nenhuma música.
                                 </p>
 
-                                <p
-                                    className={
-                                        styles.emptyStateSubMessage
-                                    }
-                                >
+                                <p className={styles.emptyStateSubMessage}>
                                     Preencha o formulário acima
                                     e comece a construir sua
                                     coleção musical!
@@ -1082,58 +1024,37 @@ function CadastrarMusica() {
 
                                 <div
                                     key={musica.id}
-                                    className={
-                                        styles.cardMusica
-                                    }
+                                    className={styles.cardMusica}
                                 >
 
-                                    <div
-                                        className={
-                                            styles.cardCapa
-                                        }
-                                    >
+                                    {/* CAPA */}
+
+                                    <div className={styles.cardCapa}>
 
                                         {musica.capa ? (
 
                                             <img
                                                 src={musica.capa}
-                                                alt={musica.nome}
-                                                style={{
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    objectFit: "cover"
-                                                }}
+                                                alt={`Capa de ${musica.nome}`}
                                             />
 
                                         ) : (
 
                                             <FiMusic
-                                                className={
-                                                    styles.cardCapaIcon
-                                                }
+                                                className={styles.cardCapaIcon}
                                             />
 
                                         )}
 
                                     </div>
 
-                                    <div
-                                        className={
-                                            styles.cardInfo
-                                        }
-                                    >
+                                    {/* INFORMAÇÕES */}
 
-                                        <div
-                                            className={
-                                                styles.cardHeader
-                                            }
-                                        >
+                                    <div className={styles.cardInfo}>
 
-                                            <div
-                                                className={
-                                                    styles.cardTitulo
-                                                }
-                                            >
+                                        <div className={styles.cardHeader}>
+
+                                            <div className={styles.cardTitulo}>
 
                                                 <h4>
                                                     {musica.nome}
@@ -1157,12 +1078,12 @@ function CadastrarMusica() {
                                                 >
 
                                                     <FiHeart
+                                                        size={20}
                                                         className={
                                                             musica.favorita
                                                                 ? styles.favoritoAtivo
                                                                 : styles.favoritoInativo
                                                         }
-                                                        size={20}
                                                     />
 
                                                 </button>
@@ -1179,6 +1100,8 @@ function CadastrarMusica() {
 
                                         </div>
 
+                                        {/* DETALHES */}
+
                                         <div
                                             className={
                                                 styles.cardDetalhes
@@ -1187,55 +1110,36 @@ function CadastrarMusica() {
 
                                             {musica.album && (
 
-                                                <span
-                                                    className={
-                                                        styles.cardAlbum
-                                                    }
-                                                >
-
+                                                <span>
                                                     <FiDisc />
-
                                                     {musica.album}
-
                                                 </span>
 
                                             )}
 
                                             {musica.genero && (
 
-                                                <span
-                                                    className={
-                                                        styles.cardGenero
-                                                    }
-                                                >
-
+                                                <span>
                                                     <FiTag />
-
                                                     {musica.genero}
-
                                                 </span>
 
                                             )}
 
                                             {musica.duracao > 0 && (
 
-                                                <span
-                                                    className={
-                                                        styles.cardDuracao
-                                                    }
-                                                >
-
+                                                <span>
                                                     <FiClock />
-
                                                     {formatarDuracao(
                                                         musica.duracao
                                                     )}
-
                                                 </span>
 
                                             )}
 
                                         </div>
+
+                                        {/* ANOTAÇÕES */}
 
                                         <div
                                             className={
@@ -1258,25 +1162,23 @@ function CadastrarMusica() {
                                                 <FiMessageCircle />
 
                                                 {musica.notas?.length || 0}
+
                                                 {" "}
-                                                anotações
+
+                                                {musica.notas?.length === 1
+                                                    ? "anotação"
+                                                    : "anotações"}
 
                                             </button>
 
                                         </div>
 
-                                        {notasAbertas[
-                                            musica.id
-                                        ] && (
+                                        {notasAbertas[musica.id] && (
 
                                             <Notas
                                                 musicas={musicas}
-                                                setMusicas={
-                                                    setMusicas
-                                                }
-                                                musicaId={
-                                                    musica.id
-                                                }
+                                                setMusicas={setMusicas}
+                                                musicaId={musica.id}
                                                 onClose={() =>
                                                     alternarNotas(
                                                         musica.id
@@ -1288,26 +1190,19 @@ function CadastrarMusica() {
 
                                     </div>
 
-                                    <div
-                                        className={
-                                            styles.cardActions
-                                        }
-                                    >
+                                    {/* AÇÕES */}
+
+                                    <div className={styles.cardActions}>
 
                                         <button
                                             type="button"
                                             onClick={() =>
-                                                editarMusica(
-                                                    musica
-                                                )
+                                                editarMusica(musica)
                                             }
-                                            className={
-                                                styles.editButton
-                                            }
+                                            className={styles.editButton}
+                                            title="Editar música"
                                         >
-
                                             <FiEdit />
-
                                         </button>
 
                                         <button
@@ -1320,10 +1215,9 @@ function CadastrarMusica() {
                                             className={
                                                 styles.deleteButton
                                             }
+                                            title="Excluir música"
                                         >
-
                                             <FiTrash2 />
-
                                         </button>
 
                                     </div>
@@ -1345,4 +1239,3 @@ function CadastrarMusica() {
 }
 
 export default CadastrarMusica;
-

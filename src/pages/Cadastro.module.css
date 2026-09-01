@@ -1,12 +1,16 @@
-/* FINALIZADO ÚLTIMA VERSÃO */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
 
+
+/* ===== VARIÁVEIS GLOBAIS ===== */
+
 :root {
   /* ===== CORES ===== */
+
   --cor-roxo-escuro: #40265c;
   --cor-roxo-medio: #6c3d5f;
   --cor-roxo-claro: #a65d9a;
+
   --cor-rosa-medio: #aa5b9e;
   --cor-rosa-claro: #d79fc4;
   --cor-rosa-vibrante: #a63088;
@@ -30,10 +34,15 @@
   --cor-branco: #ffffff;
   --cor-cinza-claro: #f2f2f2;
 
+
   /* ===== FONTES ===== */
+
   --fonte-primaria: 'Inter', sans-serif;
   --fonte-secundaria: 'Poppins', sans-serif;
 }
+
+
+/* ===== RESET ===== */
 
 * {
   margin: 0;
@@ -41,10 +50,15 @@
   box-sizing: border-box;
 }
 
+
+/* ===== CORPO DA PÁGINA ===== */
+
 body {
   font-family: var(--fonte-primaria);
 }
 
+
+/* ===== TELA DE CADASTRO ===== */
 
 .cadastro {
   width: 100%;
@@ -54,6 +68,9 @@ body {
   background-color: var(--cor-fundo-escuro);
 }
 
+
+/* ===== ÁREA VISUAL ===== */
+
 .visual {
   width: 56%;
   overflow: hidden;
@@ -62,21 +79,27 @@ body {
   background-color: var(--cor-fundo-escuro);
 }
 
-.shapePink {
+
+/* ===== FORMAS DECORATIVAS ===== */
+
+.formaRosa {
   inset: 0;
   position: absolute;
   background-color: var(--cor-fundo-forma-medio);
   clip-path: polygon(0 0, 60% 0, 30% 100%, 0 100%);
 }
 
-.shapeLight {
+.formaClara {
   inset: 0;
   position: absolute;
   background-color: var(--cor-fundo-forma-claro);
   clip-path: polygon(55% 0, 95% 0, 70% 100%, 25% 100%);
 }
 
-.dancer {
+
+/* ===== IMAGEM ===== */
+
+.pessoaDancando {
   left: 40%;
   z-index: 3;
   bottom: 0;
@@ -87,7 +110,10 @@ body {
   transform: translateX(-50%);
 }
 
-.formSide {
+
+/* ===== ÁREA DO FORMULÁRIO ===== */
+
+.ladoFormulario {
   width: 48%;
   display: flex;
   padding: 40px 0;
@@ -98,6 +124,9 @@ body {
   background-color: var(--cor-fundo-escuro);
 }
 
+
+/* ===== LOGO ===== */
+
 .logo {
   top: 10px;
   right: 10px;
@@ -107,19 +136,25 @@ body {
   object-fit: contain;
 }
 
-.formContent {
+
+/* ===== CONTEÚDO DO FORMULÁRIO ===== */
+
+.conteudoFormulario {
   width: 67%;
   max-width: 440px;
   margin-top: 8vh;
 }
 
-.welcome {
+
+/* ===== MENSAGEM DE BOAS-VINDAS ===== */
+
+.boasVindas {
   margin-top: 50px;
   text-align: right;
   margin-bottom: 28px;
 }
 
-.welcome h1 {
+.boasVindas h1 {
   margin: 0 0 6px;
   font-size: 48px;
   font-weight: 700;
@@ -128,7 +163,7 @@ body {
   font-family: var(--fonte-secundaria);
 }
 
-.welcome p {
+.boasVindas p {
   margin: 0;
   display: flex;
   align-items: flex-end;
@@ -136,7 +171,7 @@ body {
   gap: 2px;
 }
 
-.welcome p span {
+.boasVindas p span {
   font-size: 26px;
   font-weight: 600;
   padding-right: 4px;
@@ -144,20 +179,26 @@ body {
   font-family: var(--fonte-secundaria);
 }
 
-.form {
+
+/* ===== FORMULÁRIO ===== */
+
+.formulario {
   gap: 8px;
   display: flex;
   margin-top: 30px;
   flex-direction: column;
 }
 
-.field {
+
+/* ===== CAMPOS ===== */
+
+.campo {
   gap: 3px;
   display: flex;
   flex-direction: column;
 }
 
-.field label {
+.campo label {
   font-size: 16px;
   font-weight: 500;
   text-align: right;
@@ -165,7 +206,7 @@ body {
   color: var(--cor-texto-label);
 }
 
-.field input {
+.campo input {
   width: 100%;
   height: 44px;
   outline: none;
@@ -181,23 +222,28 @@ body {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-.field input::placeholder {
+.campo input::placeholder {
   font-size: 13px;
   color: rgba(238, 132, 220, 0.25);
 }
 
-.field input:focus {
+.campo input:focus {
   border-color: var(--cor-borda-foco);
-  box-shadow: 0 4px 20px rgba(203, 67, 190, 0.3), 0 0 0 3px rgba(232, 107, 190, 0.1);
+  box-shadow:
+    0 4px 20px rgba(203, 67, 190, 0.3),
+    0 0 0 3px rgba(232, 107, 190, 0.1);
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.passwordWrapper {
+
+/* ===== CAMPO DE SENHA ===== */
+
+.containerSenha {
   width: 100%;
   position: relative;
 }
 
-.passwordWrapper input {
+.containerSenha input {
   width: 100%;
   height: 44px;
   outline: none;
@@ -213,18 +259,23 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.passwordWrapper input::placeholder {
+.containerSenha input::placeholder {
   font-size: 13px;
   color: rgba(238, 132, 220, 0.25);
 }
 
-.passwordWrapper input:focus {
+.containerSenha input:focus {
   border-color: var(--cor-borda-foco);
-  box-shadow: 0 4px 20px rgba(203, 67, 190, 0.3), 0 0 0 3px rgba(232, 107, 190, 0.1);
+  box-shadow:
+    0 4px 20px rgba(203, 67, 190, 0.3),
+    0 0 0 3px rgba(232, 107, 190, 0.1);
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.togglePassword {
+
+/* ===== BOTÃO MOSTRAR/OCULTAR SENHA ===== */
+
+.alternarSenha {
   top: 50%;
   right: 12px;
   border: none;
@@ -240,21 +291,24 @@ body {
   color: var(--cor-texto-secundario);
 }
 
-.togglePassword:hover {
+.alternarSenha:hover {
   opacity: 0.8;
   color: var(--cor-texto-primario);
 }
 
-.togglePassword:active {
+.alternarSenha:active {
   transform: translateY(-50%) scale(0.95);
 }
 
-.togglePassword svg {
+.alternarSenha svg {
   width: 16px;
   height: 16px;
 }
 
-.error {
+
+/* ===== MENSAGEM DE ERRO ===== */
+
+.erro {
   font-size: 16px;
   font-weight: 500;
   margin-top: -2px;
@@ -262,7 +316,10 @@ body {
   color: var(--cor-texto-erro);
 }
 
-.button {
+
+/* ===== BOTÃO CADASTRAR ===== */
+
+.botao {
   width: 100%;
   height: 42px;
   border: none;
@@ -279,23 +336,26 @@ body {
   box-shadow: 0 8px 24px rgba(174, 92, 166, 0.4);
 }
 
-.button:hover {
+.botao:hover {
   transform: translateY(-2px);
   background-color: var(--cor-botao-hover);
   box-shadow: 0 12px 32px rgba(174, 92, 166, 0.5);
 }
 
-.button:active {
+.botao:active {
   transform: scale(0.98) translateY(0);
   box-shadow: 0 4px 12px rgba(174, 92, 166, 0.3);
 }
 
-.button:disabled {
+.botao:disabled {
   opacity: 0.6;
   transform: none;
   cursor: not-allowed;
   box-shadow: 0 4px 12px rgba(174, 92, 166, 0.15);
 }
+
+
+/* ===== LINK PARA LOGIN ===== */
 
 .loginLink {
   gap: 8px;
@@ -325,35 +385,37 @@ body {
   text-decoration: none;
 }
 
-/* =========================
-   RESPONSIVIDADE
-========================= */
+
+/* ===== RESPONSIVIDADE ===== */
 
 @media (max-width: 1024px) {
-  .formContent {
+
+  .conteudoFormulario {
     width: 70%;
     max-width: 400px;
   }
 
-  .welcome h1 {
+  .boasVindas h1 {
     font-size: 30px;
   }
 
-  .welcome p span {
+  .boasVindas p span {
     font-size: 18px;
   }
 }
 
+
 @media (max-width: 900px) {
+
   .visual {
     width: 50%;
   }
 
-  .formSide {
+  .ladoFormulario {
     width: 50%;
   }
 
-  .formContent {
+  .conteudoFormulario {
     width: 75%;
     max-width: 380px;
     margin-top: 6vh;
@@ -364,7 +426,9 @@ body {
   }
 }
 
+
 @media (max-width: 700px) {
+
   .cadastro {
     min-height: 100vh;
   }
@@ -373,12 +437,12 @@ body {
     display: none;
   }
 
-  .formSide {
+  .ladoFormulario {
     width: 100%;
     padding: 20px;
   }
 
-  .formContent {
+  .conteudoFormulario {
     width: 90%;
     max-width: 360px;
     margin-top: 4vh;
@@ -392,17 +456,17 @@ body {
     width: 160px;
   }
 
-  .welcome h1 {
+  .boasVindas h1 {
     font-size: 26px;
   }
 
-  .welcome p span {
+  .boasVindas p span {
     font-size: 16px;
   }
 
-  .field input,
-  .passwordWrapper input,
-  .button {
+  .campo input,
+  .containerSenha input,
+  .botao {
     height: 44px;
     font-size: 15px;
   }
@@ -417,3 +481,4 @@ body {
     font-size: 13px;
   }
 }
+

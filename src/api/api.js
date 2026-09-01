@@ -1,159 +1,230 @@
-const API_URL = 'http://localhost:8080';
+
+import axios from "axios";
+
+const API_URL = "http://localhost:8080";
 
 export const api = {
 
     // Cadastrando usuários
     cadastrarUsuario: async (dados) => {
-        const response = await fetch(`${API_URL}/usuarios/cadastro`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
+        try {
+            const response = await axios.post(
+                `${API_URL}/usuarios/cadastro`,
+                dados
+            );
 
-        if (response.status === 409) {
-            throw new Error('Usuário ou e-mail já cadastrado');
+            return response.data;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 409) {
+                throw new Error("Usuário ou e-mail já cadastrado");
+            }
+
+            throw new Error("Erro ao cadastrar usuário");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao cadastrar usuário');
-        }
-        return await response.json();
     },
+
 
     // Cadastrado ele faz o login na Sonora
     login: async (dados) => {
-        const response = await fetch(`${API_URL}/usuarios/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
+        try {
+            const response = await axios.post(
+                `${API_URL}/usuarios/login`,
+                dados
+            );
 
-        if (response.status === 401) {
-            throw new Error('Usuário ou senha incorretos');
+            return response.data;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 401) {
+                throw new Error("Usuário ou senha incorretos");
+            }
+
+            throw new Error("Erro ao fazer login");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao fazer login');
-        }
-        return await response.json();
     },
 
 
-    // Pega as músicas com a capa(imagem)
+    // Pega as músicas com a capa (imagem)
     getMusicas: async (usuarioId) => {
-        const response = await fetch(`${API_URL}/musicas?usuarioId=${usuarioId}`);
-        if (!response.ok) throw new Error('Erro ao buscar músicas');
-        return await response.json();
+        try {
+            const response = await axios.get(
+                `${API_URL}/musicas`,
+                {
+                    params: {
+                        usuarioId: usuarioId
+                    }
+                }
+            );
+
+            return response.data;
+
+        } catch (erro) {
+            throw new Error("Erro ao buscar músicas");
+        }
     },
 
-    // Mostra as músicas na tela, verifica se ela existe e tals...
+
+    // Mostra as músicas na tela, verifica se ela existe e etc.
     postMusica: async (musica) => {
-        const response = await fetch(`${API_URL}/musicas`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(musica)
-        });
+        try {
+            const response = await axios.post(
+                `${API_URL}/musicas`,
+                musica
+            );
 
-        if (response.status === 409) {
-            throw new Error('Música já cadastrada');
+            return response.data;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 409) {
+                throw new Error("Música já cadastrada");
+            }
+
+            throw new Error("Erro ao cadastrar música");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao cadastrar música');
-        }
-        return await response.json();
     },
+
 
     // Podemos editar as informações das músicas
     putMusica: async (id, musica) => {
-        const response = await fetch(`${API_URL}/musicas/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(musica)
-        });
+        try {
+            const response = await axios.put(
+                `${API_URL}/musicas/${id}`,
+                musica
+            );
 
-        if (response.status === 403) {
-            throw new Error('Você não tem permissão para editar esta música');
+            return response.data;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 403) {
+                throw new Error(
+                    "Você não tem permissão para editar esta música"
+                );
+            }
+
+            throw new Error("Erro ao atualizar música");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao atualizar música');
-        }
-        return await response.json();
     },
+
 
     // Deletamos as músicas
     deleteMusica: async (id, usuarioId) => {
-        const response = await fetch(`${API_URL}/musicas/${id}?usuarioId=${usuarioId}`, {
-            method: 'DELETE'
-        });
+        try {
+            await axios.delete(
+                `${API_URL}/musicas/${id}`,
+                {
+                    params: {
+                        usuarioId: usuarioId
+                    }
+                }
+            );
 
-        if (response.status === 403) {
-            throw new Error('Você não tem permissão para excluir esta música');
+            return true;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 403) {
+                throw new Error(
+                    "Você não tem permissão para excluir esta música"
+                );
+            }
+
+            throw new Error("Erro ao deletar música");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao deletar música');
-        }
-        return true;
     },
 
-    // Função responsável por favoritar uma música.
-    // Recebe o ID da música e o ID do usuário e envia uma requisição PATCH para a API.
-    // Se o usuário não tiver permissão, retorna um erro 403.
-    // Caso aconteça outro erro, também informa que não foi possível favoritar.
-    // Se der tudo certo, retorna os dados atualizados da música.
-    
+
+    // Função responsável por favoritar uma música
     patchFavoritar: async (id, usuarioId) => {
-        const response = await fetch(`${API_URL}/musicas/${id}/favoritar?usuarioId=${usuarioId}`, {
-            method: 'PATCH'
-        });
+        try {
+            const response = await axios.patch(
+                `${API_URL}/musicas/${id}/favoritar`,
+                null,
+                {
+                    params: {
+                        usuarioId: usuarioId
+                    }
+                }
+            );
 
-        if (response.status === 403) {
-            throw new Error('Você não tem permissão para favoritar esta música');
+            return response.data;
+
+        } catch (erro) {
+
+            if (erro.response?.status === 403) {
+                throw new Error(
+                    "Você não tem permissão para favoritar esta música"
+                );
+            }
+
+            throw new Error("Erro ao favoritar música");
         }
-        if (!response.ok) {
-            throw new Error('Erro ao favoritar música');
-        }
-        return await response.json();
     },
 
+
+    // Busca as anotações de uma música
     getAnotacoes: async (musicaId) => {
-        const response = await fetch(`${API_URL}/anotacoes/musica/${musicaId}`);
-        if (!response.ok) throw new Error('Erro ao buscar anotações');
-        return await response.json();
+        try {
+            const response = await axios.get(
+                `${API_URL}/anotacoes/musica/${musicaId}`
+            );
+
+            return response.data;
+
+        } catch (erro) {
+            throw new Error("Erro ao buscar anotações");
+        }
     },
 
+
+    // Adiciona uma anotação
     postAnotacao: async (dados) => {
-        const response = await fetch(`${API_URL}/anotacoes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
+        try {
+            const response = await axios.post(
+                `${API_URL}/anotacoes`,
+                dados
+            );
 
-        if (!response.ok) {
-            throw new Error('Erro ao adicionar anotação');
+            return response.data;
+
+        } catch (erro) {
+            throw new Error("Erro ao adicionar anotação");
         }
-        return await response.json();
     },
 
+
+    // Atualiza uma anotação
     putAnotacao: async (id, dados) => {
-        const response = await fetch(`${API_URL}/anotacoes/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
+        try {
+            const response = await axios.put(
+                `${API_URL}/anotacoes/${id}`,
+                dados
+            );
 
-        if (!response.ok) {
-            throw new Error('Erro ao atualizar anotação');
+            return response.data;
+
+        } catch (erro) {
+            throw new Error("Erro ao atualizar anotação");
         }
-        return await response.json();
     },
 
-    deleteAnotacao: async (id) => {
-        const response = await fetch(`${API_URL}/anotacoes/${id}`, {
-            method: 'DELETE'
-        });
 
-        if (!response.ok) {
-            throw new Error('Erro ao deletar anotação');
+    // Deleta uma anotação
+    deleteAnotacao: async (id) => {
+        try {
+            await axios.delete(
+                `${API_URL}/anotacoes/${id}`
+            );
+
+            return true;
+
+        } catch (erro) {
+            throw new Error("Erro ao deletar anotação");
         }
-        return true;
     }
 };
 

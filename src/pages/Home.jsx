@@ -44,11 +44,8 @@ function Home() {
     const usuario = usuarioSalvo?.usuario || "Visitante";
 
     const [erro, setErro] = useState("");
-
     const [favoritas, setFavoritas] = useState([]);
-
     const [carregando, setCarregando] = useState(true);
-
     const [musicasRecentes, setMusicasRecentes] = useState([]);
 
     const [modalNotas, setModalNotas] = useState({
@@ -66,7 +63,6 @@ function Home() {
         nome: "",
         musicas: 0
     });
-
 
     /*
      * Busca as anotações de uma música
@@ -99,7 +95,6 @@ function Home() {
         }
     };
 
-
     /*
      * Busca todas as músicas do usuário
      * e atualiza todas as informações da Home.
@@ -119,7 +114,6 @@ function Home() {
             const musicas = await api.getMusicas(
                 usuarioId
             );
-
 
             /*
              * Busca as anotações de cada música.
@@ -158,14 +152,12 @@ function Home() {
                 })
             );
 
-
             /*
              * Músicas cadastradas recentemente.
              */
             setMusicasRecentes(
                 musicasComNotas.slice(0, 8)
             );
-
 
             /*
              * Filtra somente as músicas favoritas.
@@ -177,7 +169,6 @@ function Home() {
 
             setFavoritas(listaFavoritas);
 
-
             /*
              * Conta quantas músicas existem.
              */
@@ -188,13 +179,11 @@ function Home() {
                     )
                 ).size;
 
-
             setEstatisticas({
                 musicas: musicasComNotas.length,
                 artistas: quantidadeArtistas,
                 favoritas: listaFavoritas.length
             });
-
 
             /*
              * Descobre qual artista possui
@@ -212,10 +201,8 @@ function Home() {
                         (contagemArtistas[artista] || 0) + 1;
                 });
 
-
                 let artistaMaisCadastrado = "";
                 let maiorQuantidade = 0;
-
 
                 for (
                     const [artista, quantidade]
@@ -230,7 +217,6 @@ function Home() {
                         artistaMaisCadastrado = artista;
                     }
                 }
-
 
                 setArtistaDestaque({
                     nome: artistaMaisCadastrado,
@@ -266,7 +252,6 @@ function Home() {
         }
     };
 
-
     /*
      * Carrega os dados quando a Home é aberta.
      */
@@ -276,13 +261,9 @@ function Home() {
 
     }, [usuarioId]);
 
-
     /*
      * Atualiza a Home quando o usuário volta
      * para a aba/janela do navegador.
-     *
-     * Isso ajuda a garantir que uma música cadastrada
-     * em outra tela apareça sem precisar apertar F5.
      */
     useEffect(() => {
 
@@ -295,12 +276,10 @@ function Home() {
             }
         };
 
-
         document.addEventListener(
             "visibilitychange",
             atualizarAoVoltarParaPagina
         );
-
 
         return () => {
 
@@ -312,7 +291,6 @@ function Home() {
 
     }, [usuarioId]);
 
-
     /*
      * Abre as anotações de uma música.
      */
@@ -320,7 +298,6 @@ function Home() {
 
         carregarAnotacoes(musica.id);
     };
-
 
     /*
      * Fecha o modal de anotações.
@@ -333,30 +310,27 @@ function Home() {
         });
     };
 
-
     if (carregando) {
 
         return <Loading />;
     }
 
-
     if (erro) {
 
         return (
-            <div className={styles.errorContainer}>
+            <div className={styles.containerErro}>
                 {erro}
             </div>
         );
     }
 
-
     return (
 
         <div className={styles.home}>
 
-            <aside className={styles.sidebar}>
+            <aside className={styles.barraLateral}>
 
-                <div className={styles.logoContainer}>
+                <div className={styles.containerLogo}>
 
                     <img
                         src={logo}
@@ -366,16 +340,15 @@ function Home() {
 
                 </div>
 
-
-                <nav className={styles.nav}>
+                <nav className={styles.navegacao}>
 
                     <Link
                         to="/home"
-                        className={`${styles.navItem} ${styles.active}`}
+                        className={`${styles.itemNavegacao} ${styles.ativo}`}
                     >
 
                         <FiHome
-                            className={styles.navIcon}
+                            className={styles.iconeNavegacao}
                         />
 
                         <span>
@@ -384,14 +357,13 @@ function Home() {
 
                     </Link>
 
-
                     <Link
                         to="/cadastrarMusica"
-                        className={styles.navItem}
+                        className={styles.itemNavegacao}
                     >
 
                         <FiPlus
-                            className={styles.navIcon}
+                            className={styles.iconeNavegacao}
                         />
 
                         <span>
@@ -402,12 +374,11 @@ function Home() {
 
                 </nav>
 
+                <div className={styles.rodapeBarraLateral}>
 
-                <div className={styles.sidebarFooter}>
+                    <div className={styles.informacoesUsuario}>
 
-                    <div className={styles.userInfo}>
-
-                        <div className={styles.userAvatar}>
+                        <div className={styles.avatarUsuario}>
 
                             {usuario
                                 .charAt(0)
@@ -415,27 +386,22 @@ function Home() {
 
                         </div>
 
-                        <span
-                            className={
-                                styles.userName
-                            }
-                        >
+                        <span className={styles.nomeUsuario}>
                             {usuario}
                         </span>
 
                     </div>
 
-
                     <Link
                         to="/"
-                        className={styles.logoutButton}
+                        className={styles.botaoSair}
                     >
 
                         <FiLogOut
-                            className={styles.navIcon}
+                            className={styles.iconeNavegacao}
                         />
 
-                        <span className={styles.span}>
+                        <span className={styles.textoSair}>
                             Sair
                         </span>
 
@@ -445,22 +411,17 @@ function Home() {
 
             </aside>
 
+            <main className={styles.conteudoPrincipal}>
 
-            <main className={styles.main}>
+                <header className={styles.cabecalho}>
 
-                <header className={styles.header}>
+                    <div className={styles.ladoEsquerdoCabecalho}>
 
-                    <div className={styles.headerLeft}>
-
-                        <h1 className={styles.title}>
+                        <h1 className={styles.titulo}>
 
                             Olá,{" "}
 
-                            <span
-                                className={
-                                    styles.titleSpan
-                                }
-                            >
+                            <span className={styles.nomeTitulo}>
                                 {usuario}
                             </span>
 
@@ -468,22 +429,16 @@ function Home() {
 
                         </h1>
 
-
-                        <p
-                            className={
-                                styles.subtitle
-                            }
-                        >
+                        <p className={styles.subtitulo}>
                             Qual memória você vai guardar
                             em forma de música hoje?
                         </p>
 
                     </div>
 
+                    <div className={styles.ladoDireitoCabecalho}>
 
-                    <div className={styles.headerRight}>
-
-                        <div className={styles.search}>
+                        <div className={styles.busca}>
 
                             <input
                                 type="text"
@@ -491,9 +446,7 @@ function Home() {
                             />
 
                             <FiSearch
-                                className={
-                                    styles.searchIcon
-                                }
+                                className={styles.iconeBusca}
                             />
 
                         </div>
@@ -502,42 +455,27 @@ function Home() {
 
                 </header>
 
-
                 {/* ESTATÍSTICAS */}
 
-                <section className={styles.stats}>
+                <section className={styles.estatisticas}>
 
-                    <div className={styles.statCard}>
+                    <div className={styles.cardEstatistica}>
 
-                        <div
-                            className={
-                                styles.statIconWrapper
-                            }
-                        >
+                        <div className={styles.containerIconeEstatistica}>
 
                             <FiMusic
-                                className={
-                                    styles.statIcon
-                                }
+                                className={styles.iconeEstatistica}
                             />
 
                         </div>
 
                         <div>
 
-                            <span
-                                className={
-                                    styles.statLabel
-                                }
-                            >
+                            <span className={styles.rotuloEstatistica}>
                                 Músicas Cadastradas
                             </span>
 
-                            <span
-                                className={
-                                    styles.statNumber
-                                }
-                            >
+                            <span className={styles.numeroEstatistica}>
                                 {estatisticas.musicas}
                             </span>
 
@@ -545,38 +483,23 @@ function Home() {
 
                     </div>
 
+                    <div className={styles.cardEstatistica}>
 
-                    <div className={styles.statCard}>
-
-                        <div
-                            className={
-                                styles.statIconWrapper
-                            }
-                        >
+                        <div className={styles.containerIconeEstatistica}>
 
                             <FiUser
-                                className={
-                                    styles.statIcon
-                                }
+                                className={styles.iconeEstatistica}
                             />
 
                         </div>
 
                         <div>
 
-                            <span
-                                className={
-                                    styles.statLabel
-                                }
-                            >
+                            <span className={styles.rotuloEstatistica}>
                                 Artistas Cadastrados
                             </span>
 
-                            <span
-                                className={
-                                    styles.statNumber
-                                }
-                            >
+                            <span className={styles.numeroEstatistica}>
                                 {estatisticas.artistas}
                             </span>
 
@@ -584,38 +507,23 @@ function Home() {
 
                     </div>
 
+                    <div className={styles.cardEstatistica}>
 
-                    <div className={styles.statCard}>
-
-                        <div
-                            className={
-                                styles.statIconWrapper
-                            }
-                        >
+                        <div className={styles.containerIconeEstatistica}>
 
                             <FiHeart
-                                className={
-                                    styles.statIcon
-                                }
+                                className={styles.iconeEstatistica}
                             />
 
                         </div>
 
                         <div>
 
-                            <span
-                                className={
-                                    styles.statLabel
-                                }
-                            >
+                            <span className={styles.rotuloEstatistica}>
                                 Músicas Favoritas
                             </span>
 
-                            <span
-                                className={
-                                    styles.statNumber
-                                }
-                            >
+                            <span className={styles.numeroEstatistica}>
                                 {estatisticas.favoritas}
                             </span>
 
@@ -625,60 +533,31 @@ function Home() {
 
                 </section>
 
-
                 {/* ARTISTA EM DESTAQUE */}
 
                 <section className={styles.destaque}>
 
-                    <div
-                        className={
-                            styles.destaqueCard
-                        }
-                    >
+                    <div className={styles.cardDestaque}>
 
-                        <div
-                            className={
-                                styles.destaqueTop
-                            }
-                        >
+                        <div className={styles.topoDestaque}>
 
-                            <div
-                                className={
-                                    styles.destaqueLeft
-                                }
-                            >
+                            <div className={styles.ladoEsquerdoDestaque}>
 
-                                <span
-                                    className={
-                                        styles.destaqueLabel
-                                    }
-                                >
+                                <span className={styles.rotuloDestaque}>
                                     Artista em destaque
                                 </span>
 
-
-                                <h3
-                                    className={
-                                        styles.destaqueNome
-                                    }
-                                >
+                                <h3 className={styles.nomeDestaque}>
                                     {artistaDestaque.nome ||
                                         "Nenhum Artista Cadastrado"}
                                 </h3>
 
-
-                                <div
-                                    className={
-                                        styles.destaqueStats
-                                    }
-                                >
+                                <div className={styles.estatisticasDestaque}>
 
                                     <span>
 
                                         <FiMusic
-                                            className={
-                                                styles.destaqueStatIcon
-                                            }
+                                            className={styles.iconeEstatisticaDestaque}
                                         />
 
                                         {artistaDestaque.musicas}
@@ -691,17 +570,10 @@ function Home() {
 
                             </div>
 
-
-                            <div
-                                className={
-                                    styles.destaqueImagem
-                                }
-                            >
+                            <div className={styles.imagemDestaque}>
 
                                 <FiHeadphones
-                                    className={
-                                        styles.destaqueImagemIcon
-                                    }
+                                    className={styles.iconeImagemDestaque}
                                 />
 
                             </div>
@@ -712,65 +584,37 @@ function Home() {
 
                 </section>
 
-
                 {/* MÚSICAS RECENTES */}
 
                 <section className={styles.secao}>
 
-                    <div
-                        className={
-                            styles.secaoHeader
-                        }
-                    >
+                    <div className={styles.cabecalhoSecao}>
 
                         <h2>
                             Cadastradas Recentemente
                         </h2>
 
-                        <p
-                            className={
-                                styles.secaoSubtitulo
-                            }
-                        >
-                            Músicas que você cadastrou
-                            recentemente
+                        <p className={styles.subtituloSecao}>
+                            Músicas que você cadastrou recentemente
                         </p>
 
                     </div>
 
-
-                    <div
-                        className={
-                            styles.listaMusicas
-                        }
-                    >
+                    <div className={styles.listaMusicas}>
 
                         {musicasRecentes.length === 0 ? (
 
-                            <div
-                                className={
-                                    styles.emptyState
-                                }
-                            >
+                            <div className={styles.estadoVazio}>
 
-                                <p
-                                    className={
-                                        styles.emptyStateMessage
-                                    }
-                                >
+                                <p className={styles.mensagemEstadoVazio}>
                                     {usuario}, você ainda
                                     não cadastrou nenhuma
                                     música.
                                 </p>
 
-
                                 <Link to="/cadastrarMusica">
 
-                                    <button
-                                        className={
-                                            styles.emptyStateButton
-                                        }
-                                    >
+                                    <button className={styles.botaoEstadoVazio}>
                                         Cadastre sua primeira
                                         música!
                                     </button>
@@ -786,20 +630,16 @@ function Home() {
 
                                     <div
                                         key={musica.id}
-                                        className={
-                                            styles.cardMusica
-                                        }
+                                        className={styles.cardMusica}
                                     >
 
                                         <div
-                                            className={
-                                                styles.cardCapa
-                                            }
+                                            className={styles.capaMusica}
                                             style={{
                                                 backgroundColor:
                                                     coresCapas[
-                                                        indice %
-                                                        coresCapas.length
+                                                    indice %
+                                                    coresCapas.length
                                                     ]
                                             }}
                                         >
@@ -807,66 +647,40 @@ function Home() {
                                             {musica.capa ? (
 
                                                 <img
-                                                    src={
-                                                        musica.capa
-                                                    }
-                                                    alt={
-                                                        musica.nome
-                                                    }
-                                                    className={
-                                                        styles.cardCapaImagem
-                                                    }
+                                                    src={musica.capa}
+                                                    alt={musica.nome}
+                                                    className={styles.imagemCapaMusica}
                                                     style={{
-                                                        width:
-                                                            "100%",
-                                                        height:
-                                                            "100%",
-                                                        objectFit:
-                                                            "cover"
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "cover"
                                                     }}
                                                 />
 
                                             ) : (
 
                                                 <FiMusic
-                                                    className={
-                                                        styles.cardCapaIcon
-                                                    }
+                                                    className={styles.iconeCapaMusica}
                                                 />
 
                                             )}
 
                                         </div>
 
+                                        <div className={styles.informacoesMusica}>
 
-                                        <div
-                                            className={
-                                                styles.cardInfo
-                                            }
-                                        >
-
-                                            <span
-                                                className={
-                                                    styles.cardNome
-                                                }
-                                            >
+                                            <span className={styles.nomeMusica}>
                                                 {musica.nome}
                                             </span>
 
-                                            <span
-                                                className={
-                                                    styles.cardArtista
-                                                }
-                                            >
+                                            <span className={styles.artistaMusica}>
                                                 {musica.artista}
                                             </span>
 
                                         </div>
 
-
                                         {musica.notas &&
-                                            musica.notas.length >
-                                                0 && (
+                                            musica.notas.length > 0 && (
 
                                                 <button
                                                     type="button"
@@ -875,17 +689,13 @@ function Home() {
                                                             musica
                                                         )
                                                     }
-                                                    className={
-                                                        styles.notasButton
-                                                    }
+                                                    className={styles.botaoAnotacoes}
                                                 >
 
                                                     <FiMessageCircle />
 
                                                     {
-                                                        musica
-                                                            .notas
-                                                            .length
+                                                        musica.notas.length
                                                     }
 
                                                 </button>
@@ -903,74 +713,44 @@ function Home() {
 
                 </section>
 
-
                 {/* FAVORITAS */}
 
                 <section className={styles.secao}>
 
-                    <div
-                        className={
-                            styles.secaoHeader
-                        }
-                    >
+                    <div className={styles.cabecalhoSecao}>
 
                         <h2>
 
                             Suas favoritas
 
                             <FiHeart
-                                className={
-                                    styles.secaoIconFavoritas
-                                }
+                                className={styles.iconeSecaoFavoritas}
                             />
 
                         </h2>
 
-
-                        <p
-                            className={
-                                styles.secaoSubtituloFavoritas
-                            }
-                        >
+                        <p className={styles.subtituloSecaoFavoritas}>
                             As músicas que você marcou
                             como favoritas.
                         </p>
 
                     </div>
 
-
-                    <div
-                        className={
-                            styles.listaFavoritas
-                        }
-                    >
+                    <div className={styles.listaFavoritas}>
 
                         {favoritas.length === 0 ? (
 
-                            <div
-                                className={
-                                    styles.emptyStateFavoritas
-                                }
-                            >
+                            <div className={styles.estadoVazioFavoritas}>
 
-                                <p
-                                    className={
-                                        styles.emptyStateSubMessage
-                                    }
-                                >
+                                <p className={styles.submensagemEstadoVazio}>
                                     Marque o coração ❤️ em
                                     uma música para adicioná-la
                                     aos seus favoritos!
                                 </p>
 
-
                                 <Link to="/cadastrarMusica">
 
-                                    <button
-                                        className={
-                                            styles.emptyStateButtonFavoritas
-                                        }
-                                    >
+                                    <button className={styles.botaoEstadoVazioFavoritas}>
                                         Ver minhas músicas
                                     </button>
 
@@ -985,20 +765,16 @@ function Home() {
 
                                     <div
                                         key={musica.id}
-                                        className={
-                                            styles.cardFavorita
-                                        }
+                                        className={styles.cardFavorita}
                                     >
 
                                         <div
-                                            className={
-                                                styles.cardCapa
-                                            }
+                                            className={styles.capaMusica}
                                             style={{
                                                 backgroundColor:
                                                     coresCapas[
-                                                        (indice + 4) %
-                                                        coresCapas.length
+                                                    (indice + 4) %
+                                                    coresCapas.length
                                                     ]
                                             }}
                                         >
@@ -1006,57 +782,33 @@ function Home() {
                                             {musica.capa ? (
 
                                                 <img
-                                                    src={
-                                                        musica.capa
-                                                    }
-                                                    alt={
-                                                        musica.nome
-                                                    }
-                                                    className={
-                                                        styles.cardCapaImagem
-                                                    }
+                                                    src={musica.capa}
+                                                    alt={musica.nome}
+                                                    className={styles.imagemCapaMusica}
                                                     style={{
-                                                        width:
-                                                            "100%",
-                                                        height:
-                                                            "100%",
-                                                        objectFit:
-                                                            "cover"
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "cover"
                                                     }}
                                                 />
 
                                             ) : (
 
                                                 <FiHeart
-                                                    className={
-                                                        styles.cardCapaIcon
-                                                    }
+                                                    className={styles.iconeCapaMusica}
                                                 />
 
                                             )}
 
                                         </div>
 
+                                        <div className={styles.informacoesMusica}>
 
-                                        <div
-                                            className={
-                                                styles.cardInfo
-                                            }
-                                        >
-
-                                            <span
-                                                className={
-                                                    styles.favoritaNome
-                                                }
-                                            >
+                                            <span className={styles.nomeFavorita}>
                                                 {musica.nome}
                                             </span>
 
-                                            <span
-                                                className={
-                                                    styles.favoritaArtista
-                                                }
-                                            >
+                                            <span className={styles.artistaFavorita}>
                                                 {musica.artista}
                                             </span>
 
@@ -1075,74 +827,49 @@ function Home() {
 
             </main>
 
-
             {/* MODAL DE ANOTAÇÕES */}
 
             {modalNotas.musicaId && (
 
                 <div
-                    className={
-                        styles.modalOverlay
-                    }
+                    className={styles.sobreposicaoModal}
                     onClick={fecharAnotacoes}
                 >
 
                     <div
-                        className={
-                            styles.modal
-                        }
+                        className={styles.modal}
                         onClick={(e) =>
                             e.stopPropagation()
                         }
                     >
 
-                        <div
-                            className={
-                                styles.modalHeader
-                            }
-                        >
+                        <div className={styles.cabecalhoModal}>
 
                             <h3>
 
                                 <FiMessageCircle
-                                    className={
-                                        styles.modalIcon
-                                    }
+                                    className={styles.iconeModal}
                                 />
 
                                 Anotações
 
                             </h3>
 
-
                             <button
                                 type="button"
-                                onClick={
-                                    fecharAnotacoes
-                                }
-                                className={
-                                    styles.modalClose
-                                }
+                                onClick={fecharAnotacoes}
+                                className={styles.botaoFecharModal}
                             >
                                 ✕
                             </button>
 
                         </div>
 
-
-                        <div
-                            className={
-                                styles.modalBody
-                            }
-                        >
+                        <div className={styles.corpoModal}>
 
                             {modalNotas.notas.length === 0 ? (
 
-                                <p
-                                    className={
-                                        styles.modalVazio
-                                    }
-                                >
+                                <p className={styles.modalVazio}>
                                     Nenhuma anotação para
                                     esta música.
                                 </p>
@@ -1154,25 +881,14 @@ function Home() {
 
                                         <div
                                             key={nota.id}
-                                            className={
-                                                styles.modalNota
-                                            }
+                                            className={styles.notaModal}
                                         >
 
-                                            <p
-                                                className={
-                                                    styles.modalTexto
-                                                }
-                                            >
+                                            <p className={styles.textoNotaModal}>
                                                 {nota.texto}
                                             </p>
 
-
-                                            <span
-                                                className={
-                                                    styles.modalData
-                                                }
-                                            >
+                                            <span className={styles.dataNotaModal}>
 
                                                 {new Date(
                                                     nota.criadoEm
